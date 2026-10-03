@@ -1,4 +1,161 @@
-﻿mqa_show_decision = {
+﻿mqa_money_decision = {
+	decision_group_type = mqa
+	picture = { reference = gfx/interface/illustrations/decisions/decision_spend_money.dds }
+	title = mqa_money_decision_title
+    desc = mqa_money_decision_desc
+    selection_tooltip = mqa_money_decision_tooltip
+    confirm_text = mqa_money_decision_ct
+
+	is_shown = {
+		is_ai = no
+		has_character_flag = mqa_show_decision_flag
+	}
+
+	effect = {
+        add_gold = 100000
+		add_prestige = 100000
+		add_piety = 100000
+		dynasty ?= {
+			add_dynasty_prestige = 100000
+		}
+		# Resources added by DLCs, only when the character actually uses them
+		if = {
+			limit = { has_legitimacy = yes }
+			add_legitimacy = 100000
+		}
+		if = {
+			limit = { government_has_flag = government_has_influence }	# Roads to Power
+			change_influence = 100000
+		}
+		if = {
+			limit = { government_has_flag = government_has_merit }		# All Under Heaven
+			change_merit = 100000
+		}
+		if = {
+			limit = { has_treasury = yes }									# administrative and celestial realms
+			add_treasury = 100000
+		}
+		if = {
+			limit = { has_royal_court = yes }								# Royal Court
+			change_current_court_grandeur = 100
+		}
+		if = {
+			limit = { has_pam_dlc_trigger = yes }							# By God Alone
+			change_spiritual_fulfillment = 100
+		}
+		domicile ?= {
+			if = {
+				limit = { is_domicile_type = yurt }							# Khans of the Steppe
+				change_herd = 100000
+			}
+			if = {
+				limit = { is_domicile_type = camp }							# landless adventurers
+				change_provisions = 100000
+			}
+		}
+	}
+    ai_will_do = { base = 0 }
+	ai_check_interval = 0
+}
+
+mqa_convert_subrealm_to_culture_decision = {
+	decision_group_type = mqa
+	picture = { reference = gfx/interface/illustrations/decisions/decision_culture.dds }
+	title = mqa_subrealm_to_culture_decision_title
+    desc = mqa_subrealm_to_culture_decision_desc
+    selection_tooltip = mqa_subrealm_to_culture_decision_tooltip
+    confirm_text = mqa_subrealm_to_culture_decision_ct
+
+	is_shown = {
+		is_ai = no
+		has_character_flag = mqa_show_decision_flag
+	}
+
+	effect = {
+		every_sub_realm_county = {
+			limit = { NOT = { culture = root.culture } }
+			set_county_culture = root.culture
+		}
+		every_vassal_or_below = {
+			limit = { NOT = { culture = root.culture } }
+			set_culture = root.culture
+		}
+		every_child = {
+			limit = { NOT = { culture = root.culture} }
+			set_culture = root.culture
+		}
+		every_consort = {
+			limit = { NOT = { culture = root.culture } }
+			set_culture = root.culture
+		}
+		every_close_family_member = {
+			limit = { NOT = { culture = root.culture } }
+			set_culture = root.culture
+		}
+		every_heir = {
+			limit = { NOT = { culture = root.culture } }
+			set_culture = root.culture
+		}
+		house = {
+			every_house_member = {
+				limit = {
+					is_alive = yes
+					NOT = { culture = root.culture }
+				}
+				set_culture = root.culture
+			}
+		}
+	}
+    ai_will_do = { base = 0 }
+	ai_check_interval = 0
+}
+
+mqa_convert_subrealm_to_religion_decision = {
+	decision_group_type = mqa
+	picture = { reference = gfx/interface/illustrations/decisions/decision_major_religion.dds }
+	title = mqa_convert_subrealm_to_religion_decision_title
+    desc = mqa_convert_subrealm_to_religion_decision_desc
+    selection_tooltip = mqa_convert_subrealm_to_religion_decision_tooltip
+    confirm_text = mqa_convert_subrealm_to_religion_decision_ct
+
+	is_shown = {
+		is_ai = no
+		has_character_flag = mqa_show_decision_flag
+	}
+
+	effect = {
+		every_sub_realm_county = {
+			limit = { NOT = { faith = root.faith } }
+			set_county_faith = root.faith
+		}
+		every_vassal_or_below = {
+			limit = { NOT = { faith = root.faith } }
+			set_character_faith_with_conversion = root.faith
+		}
+		every_child = {
+			limit = { NOT = { faith = root.faith } }
+			set_character_faith_with_conversion = root.faith
+		}
+		every_consort = {
+			limit = { NOT = { faith = root.faith } }
+			set_character_faith_with_conversion = root.faith
+		}
+		house = {
+			every_house_member = {
+				limit = {
+					is_alive = yes
+					NOT = { faith = root.faith }
+				}
+				set_character_faith_with_conversion = root.faith
+			}
+		}
+	}
+
+    ai_will_do = { base = 0 }
+	ai_check_interval = 0
+}
+
+mqa_show_decision = {
     decision_group_type = mqa
 	picture = { reference = gfx/interface/illustrations/decisions/decision_misc.dds }
 	title = mqa_show_decision_title
