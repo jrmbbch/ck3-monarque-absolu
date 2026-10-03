@@ -6,9 +6,9 @@
 ## generated from the game files by tools/generate_building_effects.py.
 
 mqa_b_max_all_buildings_sub_realm_decision = {
+	sort_order = 290
 	decision_group_type = mqa
 	picture = { reference = gfx/interface/illustrations/decisions/decision_castle_view.dds }
-	sort_order = 310
 	title = mqa_b_max_all_buildings_sub_realm_decision_title
 	desc = mqa_b_max_all_buildings_sub_realm_decision_desc
 	selection_tooltip = mqa_b_max_all_buildings_sub_realm_decision_tooltip
@@ -28,9 +28,9 @@ mqa_b_max_all_buildings_sub_realm_decision = {
 }
 
 mqa_b_lucky_7_sub_realm_decision = {
+	sort_order = 280
 	decision_group_type = mqa
 	picture = { reference = gfx/interface/illustrations/decisions/decision_realm.dds }
-	sort_order = 311
 	title = mqa_b_lucky_7_sub_realm_decision_title
 	desc = mqa_b_lucky_7_sub_realm_decision_desc
 	selection_tooltip = mqa_b_lucky_7_sub_realm_decision_tooltip
@@ -54,9 +54,9 @@ mqa_b_lucky_7_sub_realm_decision = {
 }
 
 mqa_b_max_domicile_decision = {
+	sort_order = 270
 	decision_group_type = mqa
 	picture = { reference = gfx/interface/illustrations/decisions/ep3_decision_estate.dds }
-	sort_order = 309
 	title = mqa_b_max_domicile_decision_title
 	desc = mqa_b_max_domicile_decision_desc
 	selection_tooltip = mqa_b_max_domicile_decision_tooltip
@@ -83,9 +83,9 @@ mqa_b_max_domicile_decision = {
 }
 
 mqa_b_show_decision = {
+	sort_order = 300
 	decision_group_type = mqa
 	picture = { reference = gfx/interface/illustrations/decisions/decision_castle_view.dds }
-	sort_order = 314
 	title = mqa_b_show_decision_title
 	desc = mqa_b_show_decision_desc
 	selection_tooltip = mqa_b_show_decision_tooltip
@@ -105,9 +105,9 @@ mqa_b_show_decision = {
 }
 
 mqa_b_hide_decision = {
+	sort_order = 300
 	decision_group_type = mqa
 	picture = { reference = gfx/interface/illustrations/decisions/decision_castle_view.dds }
-	sort_order = 313
 	title = mqa_b_hide_decision_title
 	desc = mqa_b_hide_decision_desc
 	selection_tooltip = mqa_b_hide_decision_tooltip

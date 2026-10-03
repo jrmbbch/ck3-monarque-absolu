@@ -1,4 +1,5 @@
 ﻿mqa_immortal_interaction = {
+	interface_priority = 160
 	icon = debug_good
 	category = interaction_mqa_main
 	common_interaction = yes
@@ -26,6 +27,7 @@
 }
 
 mqa_mortal_interaction = {
+	interface_priority = 150
 	icon = icon_dead
 	category = interaction_mqa_main
 	common_interaction = yes
@@ -50,6 +52,7 @@ mqa_mortal_interaction = {
 }
 
 mqa_super_interaction = {
+	interface_priority = 140
 	icon = icon_boost_efficiency
 	category = interaction_mqa_main
 	common_interaction = yes
@@ -75,6 +78,7 @@ mqa_super_interaction = {
 }
 
 mqa_unsuper_interaction = {
+	interface_priority = 130
 	icon = debug_bad
 	category = interaction_mqa_main
 	common_interaction = yes
@@ -99,6 +103,7 @@ mqa_unsuper_interaction = {
 }
 
 mqa_super_governor_interaction = {
+	interface_priority = 120
 	icon = grant_governorship
 	category = interaction_mqa_main
 	common_interaction = yes
@@ -125,6 +130,7 @@ mqa_super_governor_interaction = {
 }
 
 mqa_unsuper_governor_interaction = {
+	interface_priority = 110
 	icon = revoke_governorship
 	category = interaction_mqa_main
 	common_interaction = yes
@@ -149,6 +155,7 @@ mqa_unsuper_governor_interaction = {
 }
 
 mqa_super_general_interaction = {
+	interface_priority = 100
 	icon = icon_combat
 	category = interaction_mqa_main
 	common_interaction = yes
@@ -175,6 +182,7 @@ mqa_super_general_interaction = {
 }
 
 mqa_unsuper_general_interaction = {
+	interface_priority = 90
 	icon = icon_retreat
 	category = interaction_mqa_main
 	common_interaction = yes
@@ -199,6 +207,7 @@ mqa_unsuper_general_interaction = {
 }
 
 mqa_all_in_one_interaction = {
+	interface_priority = 80
 	icon = coronation_icon
 	category = interaction_mqa_main
 	common_interaction = yes
@@ -230,6 +239,7 @@ mqa_all_in_one_interaction = {
 }
 
 mqa_unall_in_one_interaction = {
+	interface_priority = 70
 	icon = debug_bad
 	category = interaction_mqa_main
 	common_interaction = yes
@@ -261,6 +271,7 @@ mqa_unall_in_one_interaction = {
 # Based on the vanilla debug interaction of 1.20 (common/character_interactions/00_test_interactions.txt),
 # without debug_only: pick any title, with or without its vassals, landless and administrative titles included.
 mqa_take_title_interaction = {
+	interface_priority = 10
 	category = interaction_mqa_main
 	desc = mqa_take_title_interaction_desc
 	use_diplomatic_range = no
@@ -343,6 +354,7 @@ mqa_take_title_interaction = {
 # title of the character at once (domain), or their whole realm including their vassals' titles,
 # either for yourself or while becoming a vassal of their liege.
 mqa_take_realm_interaction = {
+	interface_priority = 20
 	category = interaction_mqa_main
 	desc = mqa_take_realm_interaction_desc
 	common_interaction = yes
@@ -464,6 +476,7 @@ mqa_take_realm_interaction = {
 }
 
 mqa_max_education_interaction = {
+	interface_priority = 40
 	category = interaction_mqa_main
 	common_interaction = yes
 	use_diplomatic_range = no
@@ -485,6 +498,7 @@ mqa_max_education_interaction = {
 
 # Unlocks every lifestyle perk at once (generated list, see tools/generate_lifestyle_effects.py).
 mqa_all_perks_interaction = {
+	interface_priority = 30
 	icon = inspiration
 	category = interaction_mqa_main
 	common_interaction = yes

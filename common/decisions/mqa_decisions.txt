@@ -1,4 +1,5 @@
 ﻿mqa_money_decision = {
+	sort_order = 390
 	decision_group_type = mqa
 	picture = { reference = gfx/interface/illustrations/decisions/decision_spend_money.dds }
 	title = mqa_money_decision_title
@@ -59,6 +60,7 @@
 }
 
 mqa_convert_subrealm_to_culture_decision = {
+	sort_order = 380
 	decision_group_type = mqa
 	picture = { reference = gfx/interface/illustrations/decisions/decision_culture.dds }
 	title = mqa_subrealm_to_culture_decision_title
@@ -111,6 +113,7 @@ mqa_convert_subrealm_to_culture_decision = {
 }
 
 mqa_convert_subrealm_to_religion_decision = {
+	sort_order = 370
 	decision_group_type = mqa
 	picture = { reference = gfx/interface/illustrations/decisions/decision_major_religion.dds }
 	title = mqa_convert_subrealm_to_religion_decision_title
@@ -156,6 +159,7 @@ mqa_convert_subrealm_to_religion_decision = {
 }
 
 mqa_show_decision = {
+	sort_order = 400
     decision_group_type = mqa
 	picture = { reference = gfx/interface/illustrations/decisions/decision_misc.dds }
 	title = mqa_show_decision_title
@@ -177,6 +181,7 @@ mqa_show_decision = {
 }
 
 mqa_hide_decision = {
+	sort_order = 400
     decision_group_type = mqa
 	picture = { reference = gfx/interface/illustrations/decisions/decision_misc.dds }
 	title = mqa_hide_decision_title
@@ -197,6 +202,7 @@ mqa_hide_decision = {
 }
 
 mqa_cure_pox_decision = {
+	sort_order = 360
 	decision_group_type = mqa
 	picture = { reference = gfx/interface/illustrations/decisions/decision_physician.dds }
 	title = mqa_cure_pox_decision_title
@@ -219,6 +225,7 @@ mqa_cure_pox_decision = {
 }
 
 mqa_cure_all_decision = {
+	sort_order = 350
 	decision_group_type = mqa
 	picture = { reference = gfx/interface/illustrations/decisions/decision_physician.dds }
 	title = mqa_cure_all_decision_title
@@ -241,6 +248,7 @@ mqa_cure_all_decision = {
 }
 
 mqa_cure_inbred_decision = {
+	sort_order = 340
 	decision_group_type = mqa
 	picture = { reference = gfx/interface/illustrations/decisions/decision_physician.dds }
 	title = mqa_cure_inbred_decision_title
