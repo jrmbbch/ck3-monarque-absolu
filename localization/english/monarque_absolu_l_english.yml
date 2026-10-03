@@ -46,6 +46,15 @@
  mqa_max_education_interaction_desc:0 "[recipient.GetShortUINameNoTooltip|U]'s education trait rises to the highest level of its track."
  mqa_lifestyle_xp_interaction:0 "A lifetime of experience"
  mqa_lifestyle_xp_interaction_desc:0 "[recipient.GetShortUINameNoTooltip|U] gains enough experience in every lifestyle to unlock all of its perks."
+ mqa_take_title_interaction:0 "Seize a title"
+ mqa_take_title_interaction_desc:0 "Seize one of [recipient.GetShortUINameNoTooltip]'s titles, landless and administrative titles included."
+ mqa_take_title_and_vassals_interaction:0 "Seize the title and its vassals"
+ mqa_take_landless_title_interaction:0 "Seize a landless title"
+ mqa_take_realm_interaction:0 "Seize domain or realm"
+ mqa_take_realm_interaction_desc:0 "Seize every title [recipient.GetShortUINameNoTooltip] holds at once, or [recipient.GetHerHis] whole realm with the titles of [recipient.GetHerHis] vassals."
+ mqa_take_domain_interaction:0 "Seize the domain"
+ mqa_take_domain_as_vassal_interaction:0 "Seize the domain and serve their liege"
+ mqa_take_realm_as_vassal_interaction:0 "Seize the realm and serve their liege"
 
  # Decisions
  mqa_show_decision_title:0 "--= #EMP Monarque Absolu:#! Show the powers =--"
