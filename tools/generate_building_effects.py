@@ -15,11 +15,10 @@ Generated effects:
   gold as a tiebreaker, then gold only), replacing lower-ranked buildings.
   Buildings giving neither levies nor gold are never built and replaced first.
   Only buildings the game allows (its own can_construct_potential) are used.
-- mqa_b_construct_domicile_effect (domicile scope): fills free external slots,
-  army buildings first, then gold and resources, then the rest.
+- mqa_b_construct_domicile_effect (domicile scope): fills free external and
+  internal slots, army buildings first, then gold and resources, then the rest.
 - mqa_b_upgrade_domicile_effect (domicile scope): upgrades every domicile
-  building along its track, stopping where the track branches into
-  specializations so the player keeps that choice.
+  building level by level, picking specializations with the same priority.
 
 The ranking is printed when the script runs and written as a comment in the
 generated file.
@@ -227,55 +226,76 @@ ARMY_MODIFIER = re.compile(r"men_at_arms|maa_|knight|levy|garrison|stationed|arm
 RESOURCE_MODIFIER = re.compile(r"gold|income|tax|herd|provision|influence|merit|treasury|prestige|piety|renown")
 
 
-def domicile_priority(buildings, tracks):
-    """External building tracks per domicile type: army first, then gold and resources, then the rest."""
-    by_type = defaultdict(list)
-    for track in tracks:
-        root = track[0]
-        if buildings[root]["slot"] != "external" or buildings[root]["previous"] in buildings:
-            continue
-        keys = re.findall(r"([a-z_]+)\s*=", "".join(buildings[level]["modifiers"] for level in track))
-        army = sum(1 for k in keys if ARMY_MODIFIER.search(k))
-        resources = sum(1 for k in keys if RESOURCE_MODIFIER.search(k))
-        group = 0 if army else (1 if resources else 2)
-        for domicile_type in buildings[root]["types"]:
-            by_type[domicile_type].append((group, -army, -resources, root))
-    return {t: [entry[3] for entry in sorted(entries)] for t, entries in sorted(by_type.items())}
+class DomicileModel:
+    """Upgrade tracks, specialization choices and construction priorities of domicile buildings.
 
+    Priority, used for every automatic choice: buildings with army bonuses first, then gold and
+    resources, then the rest (scored on the modifiers of the whole track).
+    """
 
-def domicile_tracks(buildings):
-    """Linear upgrade tracks: successors in the same slot type, stopping at branches."""
-    successors = defaultdict(list)
-    for key, building in buildings.items():
-        if building["previous"] in buildings:
-            successors[building["previous"]].append(key)
+    ORDER = {"main": 0, "external": 1, "internal": 2}
 
+    def __init__(self, buildings):
+        self.b = buildings
+        self.successors = defaultdict(list)
+        for key, building in buildings.items():
+            if building["previous"] in buildings:
+                self.successors[building["previous"]].append(key)
+
+        roots = [k for k, v in buildings.items()
+                 if v["previous"] not in buildings or buildings[v["previous"]]["slot"] != v["slot"]]
+        branch_nodes = [k for k in buildings if len(self.same_slot(k)) > 1 or
+                        (len(self.same_slot(k)) == 1 and not self.linear_next(k))]
+        # Upgrade tracks of buildings that exist without a choice, then the specialization
+        # picked at each branch, then the tracks of every specialization.
+        self.root_tracks = [t for t in (self.track_from(k) for k in
+                            sorted(roots, key=lambda k: (self.ORDER.get(buildings[k]["slot"], 3), k))) if len(t) > 1]
+        self.choices = [(node, self.best(self.same_slot(node))) for node in sorted(branch_nodes)]
+        specializations = sorted({s for node in branch_nodes for s in self.same_slot(node)})
+        self.branch_tracks = [t for t in map(self.track_from, specializations) if len(t) > 1]
+
+        # External buildings per domicile type, internal buildings per parent building.
+        self.external = defaultdict(list)
+        self.internal = defaultdict(list)
+        for root in roots:
+            slot, previous = buildings[root]["slot"], buildings[root]["previous"]
+            if slot == "external" and previous not in buildings:
+                for domicile_type in buildings[root]["types"]:
+                    self.external[domicile_type].append(root)
+            elif slot == "internal" and previous in buildings:
+                self.internal[previous].append(root)
+        for group in list(self.external.values()) + list(self.internal.values()):
+            group.sort(key=self.score)
+
+    @staticmethod
     def stem(key):
         return re.sub(r"_\d+$", "", key)
 
-    def linear_next(key):
-        # Next level of the same building only: same slot type and same name without the
-        # level number. A successor with another name is a specialization (for instance
-        # chancery_01 -> chancery_legation_01), which stays the player's choice.
-        same_slot = [s for s in successors[key] if buildings[s]["slot"] == buildings[key]["slot"]]
-        same_building = [s for s in same_slot if stem(s) == stem(key)]
-        return same_building[0] if len(same_slot) == 1 and len(same_building) == 1 else None
+    def same_slot(self, key):
+        return [s for s in self.successors[key] if self.b[s]["slot"] == self.b[key]["slot"]]
 
-    def track_from(start):
+    def linear_next(self, key):
+        # Next level of the same building: same slot type and same name without the level
+        # number. A successor with another name is a specialization (chancery_01 ->
+        # chancery_legation_01), chosen by priority instead.
+        same = self.same_slot(key)
+        same_building = [s for s in same if self.stem(s) == self.stem(key)]
+        return same_building[0] if len(same) == 1 and len(same_building) == 1 else None
+
+    def track_from(self, start):
         track = [start]
-        while linear_next(track[-1]):
-            track.append(linear_next(track[-1]))
+        while self.linear_next(track[-1]):
+            track.append(self.linear_next(track[-1]))
         return track
 
-    order = {"main": 0, "external": 1, "internal": 2}
-    roots = [k for k, b in buildings.items()
-             if b["previous"] not in buildings or buildings[b["previous"]]["slot"] != b["slot"]]
-    # Specializations reached after a branch start tracks of their own.
-    branches = [k for k, b in buildings.items()
-                if b["previous"] in buildings and buildings[b["previous"]]["slot"] == b["slot"]
-                and not linear_next(b["previous"])]
-    starts = sorted(roots, key=lambda k: (order.get(buildings[k]["slot"], 3), k)) + sorted(branches)
-    return [track for track in map(track_from, starts) if len(track) > 1]
+    def score(self, start):
+        keys = re.findall(r"([a-z_]+)\s*=", "".join(self.b[k]["modifiers"] for k in self.track_from(start)))
+        army = sum(1 for k in keys if ARMY_MODIFIER.search(k))
+        resources = sum(1 for k in keys if RESOURCE_MODIFIER.search(k))
+        return (0 if army else (1 if resources else 2), -army, -resources, start)
+
+    def best(self, candidates):
+        return min(candidates, key=self.score)
 
 
 def generate(game):
@@ -364,44 +384,46 @@ def generate(game):
         ]
     out += ["}", ""]
 
-    domicile_buildings = load_domicile_buildings(game)
-    tracks = domicile_tracks(domicile_buildings)
-    priorities = domicile_priority(domicile_buildings, tracks)
+    model = DomicileModel(load_domicile_buildings(game))
+
+    def add_if(condition_lines, building, indent):
+        tab = "\t" * indent
+        return [f"{tab}if = {{", f"{tab}\tlimit = {{"] + [f"{tab}\t\t{c}" for c in condition_lines] + \
+               [f"{tab}\t}}", f"{tab}\tadd_domicile_building = {building}", f"{tab}}}"]
+
     out += [
-        "# Domicile scope. Builds missing external buildings in free external slots, in order:",
-        "# buildings with army bonuses first, then gold and resources, then the rest.",
+        "# Domicile scope. Builds missing buildings in free slots, by priority: buildings with army",
+        "# bonuses first, then gold and resources, then the rest. External buildings go in the",
+        "# domicile's external slots, internal ones in the internal slots of their parent building.",
         "# The game still checks each building's own requirements.",
         "mqa_b_construct_domicile_effect = {",
     ]
-    for domicile_type, roots in priorities.items():
+    for domicile_type, roots in sorted(model.external.items()):
         out += ["\tif = {", f"\t\tlimit = {{ is_domicile_type = {domicile_type} }}"]
         for root in roots:
-            out += [
-                "\t\tif = {",
-                "\t\t\tlimit = {",
-                "\t\t\t\tfree_external_domicile_building_slots >= 1",
-                f"\t\t\t\tNOT = {{ has_domicile_building_or_higher = {root} }}",
-                "\t\t\t}",
-                f"\t\t\tadd_domicile_building = {root}",
-                "\t\t}",
-            ]
+            out += add_if(["free_external_domicile_building_slots >= 1",
+                           f"NOT = {{ has_domicile_building_or_higher = {root} }}"], root, 2)
         out += ["\t}"]
+    for parent, roots in sorted(model.internal.items()):
+        for root in roots:
+            out += add_if([f"has_domicile_building_or_higher = {parent}",
+                           f"domicile_building_has_free_internal_slot = {parent}",
+                           f"NOT = {{ has_domicile_building_or_higher = {root} }}"], root, 1)
     out += ["}", ""]
 
     out += [
-        "# Domicile scope. Upgrades every domicile building along its track, one level at a time",
-        "# (main building first). Stops where a track branches into specializations.",
+        "# Domicile scope. Upgrades every domicile building one level at a time, main building",
+        "# first. Where a building can specialize, the specialization is picked by the same",
+        "# priority, then upgraded in turn.",
         "mqa_b_upgrade_domicile_effect = {",
     ]
-    for track in tracks:
-        for current, following in zip(track, track[1:]):
-            out += [
-                "\tif = {",
-                f"\t\tlimit = {{ has_domicile_building = {current} }}",
-                f"\t\tadd_domicile_building = {following}",
-                "\t}",
-            ]
+    steps = [pair for track in model.root_tracks for pair in zip(track, track[1:])]
+    steps += model.choices
+    steps += [pair for track in model.branch_tracks for pair in zip(track, track[1:])]
+    for current, following in steps:
+        out += add_if([f"has_domicile_building = {current}"], following, 1)
     out += ["}", ""]
+    tracks = model.root_tracks + model.branch_tracks
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text("﻿" + "\n".join(out), encoding="utf-8")
