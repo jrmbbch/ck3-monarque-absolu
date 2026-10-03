@@ -11,8 +11,9 @@ A Crusader Kings III mod that gives you the tools of an all-powerful sovereign: 
 | Path | Content |
 |---|---|
 | `descriptor.mod`, `thumbnail.png`, `common/`, `localization/` | The mod itself |
-| `common/scripted_effects/mqa_building_effects.txt` | **Generated**, do not edit by hand |
+| `common/scripted_effects/mqa_building_effects.txt`, `mqa_lifestyle_effects.txt` | **Generated**, do not edit by hand |
 | `tools/generate_building_effects.py` | Rebuilds the building effects from the installed game files |
+| `tools/generate_lifestyle_effects.py` | Rebuilds the perk unlock effect from the installed game files |
 | `tools/check_localization.py` | Checks the 9 languages: same keys, UTF-8 BOM, no broken quotes |
 | `tools/build_release.sh` | Copies only the mod files into the game's mod folder, ready to upload |
 | `art/thumbnail.svg` | Source of the thumbnail |
@@ -24,6 +25,7 @@ All keys use the `mqa_` prefix.
 
 ```sh
 python3 tools/generate_building_effects.py
+python3 tools/generate_lifestyle_effects.py
 python3 tools/check_localization.py
 ```
 

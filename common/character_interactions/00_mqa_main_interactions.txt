@@ -483,28 +483,18 @@ mqa_max_education_interaction = {
 	auto_accept = yes
 }
 
-# 1000 experience per perk point and 27 perks per lifestyle: 30000 unlocks every perk.
-mqa_lifestyle_xp_interaction = {
+# Unlocks every lifestyle perk at once (generated list, see tools/generate_lifestyle_effects.py).
+mqa_all_perks_interaction = {
+	icon = inspiration
 	category = interaction_mqa_main
 	common_interaction = yes
 	use_diplomatic_range = no
 	ignores_pending_interaction_block = yes
-	icon = inspiration
 
-	desc = mqa_lifestyle_xp_interaction_desc
+	desc = mqa_all_perks_interaction_desc
 
 	on_accept = {
-		scope:recipient = {
-			add_diplomacy_lifestyle_xp = 30000
-			add_martial_lifestyle_xp = 30000
-			add_stewardship_lifestyle_xp = 30000
-			add_intrigue_lifestyle_xp = 30000
-			add_learning_lifestyle_xp = 30000
-			if = {
-				limit = { has_dlc_feature = wandering_nobles }
-				add_wanderer_lifestyle_xp = 30000
-			}
-		}
+		scope:recipient = { mqa_unlock_all_perks_effect = yes }
 	}
 
 	auto_accept = yes
