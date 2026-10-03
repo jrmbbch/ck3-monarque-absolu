@@ -1,0 +1,259 @@
+﻿mqa_immortal_interaction = {
+	icon = debug_good
+	category = interaction_mqa_main
+	common_interaction = yes
+	use_diplomatic_range = no
+	ignores_pending_interaction_block = yes
+
+	desc = mqa_immortal_interaction_desc
+	
+	is_shown = {
+		scope:recipient = {
+			NOT = {
+				has_trait = mqa_immortality
+			}
+		}
+	
+	}
+	on_accept = {
+		scope:recipient = {
+			add_trait = mqa_immortality
+			set_immortal_age = 25
+		}
+	}
+	
+	auto_accept = yes
+}
+
+mqa_mortal_interaction = {
+	icon = icon_dead
+	category = interaction_mqa_main
+	common_interaction = yes
+	use_diplomatic_range = no
+	ignores_pending_interaction_block = yes
+	
+	desc = mqa_mortal_interaction_desc
+
+	is_shown = {
+		scope:recipient = {
+			has_trait = mqa_immortality			
+		}
+	
+	}
+	on_accept = {
+		scope:recipient = {
+			remove_trait = mqa_immortality			
+		}
+	}
+	
+	auto_accept = yes
+}
+
+mqa_super_interaction = {
+	icon = icon_boost_efficiency
+	category = interaction_mqa_main
+	common_interaction = yes
+	use_diplomatic_range = no
+	ignores_pending_interaction_block = yes
+	
+	desc = mqa_super_interaction_desc
+
+	is_shown = {
+		scope:recipient = {
+			NOT = { has_trait = mqa_super
+			}
+		}
+	}
+	
+	on_accept = {
+		scope:recipient = {
+			add_trait = mqa_super
+		}
+	}
+	
+	auto_accept = yes
+}
+
+mqa_unsuper_interaction = {
+	icon = debug_bad
+	category = interaction_mqa_main
+	common_interaction = yes
+	use_diplomatic_range = no
+	ignores_pending_interaction_block = yes
+	
+	desc = mqa_unsuper_interaction_desc
+
+	is_shown = {
+		scope:recipient = {
+		has_trait = mqa_super
+		}
+	}
+	
+	on_accept = {
+		scope:recipient = {
+			remove_trait = mqa_super
+		}
+	}
+	
+	auto_accept = yes
+}
+
+mqa_super_governor_interaction = {
+	icon = grant_governorship
+	category = interaction_mqa_main
+	common_interaction = yes
+	use_diplomatic_range = no
+	ignores_pending_interaction_block = yes
+	
+	desc = mqa_super_governor_interaction_desc
+
+	is_shown = {
+		scope:recipient = {
+			NOT = {
+				has_trait = mqa_super_governor
+			}
+		}		
+	}
+	
+	on_accept = {
+		scope:recipient = {
+			add_trait = mqa_super_governor
+		}
+	}
+	
+	auto_accept = yes
+}
+
+mqa_unsuper_governor_interaction = {
+	icon = revoke_governorship
+	category = interaction_mqa_main
+	common_interaction = yes
+	use_diplomatic_range = no
+	ignores_pending_interaction_block = yes
+	
+	desc = mqa_unsuper_governor_interaction_desc
+
+	is_shown = {
+		scope:recipient = {
+			has_trait = mqa_super_governor
+		}		
+	}
+	
+	on_accept = {
+		scope:recipient = {
+			remove_trait = mqa_super_governor	
+		}
+	}
+	
+	auto_accept = yes
+}
+
+mqa_super_general_interaction = {
+	icon = icon_combat
+	category = interaction_mqa_main
+	common_interaction = yes
+	use_diplomatic_range = no
+	ignores_pending_interaction_block = yes
+	
+	desc = mqa_super_general_interaction_desc
+
+	is_shown = {
+		scope:recipient = {
+			NOT = {
+				has_trait = mqa_super_general
+			}
+		}		
+	}
+	
+	on_accept = {
+		scope:recipient = {
+			add_trait = mqa_super_general
+		}
+	}
+	
+	auto_accept = yes
+}
+
+mqa_unsuper_general_interaction = {
+	icon = icon_retreat
+	category = interaction_mqa_main
+	common_interaction = yes
+	use_diplomatic_range = no
+	ignores_pending_interaction_block = yes
+	
+	desc = mqa_unsuper_general_interaction_desc
+
+	is_shown = {
+		scope:recipient = {
+			has_trait = mqa_super_general
+		}		
+	}
+	
+	on_accept = {
+		scope:recipient = {
+			remove_trait = mqa_super_general
+		}
+	}
+	
+	auto_accept = yes
+}
+
+mqa_all_in_one_interaction = {
+	icon = coronation_icon
+	category = interaction_mqa_main
+	common_interaction = yes
+	use_diplomatic_range = no
+	ignores_pending_interaction_block = yes
+	
+	desc = mqa_all_in_one_interaction_desc
+
+	is_shown = {
+		scope:recipient = {
+			NOT = {
+				AND = {
+					has_trait = mqa_super
+					has_trait = mqa_super_general
+					has_trait = mqa_super_governor										
+				}
+			}
+		}		
+	}
+	
+	on_accept = {
+		scope:recipient = {
+			add_trait = mqa_super
+			add_trait = mqa_super_general
+			add_trait = mqa_super_governor			
+		}
+	}
+	auto_accept = yes
+}
+
+mqa_unall_in_one_interaction = {
+	icon = debug_bad
+	category = interaction_mqa_main
+	common_interaction = yes
+	use_diplomatic_range = no
+	ignores_pending_interaction_block = yes
+	
+	desc = mqa_unall_in_one_interaction_desc
+
+	is_shown = {
+		scope:recipient = {
+			AND = {
+			has_trait = mqa_super
+			has_trait = mqa_super_general
+			has_trait = mqa_super_governor
+			}			
+		}		
+	}
+	
+	on_accept = {
+		scope:recipient = {
+			remove_trait = mqa_super
+			remove_trait = mqa_super_general
+			remove_trait = mqa_super_governor
+		}
+	}
+	auto_accept = yes
+}
