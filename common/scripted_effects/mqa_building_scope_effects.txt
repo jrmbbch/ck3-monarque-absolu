@@ -1,0 +1,57 @@
+﻿# Character scope. Runs $EFFECT$ in every holding of the counties the character holds
+# directly, including the baronies of vassal barons (cities, temples, castles), which
+# pay their taxes and levies to the character. scope:holder is set to the holder of
+# each barony, as the game's building requirements expect.
+mqa_b_every_domain_holding_effect = {
+	every_held_title = {
+		limit = { tier = tier_county }
+		every_county_province = {
+			limit = {
+				has_holding = yes
+				exists = barony.holder
+			}
+			barony.holder = {
+				save_scope_as = holder
+				save_scope_as = character	# expected by some vanilla on_complete effects (mandala piety)
+			}
+			$EFFECT$ = yes
+		}
+	}
+}
+
+# Character scope. In every county the character holds directly, founds a holding in each
+# empty barony that the game allows to be built on: a temple if the county has none yet,
+# otherwise a city. Tribal and nomadic rulers are skipped, their holdings work differently.
+mqa_b_found_domain_holdings_effect = {
+	every_held_title = {
+		limit = {
+			tier = tier_county
+			holder = {
+				NOR = {
+					government_has_flag = government_is_tribal
+					government_has_flag = government_is_nomadic
+				}
+			}
+		}
+		save_scope_as = mqa_county
+		every_county_province = {
+			limit = {
+				has_holding = no
+				barony_cannot_construct_holding = no
+			}
+			if = {
+				limit = {
+					NOT = {
+						scope:mqa_county = {
+							any_county_province = { has_holding_type = church_holding }
+						}
+					}
+				}
+				set_holding_type = church_holding
+			}
+			else = {
+				set_holding_type = city_holding
+			}
+		}
+	}
+}
