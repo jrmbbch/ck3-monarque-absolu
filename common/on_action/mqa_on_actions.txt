@@ -1,0 +1,21 @@
+﻿# Appended to the vanilla on_action: on_actions lists from several files are merged,
+# whereas an 'effect' block would replace the vanilla one.
+on_birth_child = {
+	on_actions = {
+		mqa_perfect_bloodline_birth_on_action
+	}
+}
+
+# root is the newborn child
+# scope:mother is the mother, scope:real_father the biological father (may not exist)
+mqa_perfect_bloodline_birth_on_action = {
+	trigger = {
+		OR = {
+			scope:mother ?= { has_character_flag = mqa_perfect_bloodline_flag }
+			scope:real_father ?= { has_character_flag = mqa_perfect_bloodline_flag }
+		}
+	}
+	effect = {
+		mqa_grant_perfect_bloodline_effect = yes
+	}
+}

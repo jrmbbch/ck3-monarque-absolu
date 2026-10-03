@@ -1,0 +1,48 @@
+﻿mqa_perfect_bloodline_interaction = {
+	category = interaction_mqa_main
+	common_interaction = yes
+	use_diplomatic_range = no
+	ignores_pending_interaction_block = yes
+	icon = icon_dynasty
+
+	desc = mqa_perfect_bloodline_interaction_desc
+
+	is_shown = {
+		scope:recipient = {
+			NOT = { has_character_flag = mqa_perfect_bloodline_flag }
+		}
+	}
+
+	on_accept = {
+		scope:recipient = {
+			mqa_grant_perfect_bloodline_effect = yes
+		}
+	}
+
+	auto_accept = yes
+}
+
+# Stops the transmission to future children. Traits already gained are kept.
+mqa_unperfect_bloodline_interaction = {
+	category = interaction_mqa_main
+	common_interaction = yes
+	use_diplomatic_range = no
+	ignores_pending_interaction_block = yes
+	icon = icon_dynasty
+
+	desc = mqa_unperfect_bloodline_interaction_desc
+
+	is_shown = {
+		scope:recipient = {
+			has_character_flag = mqa_perfect_bloodline_flag
+		}
+	}
+
+	on_accept = {
+		scope:recipient = {
+			remove_character_flag = mqa_perfect_bloodline_flag
+		}
+	}
+
+	auto_accept = yes
+}

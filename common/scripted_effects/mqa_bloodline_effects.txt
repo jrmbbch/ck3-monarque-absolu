@@ -1,0 +1,75 @@
+﻿### Monarque Absolu perfect bloodline
+## A character flagged with mqa_perfect_bloodline_flag gets the best genetic traits,
+## loses every negative genetic trait, and passes all of it (flag included) to the
+## children they biologically parent. See common/on_action/mqa_on_actions.txt.
+
+# Removes a trait whether it is expressed or carried inactive (inactive genetic traits
+# can still be inherited, and some get activated later in life by vanilla events).
+mqa_purge_trait_effect = {
+	if = {
+		limit = { has_inactive_trait = $TRAIT$ }
+		make_trait_active = $TRAIT$
+	}
+	if = {
+		limit = { has_trait = $TRAIT$ }
+		remove_trait = $TRAIT$
+	}
+}
+
+mqa_apply_perfect_bloodline_traits_effect = {
+	# Lower tiers and negative versions are opposites of the tier 3 traits
+	mqa_purge_trait_effect = { TRAIT = beauty_bad_1 }
+	mqa_purge_trait_effect = { TRAIT = beauty_bad_2 }
+	mqa_purge_trait_effect = { TRAIT = beauty_bad_3 }
+	mqa_purge_trait_effect = { TRAIT = beauty_good_1 }
+	mqa_purge_trait_effect = { TRAIT = beauty_good_2 }
+	mqa_purge_trait_effect = { TRAIT = intellect_bad_1 }
+	mqa_purge_trait_effect = { TRAIT = intellect_bad_2 }
+	mqa_purge_trait_effect = { TRAIT = intellect_bad_3 }
+	mqa_purge_trait_effect = { TRAIT = intellect_good_1 }
+	mqa_purge_trait_effect = { TRAIT = intellect_good_2 }
+	mqa_purge_trait_effect = { TRAIT = physique_bad_1 }
+	mqa_purge_trait_effect = { TRAIT = physique_bad_2 }
+	mqa_purge_trait_effect = { TRAIT = physique_bad_3 }
+	mqa_purge_trait_effect = { TRAIT = physique_good_1 }
+	mqa_purge_trait_effect = { TRAIT = physique_good_2 }
+
+	# Negative genetic traits
+	mqa_purge_trait_effect = { TRAIT = clubfooted }
+	mqa_purge_trait_effect = { TRAIT = hunchbacked }
+	mqa_purge_trait_effect = { TRAIT = lisping }
+	mqa_purge_trait_effect = { TRAIT = stuttering }
+	mqa_purge_trait_effect = { TRAIT = dwarf }
+	mqa_purge_trait_effect = { TRAIT = spindly }
+	mqa_purge_trait_effect = { TRAIT = scaly }
+	mqa_purge_trait_effect = { TRAIT = wheezing }
+	mqa_purge_trait_effect = { TRAIT = bleeder }
+	mqa_purge_trait_effect = { TRAIT = infertile }
+	mqa_purge_trait_effect = { TRAIT = depressed_genetic }
+	mqa_purge_trait_effect = { TRAIT = lunatic_genetic }
+	mqa_purge_trait_effect = { TRAIT = possessed_genetic }
+	mqa_purge_trait_effect = { TRAIT = inbred }
+
+	# Best genetic traits
+	if = {
+		limit = { NOT = { has_trait = beauty_good_3 } }
+		add_trait = beauty_good_3
+	}
+	if = {
+		limit = { NOT = { has_trait = intellect_good_3 } }
+		add_trait = intellect_good_3
+	}
+	if = {
+		limit = { NOT = { has_trait = physique_good_3 } }
+		add_trait = physique_good_3
+	}
+	if = {
+		limit = { NOT = { has_trait = fecund } }
+		add_trait = fecund
+	}
+}
+
+mqa_grant_perfect_bloodline_effect = {
+	mqa_apply_perfect_bloodline_traits_effect = yes
+	add_character_flag = mqa_perfect_bloodline_flag
+}

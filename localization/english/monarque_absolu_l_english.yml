@@ -38,6 +38,10 @@
  mqa_all_in_one_interaction_desc:0 "[recipient.GetShortUINameNoTooltip|U] becomes Louis XIV, Colbert and Napoléon at once."
  mqa_unall_in_one_interaction:0 "Strip all powers"
  mqa_unall_in_one_interaction_desc:0 "[recipient.GetShortUINameNoTooltip|U] loses Louis XIV, Colbert and Napoléon."
+ mqa_perfect_bloodline_interaction:0 "Perfect bloodline"
+ mqa_perfect_bloodline_interaction_desc:0 "[recipient.GetShortUINameNoTooltip|U] gets the best hereditary traits (#EMP Beautiful, Genius, Divine, Fecund#!) and loses every genetic flaw. [recipient.GetHerHis|U] biological children will be born with the same advantages and pass them on in turn."
+ mqa_unperfect_bloodline_interaction:0 "End perfect bloodline"
+ mqa_unperfect_bloodline_interaction_desc:0 "[recipient.GetShortUINameNoTooltip|U] keeps [recipient.GetHerHis] current traits, but will no longer pass the perfect bloodline to future children."
 
  # Decisions
  mqa_show_decision_title:0 "--= #EMP Monarque Absolu:#! Show the powers =--"
