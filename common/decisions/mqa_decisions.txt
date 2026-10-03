@@ -195,3 +195,68 @@ mqa_hide_decision = {
     ai_will_do = { base = 0 }
 	ai_check_interval = 0
 }
+
+mqa_cure_pox_decision = {
+	decision_group_type = mqa
+	picture = { reference = gfx/interface/illustrations/decisions/decision_physician.dds }
+	title = mqa_cure_pox_decision_title
+    desc = mqa_cure_pox_decision_desc
+    selection_tooltip = mqa_cure_pox_decision_tooltip
+    confirm_text = mqa_cure_pox_decision_ct
+
+	is_shown = {
+		is_ai = no
+		has_character_flag = mqa_show_decision_flag
+	}
+
+	effect = {
+		# Diseases: the whole realm
+		mqa_every_realm_character_effect = { EFFECT = mqa_cure_diseases_effect }
+	}
+
+    ai_will_do = { base = 0 }
+	ai_check_interval = 0
+}
+
+mqa_cure_all_decision = {
+	decision_group_type = mqa
+	picture = { reference = gfx/interface/illustrations/decisions/decision_physician.dds }
+	title = mqa_cure_all_decision_title
+    desc = mqa_cure_all_decision_desc
+    selection_tooltip = mqa_cure_all_decision_tooltip
+    confirm_text = mqa_cure_all_decision_ct
+
+	is_shown = {
+		is_ai = no
+		has_character_flag = mqa_show_decision_flag
+	}
+
+	effect = {
+		# Diseases: the whole realm. Wounds and disabilities: close family only.
+		mqa_every_realm_character_effect = { EFFECT = mqa_cure_diseases_effect }
+		mqa_every_close_family_effect = { EFFECT = mqa_cure_wounds_effect }
+	}
+    ai_will_do = { base = 0 }
+	ai_check_interval = 0
+}
+
+mqa_cure_inbred_decision = {
+	decision_group_type = mqa
+	picture = { reference = gfx/interface/illustrations/decisions/decision_physician.dds }
+	title = mqa_cure_inbred_decision_title
+    desc = mqa_cure_inbred_decision_desc
+    selection_tooltip = mqa_cure_inbred_decision_tooltip
+    confirm_text = mqa_cure_inbred_decision_ct
+
+	is_shown = {
+		is_ai = no
+		has_character_flag = mqa_show_decision_flag
+	}
+
+	effect = {
+		# Close family only, so vassals keep their flaws
+		mqa_every_close_family_effect = { EFFECT = mqa_cure_genetic_flaws_effect }
+	}
+    ai_will_do = { base = 0 }
+	ai_check_interval = 0
+}
