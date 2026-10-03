@@ -6,3 +6,4 @@ tags={
 }
 name="Monarque Absolu - Absolute Monarch"
 supported_version="1.20.*"
+picture="thumbnail.png"
