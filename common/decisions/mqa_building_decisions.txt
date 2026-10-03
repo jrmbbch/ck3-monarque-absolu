@@ -1,31 +1,9 @@
 ﻿## Monarque Absolu building decisions (mqa_b_ prefix).
-## Province decisions act on every holding of the counties the player holds directly,
+## The province decision acts on every holding of the counties the player holds directly,
 ## vassal barons' cities, temples and castles included: they pay taxes and levies to the player.
 ## No decision adds building slots: only the slots the game grants are used.
 ## The heavy lifting is done by common/scripted_effects/mqa_building_effects.txt,
 ## generated from the game files by tools/generate_building_effects.py.
-
-mqa_b_max_all_buildings_sub_realm_decision = {
-	sort_order = 290
-	decision_group_type = mqa
-	picture = { reference = gfx/interface/illustrations/decisions/decision_castle_view.dds }
-	title = mqa_b_max_all_buildings_sub_realm_decision_title
-	desc = mqa_b_max_all_buildings_sub_realm_decision_desc
-	selection_tooltip = mqa_b_max_all_buildings_sub_realm_decision_tooltip
-	confirm_text = mqa_b_max_all_buildings_sub_realm_decision_ct
-
-	is_shown = {
-		is_ai = no
-		has_character_flag = mqa_b_show_decision_flag
-	}
-
-	effect = {
-		mqa_b_every_domain_holding_effect = { EFFECT = mqa_b_upgrade_province_buildings_effect }
-	}
-
-	ai_will_do = { base = 0 }
-	ai_check_interval = 0
-}
 
 mqa_b_lucky_7_sub_realm_decision = {
 	sort_order = 280
