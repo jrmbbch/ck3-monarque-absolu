@@ -1,0 +1,264 @@
+﻿### Monarque Absolu traits
+## Given only through the mod's interactions: birth = 0 and random_creation = 0 keep them
+## away from newborns and generated characters.
+
+# Immortal, apparent age locked at 25 (the age is set by the interaction).
+mqa_immortality = {
+	icon = immortal.dds
+	immortal = yes
+
+	birth = 0
+	random_creation = 0
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { exists = this }
+				}
+				desc = trait_mqa_immortality_desc
+			}
+			desc = trait_mqa_immortality_character_desc
+		}
+	}
+}
+
+# The ruler: skills, resources, health, fertility, schemes and limits.
+mqa_super = {
+	icon = paragon.dds
+
+	# Skills
+	learning = 100
+	diplomacy = 100
+	martial = 100
+	stewardship = 100
+	intrigue = 100
+	prowess = 100
+
+	# Resources
+	monthly_income = 1000
+	monthly_prestige = 30
+	monthly_dynasty_prestige = 30
+	monthly_piety = 1000
+	monthly_dread = 100
+	dread_baseline_add = 200
+	dread_loss_mult = -100
+	legitimacy_gain_mult = 100
+	monthly_legitimacy_add = 5
+	monthly_court_grandeur_change_add = 1			# Royal Court
+	monthly_influence = 10							# Roads to Power, administrative realms
+	monthly_influence_mult = 1
+	provisions_gain_mult = 1						# Roads to Power, landless adventurers
+	herd_gain_mult = 1								# Khans of the Steppe
+	monthly_merit = 10								# All Under Heaven
+	monthly_merit_mult = 1
+	monthly_treasury_from_vassals_mult = 1			# administrative and celestial realms
+	monthly_treasury_from_cardinal_budget_mult = 1	# By God Alone
+	character_spiritual_fulfillment_gain_mult = 1	# By God Alone
+	character_spiritual_fulfillment_loss_mult = -0.5
+
+	# Health, fertility and bloodline
+	health = 50
+	negate_health_penalty_add = 100
+	epidemic_resistance = 100
+	stress_gain_mult = -10
+	fertility = 500
+	years_of_fertility = 100
+	no_prowess_loss_from_age = yes
+	attraction_opinion = 1000
+	genetic_trait_strengthen_chance = 100
+	inbreeding_chance = -100
+	positive_inactive_inheritance_chance = 100
+	negative_inactive_inheritance_chance = -100
+	positive_random_genetic_chance = 100
+	negative_random_genetic_chance = -100
+
+	# Schemes, own and against the character
+	owned_hostile_scheme_success_chance_add = 50
+	owned_personal_scheme_success_chance_add = 50
+	owned_political_scheme_success_chance_add = 50
+	owned_contract_scheme_success_chance_add = 50
+	owned_hostile_scheme_success_chance_max_add = 30
+	owned_personal_scheme_success_chance_max_add = 30
+	owned_political_scheme_success_chance_max_add = 30
+	hostile_scheme_phase_duration_add = -30			# days per phase
+	personal_scheme_phase_duration_add = -30
+	political_scheme_phase_duration_add = -30
+	study_faith_scheme_phase_duration_add = -30
+	study_scripture_scheme_phase_duration_add = -30
+	owned_scheme_secrecy_add = 50
+	max_hostile_schemes_add = 2
+	max_personal_schemes_add = 2
+	max_political_schemes_add = 1
+	enemy_hostile_scheme_success_chance_add = -50
+
+	# Realm limits. Some governments cap them (Japanese, mandala, wanua, landless camps...),
+	# so the caps and floors are raised too.
+	vassal_limit = 200
+	vassal_limit_max = 200
+	domain_limit = 200
+	domain_limit_max = 200
+	domain_limit_min = 200
+
+	# Diplomacy and fame
+	ignore_negative_culture_opinion = yes
+	diplomatic_range_mult = 100
+	owned_legend_spread_mult = 999
+	tourney_participant_xp_gain_mult = 10
+
+	birth = 0
+	random_creation = 0
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { exists = this }
+				}
+				desc = trait_mqa_super_desc
+			}
+			desc = trait_mqa_super_character_desc
+		}
+	}
+}
+
+# The administrator: control, development, construction and income, for the holder
+# and, through contributions, from their vassals.
+mqa_super_governor = {
+	icon = administrator.dds
+
+	# Skills
+	learning = 100
+	diplomacy = 100
+	martial = 100
+	stewardship = 100
+	intrigue = 100
+	prowess = 100
+
+	# Lands
+	monthly_county_control_growth_add = 100
+	county_opinion_add_even_if_baron = 100
+	development_growth = 1000
+	tax_mult = 10
+	levy_size = 1
+	county_fertility_growth_mult = 1				# Khans of the Steppe, nomadic pastures
+	county_fertility_decline_mult = -0.9
+
+	# Construction, in every currency
+	build_speed = -1000
+	holding_build_speed = -1000
+	build_gold_cost = -100
+	build_piety_cost = -1
+	build_prestige_cost = -1
+	build_herd_cost = -1							# Khans of the Steppe
+	great_project_build_speed = -0.9				# All Under Heaven
+
+	# Domiciles: adventurer camp and family estate (Roads to Power), yurt (Khans of the Steppe),
+	# Chinese estate and Japanese manor (All Under Heaven), ecclesiastical domicile (By God Alone).
+	# The game only has a gold cost modifier for domiciles: yurt herd and prestige costs rely on
+	# build_herd_cost and build_prestige_cost, if the engine applies them there.
+	domicile_build_gold_cost = -1
+	domicile_build_speed = -0.9
+	domicile_external_slots_capacity_add = 4
+	domicile_monthly_gold_mult = 1
+	domicile_monthly_prestige_mult = 1
+	domicile_monthly_piety_mult = 1
+	domicile_monthly_influence_mult = 1
+	domicile_monthly_herd_mult = 1
+
+	# Vassal contributions, whatever their government
+	vassal_tax_contribution_mult = 1
+	vassal_levy_contribution_mult = 1
+	vassal_herd_contribution_mult = 1				# Khans of the Steppe
+
+	governor_xp_gain_mult = 1						# Governor trait track
+
+	# AI holders spend freely and act often
+	ai_greed = -200
+	ai_energy = 500
+
+	birth = 0
+	random_creation = 0
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { exists = this }
+				}
+				desc = trait_mqa_super_governor_desc
+			}
+			desc = trait_mqa_super_governor_character_desc
+		}
+	}
+}
+
+# The commander: battles, sieges, movement, supply, raids and troops.
+mqa_super_general = {
+	icon = conqueror.dds
+
+	# Skills
+	learning = 100
+	diplomacy = 100
+	martial = 100
+	stewardship = 100
+	intrigue = 100
+	prowess = 100
+
+	# Battles
+	advantage = 100
+	min_combat_roll = 20
+	max_combat_roll = 40
+	enemy_terrain_advantage = -1
+	hard_casualty_modifier = -1
+	enemy_hard_casualty_modifier = 10
+	retreat_losses = -1
+	winter_advantage = 10
+
+	# Sieges
+	siege_phase_time = -1000
+	siege_morale_loss = 1000
+	siege_weapon_max_size_mult = 3
+
+	# Movement and supply
+	movement_speed = 1000
+	naval_movement_speed_mult = 1000
+	winter_movement_speed = 1
+	no_water_crossing_penalty = yes
+	supply_duration = 100
+	supply_limit_mult = 10
+	supply_capacity_mult = 10
+	hostile_county_attrition = -1
+
+	# Raids
+	raid_speed = 10
+	movement_speed_land_raiding = 1
+	max_loot_mult = 1
+	hostile_county_attrition_raiding = -1
+
+	# Men-at-arms and knights
+	maa_damage_mult = 1
+	maa_toughness_mult = 1
+	knight_effectiveness_mult = 1
+	knight_limit = 5
+
+	# AI holders go to war eagerly
+	ai_energy = 500
+	ai_war_chance = 100
+	ai_war_cooldown = -365
+
+	birth = 0
+	random_creation = 0
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { exists = this }
+				}
+				desc = trait_mqa_super_general_desc
+			}
+			desc = trait_mqa_super_general_character_desc
+		}
+	}
+}
