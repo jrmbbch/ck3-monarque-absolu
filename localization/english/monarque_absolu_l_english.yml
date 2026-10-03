@@ -1,0 +1,14 @@
+﻿l_english:
+ # Menus
+ interaction_mqa_main:0 "Monarque Absolu"
+ decision_group_type_mqa:0 "--= Monarque Absolu =--"
+
+ # Decisions
+ mqa_show_decision_title:0 "--= #EMP Monarque Absolu:#! Show the powers =--"
+ mqa_show_decision_desc:0 "Show the Monarque Absolu decisions."
+ mqa_show_decision_tooltip:0 ""
+ mqa_show_decision_ct:0 "Qu'on les montre"
+ mqa_hide_decision_title:0 "--= #EMP Monarque Absolu:#! Hide the powers =--"
+ mqa_hide_decision_desc:0 "Hide the Monarque Absolu decisions."
+ mqa_hide_decision_tooltip:0 ""
+ mqa_hide_decision_ct:0 "Qu'on les cache"

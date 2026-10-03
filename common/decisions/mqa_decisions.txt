@@ -1,0 +1,40 @@
+﻿mqa_show_decision = {
+    decision_group_type = mqa
+	picture = { reference = gfx/interface/illustrations/decisions/decision_misc.dds }
+	title = mqa_show_decision_title
+    desc = mqa_show_decision_desc
+    selection_tooltip = mqa_show_decision_tooltip
+    confirm_text = mqa_show_decision_ct
+
+    is_shown = {
+		is_ai = no
+	    NOT = { has_character_flag = mqa_show_decision_flag }
+    }
+
+    effect = {
+        add_character_flag = mqa_show_decision_flag
+    }
+	
+    ai_will_do = { base = 0 }
+	ai_check_interval = 0
+}
+
+mqa_hide_decision = {
+    decision_group_type = mqa
+	picture = { reference = gfx/interface/illustrations/decisions/decision_misc.dds }
+	title = mqa_hide_decision_title
+    desc = mqa_hide_decision_desc
+    selection_tooltip = mqa_hide_decision_tooltip
+    confirm_text = mqa_hide_decision_ct
+
+    is_shown = {
+		is_ai = no
+	    has_character_flag = mqa_show_decision_flag
+    }
+
+    effect = {
+        remove_character_flag = mqa_show_decision_flag
+    }
+    ai_will_do = { base = 0 }
+	ai_check_interval = 0
+}

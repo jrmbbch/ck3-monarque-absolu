@@ -1,0 +1,5 @@
+﻿# Monarque Absolu decisions group, listed after the base game groups.
+mqa = {
+	sort_order = 301
+	gui_tags = { big_button }
+}

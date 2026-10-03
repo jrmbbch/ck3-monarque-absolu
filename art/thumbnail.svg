@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="40%" r="75%">
+      <stop offset="0%" stop-color="#1f3f8f"/>
+      <stop offset="60%" stop-color="#11245a"/>
+      <stop offset="100%" stop-color="#070f2b"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff3c4"/>
+      <stop offset="40%" stop-color="#e6b84d"/>
+      <stop offset="100%" stop-color="#8f5c10"/>
+    </linearGradient>
+    <linearGradient id="goldside" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fbe39a"/>
+      <stop offset="55%" stop-color="#d9a33a"/>
+      <stop offset="100%" stop-color="#7d4f0c"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="600" fill="url(#bg)"/>
+  <rect x="22" y="22" width="556" height="556" fill="none" stroke="url(#gold)" stroke-width="4"/>
+  <rect x="34" y="34" width="532" height="532" fill="none" stroke="#e6b84d" stroke-opacity="0.45" stroke-width="1.5"/>
+  <g transform="translate(300 215)" stroke="#4a2f06" stroke-width="5" stroke-linejoin="round">
+    <!-- central petal -->
+    <path d="M0 -170 C38 -120 58 -70 46 -10 C40 18 24 40 14 58 L-14 58 C-24 40 -40 18 -46 -10 C-58 -70 -38 -120 0 -170 Z" fill="url(#gold)"/>
+    <!-- right petal -->
+    <path d="M22 50 C40 -10 92 -60 148 -46 C196 -34 206 22 172 52 C152 70 120 66 112 44 C134 50 152 38 150 16 C146 -10 110 -16 84 6 C60 26 50 52 46 70 Z" fill="url(#goldside)"/>
+    <!-- left petal -->
+    <path d="M-22 50 C-40 -10 -92 -60 -148 -46 C-196 -34 -206 22 -172 52 C-152 70 -120 66 -112 44 C-134 50 -152 38 -150 16 C-146 -10 -110 -16 -84 6 C-60 26 -50 52 -46 70 Z" fill="url(#goldside)"/>
+    <!-- band -->
+    <rect x="-82" y="56" width="164" height="30" rx="8" fill="url(#gold)"/>
+    <!-- lower lobes -->
+    <path d="M-14 86 L14 86 L10 138 C8 152 -8 152 -10 138 Z" fill="url(#gold)"/>
+    <path d="M18 86 C40 92 66 104 74 124 C80 140 66 150 54 140 C46 126 34 108 16 100 Z" fill="url(#goldside)"/>
+    <path d="M-18 86 C-40 92 -66 104 -74 124 C-80 140 -66 150 -54 140 C-46 126 -34 108 -16 100 Z" fill="url(#goldside)"/>
+  </g>
+  <text x="300" y="455" text-anchor="middle" font-family="Copperplate, Didot, Georgia, serif" font-size="66" font-weight="bold" fill="url(#gold)" stroke="#3a2205" stroke-width="1.5" letter-spacing="3">MONARQUE</text>
+  <text x="300" y="521" text-anchor="middle" font-family="Copperplate, Didot, Georgia, serif" font-size="66" font-weight="bold" fill="url(#gold)" stroke="#3a2205" stroke-width="1.5" letter-spacing="3">ABSOLU</text>
+  <text x="300" y="550" text-anchor="middle" font-family="Copperplate, Didot, Georgia, serif" font-size="18" fill="#e8c977" letter-spacing="6">CRUSADER KINGS III</text>
+</svg>

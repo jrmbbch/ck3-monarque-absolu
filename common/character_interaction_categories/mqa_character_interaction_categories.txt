@@ -1,0 +1,7 @@
+﻿# Category indexes must be contiguous: a gap crashes the game.
+# Vanilla 1.20 uses indexes 0-15 (15 = interaction_debug_pam, added by Crozier).
+# If another mod also uses 16, bump this to the next free index.
+interaction_mqa_main = {
+	index = 16
+	desc = "interaction_mqa_main"
+}
