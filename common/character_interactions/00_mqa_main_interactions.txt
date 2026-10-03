@@ -257,3 +257,50 @@ mqa_unall_in_one_interaction = {
 	}
 	auto_accept = yes
 }
+
+mqa_max_education_interaction = {
+	category = interaction_mqa_main
+	common_interaction = yes
+	use_diplomatic_range = no
+	ignores_pending_interaction_block = yes
+	icon = mentor
+
+	desc = mqa_max_education_interaction_desc
+
+	is_shown = {
+		scope:recipient = { mqa_can_improve_education_trigger = yes }
+	}
+
+	on_accept = {
+		scope:recipient = { mqa_maximize_education_effect = yes }
+	}
+
+	auto_accept = yes
+}
+
+# 1000 experience per perk point and 27 perks per lifestyle: 30000 unlocks every perk.
+mqa_lifestyle_xp_interaction = {
+	category = interaction_mqa_main
+	common_interaction = yes
+	use_diplomatic_range = no
+	ignores_pending_interaction_block = yes
+	icon = inspiration
+
+	desc = mqa_lifestyle_xp_interaction_desc
+
+	on_accept = {
+		scope:recipient = {
+			add_diplomacy_lifestyle_xp = 30000
+			add_martial_lifestyle_xp = 30000
+			add_stewardship_lifestyle_xp = 30000
+			add_intrigue_lifestyle_xp = 30000
+			add_learning_lifestyle_xp = 30000
+			if = {
+				limit = { has_dlc_feature = wandering_nobles }
+				add_wanderer_lifestyle_xp = 30000
+			}
+		}
+	}
+
+	auto_accept = yes
+}

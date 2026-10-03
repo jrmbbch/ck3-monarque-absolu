@@ -1,0 +1,107 @@
+﻿### Maximum education
+# Raises the education trait of a character to the highest level of its track.
+
+mqa_maximize_education_effect = {
+	if = {
+		limit = {
+			OR = {
+				has_trait = education_diplomacy_1
+				has_trait = education_diplomacy_2
+				has_trait = education_diplomacy_3
+				has_trait = education_diplomacy_4
+			}
+		}
+		remove_trait = education_diplomacy_1
+		remove_trait = education_diplomacy_2
+		remove_trait = education_diplomacy_3
+		remove_trait = education_diplomacy_4
+		add_trait = education_diplomacy_5
+	}
+	if = {
+		limit = {
+			OR = {
+				has_trait = education_intrigue_1
+				has_trait = education_intrigue_2
+				has_trait = education_intrigue_3
+				has_trait = education_intrigue_4
+			}
+		}
+		remove_trait = education_intrigue_1
+		remove_trait = education_intrigue_2
+		remove_trait = education_intrigue_3
+		remove_trait = education_intrigue_4
+		add_trait = education_intrigue_5
+	}
+	if = {
+		limit = {
+			OR = {
+				has_trait = education_learning_1
+				has_trait = education_learning_2
+				has_trait = education_learning_3
+				has_trait = education_learning_4
+			}
+		}
+		remove_trait = education_learning_1
+		remove_trait = education_learning_2
+		remove_trait = education_learning_3
+		remove_trait = education_learning_4
+		add_trait = education_learning_5
+	}
+	if = {
+		limit = {
+			OR = {
+				has_trait = education_martial_1
+				has_trait = education_martial_2
+				has_trait = education_martial_3
+				has_trait = education_martial_4
+			}
+		}
+		remove_trait = education_martial_1
+		remove_trait = education_martial_2
+		remove_trait = education_martial_3
+		remove_trait = education_martial_4
+		add_trait = education_martial_5
+	}
+	if = {
+		limit = {
+			OR = {
+				has_trait = education_stewardship_1
+				has_trait = education_stewardship_2
+				has_trait = education_stewardship_3
+				has_trait = education_stewardship_4
+			}
+		}
+		remove_trait = education_stewardship_1
+		remove_trait = education_stewardship_2
+		remove_trait = education_stewardship_3
+		remove_trait = education_stewardship_4
+		add_trait = education_stewardship_5
+	}
+	if = {
+		limit = {
+			OR = {
+				has_trait = education_martial_prowess_1
+				has_trait = education_martial_prowess_2
+				has_trait = education_martial_prowess_3
+			}
+		}
+		remove_trait = education_martial_prowess_1
+		remove_trait = education_martial_prowess_2
+		remove_trait = education_martial_prowess_3
+		add_trait = education_martial_prowess_4
+	}
+	if = {
+		limit = {
+			OR = {
+				has_trait = education_republican_knowledge_1
+				has_trait = education_republican_knowledge_2
+				has_trait = education_republican_knowledge_3
+			}
+		}
+		remove_trait = education_republican_knowledge_1
+		remove_trait = education_republican_knowledge_2
+		remove_trait = education_republican_knowledge_3
+		add_trait = education_republican_knowledge_4
+	}
+}
+
