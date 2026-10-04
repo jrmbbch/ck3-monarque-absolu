@@ -4,7 +4,8 @@ A Crusader Kings III mod that gives you the tools of an all-powerful sovereign: 
 
 - **Game version:** CK3 1.20.* (Crozier), every DLC supported up to By God Alone, none required
 - **Languages:** English, French, German, Spanish, Polish, Russian, Japanese, Korean, Simplified Chinese
-- **Workshop description:** [docs/workshop_description.bbcode](docs/workshop_description.bbcode)
+- **Steam Workshop:** https://steamcommunity.com/sharedfiles/filedetails/?id=3813333986 (description: [docs/workshop_description.bbcode](docs/workshop_description.bbcode), BBCode)
+- **Paradox Mods:** https://mods.paradoxplaza.com/mods/161949/Any (description: [docs/paradox_mods_description.txt](docs/paradox_mods_description.txt) and [docs/paradox_mods_short_description.txt](docs/paradox_mods_short_description.txt), plain text to paste as is)
 
 ## Repository layout
 
@@ -47,4 +48,4 @@ supported_version="1.20.*"
 sh tools/build_release.sh
 ```
 
-Then upload **Monarque Absolu** from the launcher (*All installed mods → Upload Mod*), never the dev entry: the repository folder also contains `.git`, `tools/` and `art/`. After the first upload, copy the `remote_file_id` line the launcher adds to the built `descriptor.mod` back into the repository's `descriptor.mod`, so later uploads update the same item.
+Then upload **Monarque Absolu** from the launcher (*All installed mods → Upload Mod*), never the dev entry: the repository folder also contains `.git`, `tools/` and `art/`. After the first upload, copy the `remote_file_id` line the launcher adds to the built `descriptor.mod` back into the repository's `descriptor.mod`, so later uploads update the same item. The Paradox Mods ID (161949) is not stored in the descriptor: type it in the launcher's *Mod ID* field when updating there, and clear that field's Steam ID first.
