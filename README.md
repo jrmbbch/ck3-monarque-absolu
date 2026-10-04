@@ -18,7 +18,8 @@ A Crusader Kings III mod that gives you the tools of an all-powerful sovereign: 
 | `tools/check_localization.py` | Checks the 9 languages: same keys, UTF-8 BOM, no broken quotes |
 | `tools/build_release.sh` | Copies only the mod files into the game's mod folder, ready to upload |
 | `art/thumbnail.svg` | Source of the thumbnail |
-| `docs/` | Publication texts |
+| `docs/` | Publication texts; `docs/patch_notes/<version>.txt` holds the patch note to paste on each upload |
+| `CHANGELOG.md` | Version history |
 
 All keys use the `mqa_` prefix.
 

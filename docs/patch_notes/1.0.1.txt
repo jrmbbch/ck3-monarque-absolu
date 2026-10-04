@@ -1,0 +1,4 @@
+1.0.1
+- One realm, one faith now also converts to your rite (By God Alone subdivides faiths into rites), including counties and characters that already shared your faith but followed another rite.
+- Deceased children are no longer touched by the conversion.
+- The decision's description mentions the rite in every language.
