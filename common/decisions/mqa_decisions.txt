@@ -127,29 +127,18 @@ mqa_convert_subrealm_to_religion_decision = {
 	}
 
 	effect = {
-		every_sub_realm_county = {
-			limit = { NOT = { faith = root.faith } }
-			set_county_faith = root.faith
-		}
-		every_vassal_or_below = {
-			limit = { NOT = { faith = root.faith } }
-			set_character_faith_with_conversion = root.faith
-		}
+		# Faith and rite (see common/scripted_effects/mqa_faith_effects.txt)
+		every_sub_realm_county = { mqa_convert_county_to_root_faith_effect = yes }
+		every_vassal_or_below = { mqa_convert_character_to_root_faith_effect = yes }
 		every_child = {
-			limit = { NOT = { faith = root.faith } }
-			set_character_faith_with_conversion = root.faith
+			limit = { is_alive = yes }
+			mqa_convert_character_to_root_faith_effect = yes
 		}
-		every_consort = {
-			limit = { NOT = { faith = root.faith } }
-			set_character_faith_with_conversion = root.faith
-		}
+		every_consort = { mqa_convert_character_to_root_faith_effect = yes }
 		house = {
 			every_house_member = {
-				limit = {
-					is_alive = yes
-					NOT = { faith = root.faith }
-				}
-				set_character_faith_with_conversion = root.faith
+				limit = { is_alive = yes }
+				mqa_convert_character_to_root_faith_effect = yes
 			}
 		}
 	}

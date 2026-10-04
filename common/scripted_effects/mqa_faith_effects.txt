@@ -1,0 +1,27 @@
+﻿### Monarque Absolu faith conversion, used by the One realm, one faith decision.
+## Converts to root's faith and to root's rite (By God Alone subdivides faiths into rites;
+## every faith has at least one, created by the game when none is scripted).
+
+# County scope
+mqa_convert_county_to_root_faith_effect = {
+	if = {
+		limit = { NOT = { faith = root.faith } }
+		set_county_faith = root.faith
+	}
+	if = {
+		limit = { NOT = { rite = root.rite } }
+		set_county_rite = root.rite
+	}
+}
+
+# Character scope
+mqa_convert_character_to_root_faith_effect = {
+	if = {
+		limit = { NOT = { faith = root.faith } }
+		set_character_faith_with_conversion = root.faith
+	}
+	if = {
+		limit = { NOT = { rite = root.rite } }
+		set_character_rite = root.rite
+	}
+}
