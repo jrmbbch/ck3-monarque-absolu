@@ -1,6 +1,6 @@
 ﻿mqa_perfect_bloodline_interaction = {
 	interface_priority = 60
-	category = interaction_category_friendly
+	category = interaction_debug_pam
 	common_interaction = yes
 	use_diplomatic_range = no
 	ignores_pending_interaction_block = yes
@@ -26,7 +26,7 @@
 # Stops the transmission to future children. Traits already gained are kept.
 mqa_unperfect_bloodline_interaction = {
 	interface_priority = 50
-	category = interaction_category_friendly
+	category = interaction_debug_pam
 	common_interaction = yes
 	use_diplomatic_range = no
 	ignores_pending_interaction_block = yes

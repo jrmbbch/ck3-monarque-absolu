@@ -1,0 +1,14 @@
+﻿# Monarque Absolu interaction menu.
+#
+# Category indexes must be unique and contiguous from 0, or the game crashes: a new
+# category (index 16) clashes with any other mod adding one, and any other index leaves
+# a gap. Instead, this takes over the slot of the base game's interaction_debug_pam
+# category (index 15). Only two debug_only interactions use it, so players never see
+# them; in debug mode they would show up in this menu, which is harmless.
+# Check after each game patch that interaction_debug_pam still exists at index 15.
+interaction_debug_pam = {
+	index = 15
+	desc = "interaction_mqa_main"
+	color = { 0.85 0.65 0.2 1 } # gold
+	icon = "icon_bg"
+}
