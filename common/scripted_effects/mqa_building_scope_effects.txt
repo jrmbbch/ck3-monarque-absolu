@@ -1,7 +1,8 @@
-﻿# Character scope. Runs $EFFECT$ in every holding of the counties the character holds
-# directly, including the baronies of vassal barons (cities, temples, castles), which
-# pay their taxes and levies to the character. scope:holder is set to the holder of
-# each barony, as the game's building requirements expect.
+﻿# Character scope. Runs $EFFECT$ in every holding of the character's domain:
+# - every holding of the counties the character holds directly, including the baronies of
+#   vassal barons (cities, temples, castles), which pay their taxes and levies to the character;
+# - every barony the character holds directly in a county held by someone else.
+# scope:holder is set to the holder of each barony, as the game's building requirements expect.
 mqa_b_every_domain_holding_effect = {
 	every_held_title = {
 		limit = { tier = tier_county }
@@ -10,13 +11,30 @@ mqa_b_every_domain_holding_effect = {
 				has_holding = yes
 				exists = barony.holder
 			}
-			barony.holder = {
-				save_scope_as = holder
-				save_scope_as = character	# expected by some vanilla on_complete effects (mandala piety)
-			}
-			$EFFECT$ = yes
+			mqa_b_run_in_holding_effect = { EFFECT = $EFFECT$ }
 		}
 	}
+	every_held_title = {
+		limit = {
+			tier = tier_barony
+			title_province = {
+				has_holding = yes
+				NOT = { county.holder ?= root }
+			}
+		}
+		title_province = {
+			mqa_b_run_in_holding_effect = { EFFECT = $EFFECT$ }
+		}
+	}
+}
+
+# Province scope. Runs $EFFECT$ with scope:holder set to the barony holder.
+mqa_b_run_in_holding_effect = {
+	barony.holder = {
+		save_scope_as = holder
+		save_scope_as = character	# expected by some vanilla on_complete effects (mandala piety)
+	}
+	$EFFECT$ = yes
 }
 
 # Character scope. In every county the character holds directly, founds a holding in each
