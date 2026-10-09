@@ -1,6 +1,5 @@
 ﻿l_simp_chinese:
  # Menus
- interaction_mqa_main:0 "Monarque Absolu"
  decision_group_type_mqa:0 "--= Monarque Absolu =--"
 
  # Traits
