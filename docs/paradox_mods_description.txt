@@ -31,7 +31,7 @@ Compatibility
 
 • CK3 1.20.*, all DLCs supported, none required.
 • Does not overwrite any base game file.
-• Uses the character interaction category index 16.
+• Adds no interaction category of its own (interactions are listed under uncategorized actions), so it cannot clash with other mods.
 
 Languages
 
