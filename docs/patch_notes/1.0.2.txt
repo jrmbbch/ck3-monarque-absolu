@@ -1,3 +1,4 @@
 1.0.2
 - Fixed a crash when right-clicking a character alongside other mods that add an interaction category: the mod no longer adds its own category.
-- The mod's interactions are now listed under the uncategorized actions of the character menu.
+- The mod's interactions are now listed under the Personal category of the character menu.
+- Nicer icons for the interactions that revoke Louis XIV and all powers.

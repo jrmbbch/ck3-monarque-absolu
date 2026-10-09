@@ -2,7 +2,8 @@
 
 ## 1.0.2
 
-- **Fixed a crash when right-clicking a character** with other mods installed. The mod's own interaction category used index 16, which other mods use too, and a duplicate index crashes the game. The mod no longer adds any category: its interactions are now listed under the base game's uncategorized actions.
+- **Fixed a crash when right-clicking a character** with other mods installed. The mod's own interaction category used index 16, which other mods use too, and a duplicate index crashes the game. The mod no longer adds any category: its interactions are now listed under the base game's Personal category of the character menu.
+- Nicer icons for the interactions that revoke Louis XIV and all powers.
 
 ## 1.0.1
 
