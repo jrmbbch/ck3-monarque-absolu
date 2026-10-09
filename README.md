@@ -50,3 +50,5 @@ sh tools/build_release.sh
 ```
 
 Then upload **Monarque Absolu** from the launcher (*All installed mods → Upload Mod*), never the dev entry: the repository folder also contains `.git`, `tools/` and `art/`. After the first upload, copy the `remote_file_id` line the launcher adds to the built `descriptor.mod` back into the repository's `descriptor.mod`, so later uploads update the same item. The Paradox Mods ID (161949) is not stored in the descriptor: type it in the launcher's *Mod ID* field when updating there, and clear that field's Steam ID first. The launcher pre-fills the Paradox Mods description with the text saved at the previous upload: replace it with docs/paradox_mods_description.txt every time, or the website text gets overwritten.
+
+The launcher does not send a change note to the Steam Workshop (its Steam form has no field for it): after each Steam upload, open the item's change notes page (https://steamcommunity.com/sharedfiles/filedetails/changelog/3813333986), click *Edit* on the new entry and paste docs/patch_notes/<version>.txt. Paradox Mods takes the patch note in the upload form.
