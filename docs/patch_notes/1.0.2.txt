@@ -1,4 +1,3 @@
 1.0.2
-- Fixed a crash when right-clicking a character alongside other mods that add an interaction category: the mod no longer adds its own category.
-- The mod's interactions are now listed under the Personal category of the character menu.
+- Fixed a crash when right-clicking a character alongside other mods that add an interaction category: the Monarque Absolu menu now reuses the slot of an unused base game debug category instead of adding a new one.
 - Nicer icons for the interactions that revoke Louis XIV and all powers.

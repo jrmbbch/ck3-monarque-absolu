@@ -31,7 +31,7 @@ Compatibility
 
 • CK3 1.20.*, all DLCs supported, none required.
 • Does not overwrite any base game file.
-• Adds no interaction category of its own (interactions are listed under the Personal category), so it cannot clash with other mods.
+• Its interaction menu reuses a base game slot instead of adding a new category, so it cannot clash with other mods.
 
 Languages
 
