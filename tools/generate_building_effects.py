@@ -15,10 +15,11 @@ Generated effects:
   gold as a tiebreaker, then gold only), replacing lower-ranked buildings.
   Buildings giving neither levies nor gold are never built and replaced first.
   Only buildings the game allows (its own can_construct_potential) are used.
-- mqa_b_construct_domicile_effect (domicile scope): fills free external and
-  internal slots, army buildings first, then gold and resources, then the rest.
-- mqa_b_upgrade_domicile_effect (domicile scope): upgrades every domicile
-  building level by level, picking specializations with the same priority.
+- mqa_b_construct_domicile_effect (character scope): fills the domicile's free
+  external and internal slots, army buildings first, then gold and resources,
+  then the rest, only with buildings whose own can_construct is met.
+- mqa_b_upgrade_domicile_effect (character scope): upgrades every domicile
+  building level by level, picking the best allowed specialization.
 
 The ranking is printed when the script runs and written as a comment in the
 generated file.
@@ -217,6 +218,7 @@ def load_domicile_buildings(game):
                 "slot": field(body, "slot_type") or "external",
                 "types": allowed.group(1).split() if allowed else [],
                 "modifiers": (inner_block(body, "character_modifier") or "") + (inner_block(body, "province_modifier") or ""),
+                "can_construct": inner_block(body, "can_construct") or "",
             }
     return buildings
 
@@ -250,7 +252,8 @@ class DomicileModel:
         # picked at each branch, then the tracks of every specialization.
         self.root_tracks = [t for t in (self.track_from(k) for k in
                             sorted(roots, key=lambda k: (self.ORDER.get(buildings[k]["slot"], 3), k))) if len(t) > 1]
-        self.choices = [(node, self.best(self.same_slot(node))) for node in sorted(branch_nodes)]
+        # Specializations to try at each branch, best first: the first one the game allows wins.
+        self.choices = [(node, sorted(self.same_slot(node), key=self.score)) for node in sorted(branch_nodes)]
         specializations = sorted({s for node in branch_nodes for s in self.same_slot(node)})
         self.branch_tracks = [t for t in map(self.track_from, specializations) if len(t) > 1]
 
@@ -386,42 +389,56 @@ def generate(game):
 
     model = DomicileModel(load_domicile_buildings(game))
 
-    def add_if(condition_lines, building, indent):
+    def attempt(domicile_conditions, building, indent, keyword="if"):
+        """Character scope: add the building to the domicile when the domicile is ready for it
+        and the character meets the building's own can_construct (copied from the game)."""
         tab = "\t" * indent
-        return [f"{tab}if = {{", f"{tab}\tlimit = {{"] + [f"{tab}\t\t{c}" for c in condition_lines] + \
-               [f"{tab}\t}}", f"{tab}\tadd_domicile_building = {building}", f"{tab}}}"]
+        lines = [f"{tab}{keyword} = {{", f"{tab}\tlimit = {{", f"{tab}\t\tdomicile ?= {{"]
+        lines += [f"{tab}\t\t\t{c}" for c in domicile_conditions]
+        lines += [f"{tab}\t\t}}"]
+        requirement = model.b[building]["can_construct"]
+        if requirement.strip():
+            lines += reindent(requirement, indent + 2)
+        lines += [f"{tab}\t}}", f"{tab}\tdomicile = {{ add_domicile_building = {building} }}", f"{tab}}}"]
+        return lines
 
     out += [
-        "# Domicile scope. Builds missing buildings in free slots, by priority: buildings with army",
-        "# bonuses first, then gold and resources, then the rest. External buildings go in the",
-        "# domicile's external slots, internal ones in the internal slots of their parent building.",
-        "# The game still checks each building's own requirements.",
+        "# Character scope (the domicile owner). Builds missing buildings in free slots, by priority:",
+        "# buildings with army bonuses first, then gold and resources, then the rest. External",
+        "# buildings go in the domicile's external slots, internal ones in the internal slots of their",
+        "# parent building. Each building is only attempted when the character meets its own",
+        "# can_construct, copied from the game.",
         "mqa_b_construct_domicile_effect = {",
     ]
     for domicile_type, roots in sorted(model.external.items()):
-        out += ["\tif = {", f"\t\tlimit = {{ is_domicile_type = {domicile_type} }}"]
+        out += ["\tif = {", f"\t\tlimit = {{ domicile ?= {{ is_domicile_type = {domicile_type} }} }}"]
         for root in roots:
-            out += add_if(["free_external_domicile_building_slots >= 1",
-                           f"NOT = {{ has_domicile_building_or_higher = {root} }}"], root, 2)
+            out += attempt(["free_external_domicile_building_slots >= 1",
+                            f"NOT = {{ has_domicile_building_or_higher = {root} }}"], root, 2)
         out += ["\t}"]
     for parent, roots in sorted(model.internal.items()):
         for root in roots:
-            out += add_if([f"has_domicile_building_or_higher = {parent}",
-                           f"domicile_building_has_free_internal_slot = {parent}",
-                           f"NOT = {{ has_domicile_building_or_higher = {root} }}"], root, 1)
+            out += attempt([f"has_domicile_building_or_higher = {parent}",
+                            f"domicile_building_has_free_internal_slot = {parent}",
+                            f"NOT = {{ has_domicile_building_or_higher = {root} }}"], root, 1)
     out += ["}", ""]
 
     out += [
-        "# Domicile scope. Upgrades every domicile building one level at a time, main building",
-        "# first. Where a building can specialize, the specialization is picked by the same",
+        "# Character scope (the domicile owner). Upgrades every domicile building one level at a",
+        "# time, main building first, when the character meets the next level's can_construct.",
+        "# Where a building can specialize, the best allowed specialization is picked by the same",
         "# priority, then upgraded in turn.",
         "mqa_b_upgrade_domicile_effect = {",
     ]
-    steps = [pair for track in model.root_tracks for pair in zip(track, track[1:])]
-    steps += model.choices
-    steps += [pair for track in model.branch_tracks for pair in zip(track, track[1:])]
-    for current, following in steps:
-        out += add_if([f"has_domicile_building = {current}"], following, 1)
+    for track in model.root_tracks:
+        for current, following in zip(track, track[1:]):
+            out += attempt([f"has_domicile_building = {current}"], following, 1)
+    for node, candidates in model.choices:
+        for index, candidate in enumerate(candidates):
+            out += attempt([f"has_domicile_building = {node}"], candidate, 1, "if" if index == 0 else "else_if")
+    for track in model.branch_tracks:
+        for current, following in zip(track, track[1:]):
+            out += attempt([f"has_domicile_building = {current}"], following, 1)
     out += ["}", ""]
     tracks = model.root_tracks + model.branch_tracks
 

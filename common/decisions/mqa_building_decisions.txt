@@ -49,11 +49,10 @@ mqa_b_max_domicile_decision = {
 	effect = {
 		# Upgrade first (the main building unlocks slots and levels), build in the free
 		# slots by priority, then upgrade what was just built.
-		domicile = {
-			mqa_b_upgrade_domicile_effect = yes
-			mqa_b_construct_domicile_effect = yes
-			mqa_b_upgrade_domicile_effect = yes
-		}
+		# The effects run on the character: each building's own requirements apply to them.
+		mqa_b_upgrade_domicile_effect = yes
+		mqa_b_construct_domicile_effect = yes
+		mqa_b_upgrade_domicile_effect = yes
 	}
 
 	ai_will_do = { base = 0 }
