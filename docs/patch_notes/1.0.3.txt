@@ -1,0 +1,7 @@
+1.0.3
+- Building decisions now follow the manual construction rules: only what you could build by hand is built (innovations and holding levels apply), straight at the highest level allowed. Costs and construction times are still skipped.
+- Fortify and arm the domain also covers baronies you hold outside your own counties, fills every slot in a single click, and no longer slows the game down on large domains.
+- Duchy capital buildings (such as the examination hall) are upgraded too.
+- Fortify and arm the domain warns about constructions underway in your domain: a mod cannot cancel them, so cancel them yourself first to free their slot.
+- Dream home cancels the domicile's ongoing construction first (refunded) and only attempts buildings whose requirements are met.
+- One realm, one faith now converts every character, including those the game's conversion checks refused.
