@@ -24,6 +24,8 @@ innovations...). Costs and construction times are skipped.
 - mqa_b_construct_domicile_effect (character scope): fills the domicile's free
   external and internal slots, army buildings first, then gold and resources,
   then the rest, only with buildings whose own can_construct is met.
+- mqa_b_cancel_domicile_construction_effect (character scope): cancels the
+  domicile's ongoing construction, refunded as by the game.
 - mqa_b_upgrade_domicile_effect (character scope): upgrades every domicile
   building level by level, picking the best allowed specialization.
 
@@ -420,6 +422,19 @@ def generate(game):
             lines += reindent(requirement, indent + 2)
         lines += [f"{tab}\t}}", f"{tab}\tdomicile = {{ add_domicile_building = {building} }}", f"{tab}}}"]
         return lines
+
+    out += [
+        "# Character scope (the domicile owner). Cancels the domicile's ongoing construction, with",
+        "# the game's own refund, so that its slot can be filled and upgraded right away.",
+        "mqa_b_cancel_domicile_construction_effect = {",
+        "\tif = {",
+        "\t\tlimit = { domicile ?= { has_ongoing_domicile_construction = yes } }",
+        "\t\tdomicile = {",
+    ]
+    for building in sorted(model.b):
+        out += ["\t\t\tif = {", f"\t\t\t\tlimit = {{ has_domicile_construction = {building} }}",
+                f"\t\t\t\tremove_domicile_building = {building}", "\t\t\t}"]
+    out += ["\t\t}", "\t}", "}", ""]
 
     out += [
         "# Character scope (the domicile owner). Builds missing buildings in free slots, by priority:",
