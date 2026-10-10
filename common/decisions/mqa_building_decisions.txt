@@ -20,8 +20,14 @@ mqa_b_lucky_7_sub_realm_decision = {
 	}
 
 	# Fills the existing slots by priority (fortification, levies, then gold), replacing
-	# lower-ranked buildings, then upgrades everything to the maximum level.
+	# lower-ranked buildings, then upgrades everything as far as the game allows.
 	effect = {
+		# Constructions underway cannot be cancelled by script in provinces: warn the
+		# player so they can cancel them by hand first.
+		if = {
+			limit = { mqa_b_ongoing_constructions_value > 0 }
+			custom_tooltip = mqa_b_ongoing_constructions_warning
+		}
 		# Each building's own requirements apply, as when building by hand: main
 		# buildings rise first so the others can follow. Some buildings are only
 		# unlocked by another one at a high level (farm estates by pastures 4...),

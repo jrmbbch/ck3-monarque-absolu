@@ -1,0 +1,30 @@
+﻿## Monarque Absolu building values (mqa_b_ prefix).
+
+# Character scope. Number of holdings of the domain, as covered by
+# mqa_b_every_domain_holding_effect, with a construction underway. The game has no
+# script effect to cancel those, so the decision warns about them.
+mqa_b_ongoing_constructions_value = {
+	value = 0
+	every_held_title = {
+		limit = { tier = tier_county }
+		every_county_province = {
+			limit = {
+				has_holding = yes
+				exists = barony.holder
+				has_ongoing_construction = yes
+			}
+			add = 1
+		}
+	}
+	every_held_title = {
+		limit = {
+			tier = tier_barony
+			title_province = {
+				has_holding = yes
+				has_ongoing_construction = yes
+			}
+			NOT = { county.holder ?= root }
+		}
+		add = 1
+	}
+}
