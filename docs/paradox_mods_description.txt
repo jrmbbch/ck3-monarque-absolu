@@ -24,8 +24,9 @@ Decisions
 • One realm, one culture and One realm, one faith.
 • Mend body and realm: cures every disease across the realm and the wounds of your closest kin.
 • Purify the bloodline of your closest kin (vassals keep their own flaws).
-• Fortify and arm the domain: founds temples and cities in empty baronies, then fills every building slot of your domain with the best buildings the game allows (fortification first, then levies, then gold) and upgrades everything. No extra slot is ever added.
+• Fortify and arm the domain: founds temples and cities in empty baronies, then fills every building slot of your domain with the best buildings the game allows (fortification first, then levies, then gold) and upgrades everything as far as the game allows. No extra slot is ever added.
 • Dream home: fills every slot of your domicile and upgrades everything, military buildings first.
+• Both building decisions skip costs and construction times, but only build what you could build by hand: innovations and holding levels still apply.
 
 Compatibility
 
