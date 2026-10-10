@@ -8,13 +8,19 @@ so new buildings are picked up by simply running it again after a patch:
     python3 tools/generate_building_effects.py [path/to/Crusader Kings III/game]
 
 Generated effects:
-- mqa_b_upgrade_province_buildings_effect (province scope): upgrades every
-  existing building to the last level of its chain.
+- mqa_b_upgrade_province_buildings_effect (province scope, needs scope:holder):
+  upgrades every existing building level by level, holding main buildings first,
+  as long as the next level's own requirements are met.
 - mqa_b_priority_fill_province_effect (province scope, needs scope:holder):
   fills the province's existing building slots by priority (most levies first,
   gold as a tiebreaker, then gold only), replacing lower-ranked buildings.
   Buildings giving neither levies nor gold are never built and replaced first.
-  Only buildings the game allows (its own can_construct_potential) are used.
+  A building is only built when the game would let the holder build it by hand.
+
+Province and domicile effects follow the same rule: nothing is built or upgraded
+unless the game's own requirements are met (can_construct_potential, can_construct
+and can_construct_showing_failures_only: terrain, holding type and level,
+innovations...). Costs and construction times are skipped.
 - mqa_b_construct_domicile_effect (character scope): fills the domicile's free
   external and internal slots, army buildings first, then gold and resources,
   then the rest, only with buildings whose own can_construct is met.
@@ -164,6 +170,7 @@ def load_province_buildings(game):
                 "next": field(body, "next_building"),
                 "potential": inner_block(body, "can_construct_potential"),
                 "can_construct": inner_block(body, "can_construct"),
+                "failures_only": inner_block(body, "can_construct_showing_failures_only"),
                 "levy_token": field(body, "levy"),
                 "gold_token": income.group(1) if income else None,
             }
@@ -184,6 +191,12 @@ def province_chains(buildings):
     return chains
 
 
+def requirements(building):
+    """Every construction requirement of a building level, as trigger lines."""
+    return "\n".join(block for block in (building["potential"], building["can_construct"],
+                                          building["failures_only"]) if block and block.strip())
+
+
 def regular_families(buildings, chains, values):
     """Constructible regular families with their requirement, levels and max-level yields."""
     families = []
@@ -192,9 +205,8 @@ def regular_families(buildings, chains, values):
         building = buildings[root]
         if building["file"] not in REGULAR_FILES or family in HOLDING_MAIN or not root.endswith("_01"):
             continue
-        requirement = building["potential"] if building["potential"] and building["potential"].strip() \
-            else building["can_construct"]
-        if not requirement or not requirement.strip():
+        requirement = requirements(building)
+        if not requirement:
             continue
         top = buildings[chain[-1]]
         families.append({
@@ -332,17 +344,24 @@ def generate(game):
     out.append("")
 
     out += [
-        "# Province scope. Upgrades every existing building to the last level of its chain.",
+        "# Province scope, scope:holder must be the holder of the barony.",
+        "# Upgrades every existing building one level at a time, holding main buildings",
+        "# first (other buildings need their level), as long as the next level's own",
+        "# requirements are met, as when building it by hand.",
         "mqa_b_upgrade_province_buildings_effect = {",
     ]
     upgradable = 0
-    for root, chain in sorted(chains.items()):
+    main_first = sorted(chains.items(), key=lambda item: (re.sub(r"_01$", "", item[0]) not in HOLDING_MAIN, item[0]))
+    for root, chain in main_first:
         if len(chain) < 2 or buildings[root]["file"] in NOT_UPGRADED_FILES:
             continue
         upgradable += 1
-        out += ["\tif = {", "\t\tlimit = {", "\t\t\tOR = {"]
-        out += [f"\t\t\t\thas_building = {level}" for level in chain[:-1]]
-        out += ["\t\t\t}", "\t\t}", f"\t\tadd_building = {chain[-1]}", "\t}"]
+        for level, upper in zip(chain, chain[1:]):
+            out += ["\tif = {", "\t\tlimit = {", f"\t\t\thas_building = {level}"]
+            requirement = requirements(buildings[upper])
+            if requirement:
+                out += reindent(requirement, 3)
+            out += ["\t\t}", f"\t\tadd_building = {upper}", "\t}"]
     out += ["}", ""]
 
     out.append("# Province scope. Remove a regular building, whatever its level.")
@@ -355,11 +374,11 @@ def generate(game):
 
     out += [
         "# Province scope, scope:holder must be the holder of the barony.",
-        "# Goes down the priority list. Each building the game allows here (its own",
-        "# can_construct_potential, or can_construct when there is none) and that is missing",
-        "# is built at maximum level in a free slot; when no slot is free, the worst-ranked",
-        "# building below it is removed to make room. No slot is ever added.",
-        "# Innovation requirements are deliberately ignored, as in the original mod.",
+        "# Goes down the priority list. Each missing building the holder could build here",
+        "# by hand (all of its first level's requirements, copied from the game) is built",
+        "# at level 1 in a free slot; when no slot is free, the worst-ranked building below",
+        "# it is removed to make room. No slot is ever added. The upgrade effect then takes",
+        "# it as high as its requirements allow.",
         "mqa_b_priority_fill_province_effect = {",
     ]
     for rank, family in enumerate(ranked):
@@ -381,7 +400,7 @@ def generate(game):
         out += [
             "\t\tif = {",
             "\t\t\tlimit = { free_building_slots > 0 }",
-            f"\t\t\tadd_building = {family['chain'][-1]}",
+            f"\t\t\tadd_building = {family['chain'][0]}",
             "\t\t}",
             "\t}",
         ]
