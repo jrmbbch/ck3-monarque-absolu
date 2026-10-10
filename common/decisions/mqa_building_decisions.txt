@@ -23,8 +23,14 @@ mqa_b_lucky_7_sub_realm_decision = {
 	# lower-ranked buildings, then upgrades everything to the maximum level.
 	effect = {
 		# Each building's own requirements apply, as when building by hand: main
-		# buildings rise first so the others can follow.
+		# buildings rise first so the others can follow. Some buildings are only
+		# unlocked by another one at a high level (farm estates by pastures 4...),
+		# so filling and upgrading run three times to settle in a single click.
 		mqa_b_found_domain_holdings_effect = yes
+		mqa_b_every_domain_holding_effect = { EFFECT = mqa_b_upgrade_province_buildings_effect }
+		mqa_b_every_domain_holding_effect = { EFFECT = mqa_b_priority_fill_province_effect }
+		mqa_b_every_domain_holding_effect = { EFFECT = mqa_b_upgrade_province_buildings_effect }
+		mqa_b_every_domain_holding_effect = { EFFECT = mqa_b_priority_fill_province_effect }
 		mqa_b_every_domain_holding_effect = { EFFECT = mqa_b_upgrade_province_buildings_effect }
 		mqa_b_every_domain_holding_effect = { EFFECT = mqa_b_priority_fill_province_effect }
 		mqa_b_every_domain_holding_effect = { EFFECT = mqa_b_upgrade_province_buildings_effect }
