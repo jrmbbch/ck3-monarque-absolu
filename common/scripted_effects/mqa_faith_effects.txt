@@ -18,7 +18,7 @@ mqa_convert_county_to_root_faith_effect = {
 mqa_convert_character_to_root_faith_effect = {
 	if = {
 		limit = { NOT = { faith = root.faith } }
-		set_character_faith_with_conversion = root.faith
+		set_character_faith = root.faith
 	}
 	if = {
 		limit = { NOT = { rite = root.rite } }
