@@ -9,8 +9,8 @@ so new buildings are picked up by simply running it again after a patch:
 
 Generated effects:
 - mqa_b_upgrade_province_buildings_effect (province scope, needs scope:holder):
-  upgrades every existing building level by level, holding main buildings first,
-  as long as the next level's own requirements are met.
+  upgrades every existing building straight to the highest level whose own
+  requirements are met, holding main buildings first.
 - mqa_b_priority_fill_province_effect (province scope, needs scope:holder):
   fills the province's existing building slots by priority (most levies first,
   gold as a tiebreaker, then gold only), replacing lower-ranked buildings.
@@ -169,6 +169,7 @@ def load_province_buildings(game):
             income = re.search(r"monthly_income\s*=\s*(\S+)", province_modifier)
             buildings[key] = {
                 "file": path.name,
+                "type": field(body, "type") or "regular",
                 "next": field(body, "next_building"),
                 "potential": inner_block(body, "can_construct_potential"),
                 "can_construct": inner_block(body, "can_construct"),
@@ -347,23 +348,35 @@ def generate(game):
 
     out += [
         "# Province scope, scope:holder must be the holder of the barony.",
-        "# Upgrades every existing building one level at a time, holding main buildings",
-        "# first (other buildings need their level), as long as the next level's own",
-        "# requirements are met, as when building it by hand.",
+        "# Upgrades every existing building straight to the highest level whose own",
+        "# requirements are met, as when building it by hand, holding main buildings first",
+        "# (other buildings need their level).",
         "mqa_b_upgrade_province_buildings_effect = {",
     ]
+    def place(building):
+        """add_building cannot upgrade duchy capital and special buildings in place."""
+        if buildings[building]["type"] == "regular":
+            return f"add_building = {building}"
+        return f"replace_building_effect = {building}"
+
     upgradable = 0
     main_first = sorted(chains.items(), key=lambda item: (re.sub(r"_01$", "", item[0]) not in HOLDING_MAIN, item[0]))
     for root, chain in main_first:
         if len(chain) < 2 or buildings[root]["file"] in NOT_UPGRADED_FILES:
             continue
         upgradable += 1
-        for level, upper in zip(chain, chain[1:]):
-            out += ["\tif = {", "\t\tlimit = {", f"\t\t\thas_building = {level}"]
-            requirement = requirements(buildings[upper])
+        # Highest allowed level first, in a single step: each level added runs the
+        # building's on_complete effects, which made level-by-level upgrades very slow
+        # on large domains.
+        for index in range(len(chain) - 1, 0, -1):
+            keyword = "if" if index == len(chain) - 1 else "else_if"
+            out += [f"\t{keyword} = {{", "\t\tlimit = {", "\t\t\tOR = {"]
+            out += [f"\t\t\t\thas_building = {level}" for level in chain[:index]]
+            out += ["\t\t\t}"]
+            requirement = requirements(buildings[chain[index]])
             if requirement:
                 out += reindent(requirement, 3)
-            out += ["\t\t}", f"\t\tadd_building = {upper}", "\t}"]
+            out += ["\t\t}", f"\t\t{place(chain[index])}", "\t}"]
     out += ["}", ""]
 
     out.append("# Province scope. Remove a regular building, whatever its level.")
@@ -378,9 +391,9 @@ def generate(game):
         "# Province scope, scope:holder must be the holder of the barony.",
         "# Goes down the priority list. Each missing building the holder could build here",
         "# by hand (all of its first level's requirements, copied from the game) is built",
-        "# at level 1 in a free slot; when no slot is free, the worst-ranked building below",
-        "# it is removed to make room. No slot is ever added. The upgrade effect then takes",
-        "# it as high as its requirements allow.",
+        "# in a free slot, straight at the highest level whose requirements are met; when no",
+        "# slot is free, the worst-ranked building below it is removed to make room. No slot",
+        "# is ever added.",
         "mqa_b_priority_fill_province_effect = {",
     ]
     for rank, family in enumerate(ranked):
@@ -399,13 +412,19 @@ def generate(game):
                     "\t\t\t}",
                 ]
             out += ["\t\t}"]
-        out += [
-            "\t\tif = {",
-            "\t\t\tlimit = { free_building_slots > 0 }",
-            f"\t\t\tadd_building = {family['chain'][0]}",
-            "\t\t}",
-            "\t}",
-        ]
+        # Built straight at the highest level allowed, in a single step.
+        chain = family["chain"]
+        out += ["\t\tif = {", "\t\t\tlimit = { free_building_slots > 0 }"]
+        for index in range(len(chain) - 1, 0, -1):
+            keyword = "if" if index == len(chain) - 1 else "else_if"
+            out += [f"\t\t\t{keyword} = {{", "\t\t\t\tlimit = {"]
+            out += reindent(requirements(buildings[chain[index]]), 5)
+            out += ["\t\t\t\t}", f"\t\t\t\tadd_building = {chain[index]}", "\t\t\t}"]
+        if len(chain) > 1:
+            out += ["\t\t\telse = {", f"\t\t\t\tadd_building = {chain[0]}", "\t\t\t}"]
+        else:
+            out += [f"\t\t\tadd_building = {chain[0]}"]
+        out += ["\t\t}", "\t}"]
     out += ["}", ""]
 
     model = DomicileModel(load_domicile_buildings(game))
