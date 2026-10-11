@@ -73,3 +73,36 @@ mqa_b_found_domain_holdings_effect = {
 		}
 	}
 }
+
+# Character scope. Turns the tribal and nomadic holdings the character holds into castles,
+# as the game's own "feudalize holding" action does (gold cost skipped): only for a ruler
+# who is neither tribal nor of the steppe, on holdings they control with no construction
+# underway.
+mqa_b_feudalize_domain_holdings_effect = {
+	if = {
+		limit = {
+			NOR = {
+				government_has_flag = government_is_tribal
+				government_has_flag = government_is_in_steppe
+			}
+		}
+		every_held_title = {
+			limit = {
+				tier = tier_barony
+				title_province = {
+					OR = {
+						has_holding_type = tribal_holding
+						has_holding_type = nomad_holding
+						has_holding_type = herder_holding
+					}
+					barony_controller = root
+					has_ongoing_construction = no
+				}
+			}
+			title_province = {
+				holding_pre_feudalize_effect = yes
+				set_holding_type = castle_holding
+			}
+		}
+	}
+}
