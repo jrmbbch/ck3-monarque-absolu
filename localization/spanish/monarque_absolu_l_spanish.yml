@@ -48,7 +48,7 @@
  mqa_all_perks_interaction_desc:0 "[recipient.GetShortUINameNoTooltip|U] desbloquea de golpe todas las ventajas de todos los estilos de vida, junto con los rasgos que coronan cada árbol."
  mqa_take_title_interaction:0 "Arrebatar un título"
  mqa_take_title_interaction_desc:0 "Arrebata uno de los títulos de [recipient.GetShortUINameNoTooltip], incluidos los títulos sin tierras y administrativos: solo, o con los vasallos que tienen tierras bajo él."
- mqa_take_title_only_option:0 "Solo el título: sus vasallos se quedan con su señor"
+ mqa_take_title_only_option:0 "Solo el título: sus vasallos se quedan con su señor, si sigue teniendo un rango superior"
  mqa_take_title_and_vassals_option:0 "El título y sus vasallos: te juran lealtad"
  mqa_take_realm_interaction:0 "Arrebatar todos sus títulos"
  mqa_take_realm_interaction_desc:0 "Arrebata de una vez todos los títulos que posee [recipient.GetShortUINameNoTooltip], o todos los títulos de todo su reino, incluidos los condados y ducados de sus vasallos."
