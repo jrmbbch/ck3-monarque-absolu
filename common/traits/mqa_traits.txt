@@ -81,15 +81,25 @@ mqa_super = {
 	owned_hostile_scheme_success_chance_max_add = 30
 	owned_personal_scheme_success_chance_max_add = 30
 	owned_political_scheme_success_chance_max_add = 30
-	hostile_scheme_phase_duration_add = -30			# days per phase
-	personal_scheme_phase_duration_add = -30
-	political_scheme_phase_duration_add = -30
-	study_faith_scheme_phase_duration_add = -30
-	study_scripture_scheme_phase_duration_add = -30
+	# Days per phase. The longest phase is 170 days, plus up to 160 for a hegemon
+	# target: -400 always brings it down to the game's 10-day minimum.
+	hostile_scheme_phase_duration_add = -400
+	personal_scheme_phase_duration_add = -400
+	political_scheme_phase_duration_add = -400
+	contract_scheme_phase_duration_add = -400
+	study_faith_scheme_phase_duration_add = -400
+	study_scripture_scheme_phase_duration_add = -400
+	diplomacy_scheme_phase_duration = -400
+	intrigue_scheme_phase_duration = -400
+	stewardship_scheme_phase_duration = -400
+	martial_scheme_phase_duration = -400
+	prowess_scheme_phase_duration = -400
+	learning_scheme_phase_duration = -400
 	owned_scheme_secrecy_add = 50
-	max_hostile_schemes_add = 2
-	max_personal_schemes_add = 2
-	max_political_schemes_add = 1
+	max_hostile_schemes_add = 10
+	max_personal_schemes_add = 10
+	max_political_schemes_add = 10
+	max_contract_schemes_add = 10
 	enemy_hostile_scheme_success_chance_add = -50
 
 	# Realm limits. Some governments cap them (Japanese, mandala, wanua, landless camps...),
