@@ -1,0 +1,90 @@
+﻿## Monarque Absolu exceptional council (mqa_council_ prefix).
+## Each councillor gets +100 in the skill of their position: the regular council and the
+## administrative ministers. Positions without a skill of their own (spouse, vizier) get
+## nothing. Kept in sync by the decision, a monthly check and the council on_actions.
+
+# Character scope. Removes every council modifier.
+mqa_council_clear_effect = {
+	if = {
+		limit = { has_character_modifier = mqa_council_diplomacy_modifier }
+		remove_character_modifier = mqa_council_diplomacy_modifier
+	}
+	if = {
+		limit = { has_character_modifier = mqa_council_martial_modifier }
+		remove_character_modifier = mqa_council_martial_modifier
+	}
+	if = {
+		limit = { has_character_modifier = mqa_council_stewardship_modifier }
+		remove_character_modifier = mqa_council_stewardship_modifier
+	}
+	if = {
+		limit = { has_character_modifier = mqa_council_intrigue_modifier }
+		remove_character_modifier = mqa_council_intrigue_modifier
+	}
+	if = {
+		limit = { has_character_modifier = mqa_council_learning_modifier }
+		remove_character_modifier = mqa_council_learning_modifier
+	}
+}
+
+# Character scope (a councillor). Gives the modifier matching their current position.
+mqa_council_grant_effect = {
+	mqa_council_clear_effect = yes
+	if = {
+		limit = {
+			OR = {
+				has_council_position = councillor_chancellor
+				has_council_position = minister_personnel
+			}
+		}
+		add_character_modifier = mqa_council_diplomacy_modifier
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_council_position = councillor_marshal
+				has_council_position = minister_grand_marshal
+			}
+		}
+		add_character_modifier = mqa_council_martial_modifier
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_council_position = councillor_steward
+				has_council_position = minister_works
+			}
+		}
+		add_character_modifier = mqa_council_stewardship_modifier
+	}
+	else_if = {
+		limit = { has_council_position = councillor_spymaster }
+		add_character_modifier = mqa_council_intrigue_modifier
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_council_position = councillor_court_chaplain
+				has_council_position = minister_justice
+			}
+		}
+		add_character_modifier = mqa_council_learning_modifier
+	}
+}
+
+# Character scope (the council owner). Brings every councillor in line with their position.
+mqa_council_sync_effect = {
+	every_councillor = { mqa_council_grant_effect = yes }
+}
+
+# Character scope (the council owner). Starts the monthly check unless one is running.
+mqa_council_start_check_effect = {
+	if = {
+		limit = { NOT = { has_character_flag = mqa_council_check_running_flag } }
+		add_character_flag = mqa_council_check_running_flag
+		trigger_event = {
+			id = mqa_council.1
+			days = 30
+		}
+	}
+}

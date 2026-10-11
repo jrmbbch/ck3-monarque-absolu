@@ -214,6 +214,63 @@ mqa_gather_realm_decision = {
 	ai_check_interval = 0
 }
 
+# Exceptional council: each councillor gets +100 in the skill of their position, kept in
+# sync every month and when councillors leave or swap (common/scripted_effects/mqa_council_effects.txt).
+mqa_council_on_decision = {
+	sort_order = 355
+	decision_group_type = mqa
+	picture = { reference = gfx/interface/illustrations/decisions/decision_realm.dds }
+	title = mqa_council_on_decision_title
+	desc = mqa_council_on_decision_desc
+	selection_tooltip = mqa_council_on_decision_tooltip
+	confirm_text = mqa_council_on_decision_ct
+
+	is_shown = {
+		is_ai = no
+		has_character_flag = mqa_show_decision_flag
+		NOT = { has_character_flag = mqa_exceptional_council_flag }
+	}
+
+	effect = {
+		custom_tooltip = mqa_council_on_decision_effect_tt
+		hidden_effect = {
+			add_character_flag = mqa_exceptional_council_flag
+			mqa_council_sync_effect = yes
+			mqa_council_start_check_effect = yes
+		}
+	}
+
+	ai_will_do = { base = 0 }
+	ai_check_interval = 0
+}
+
+mqa_council_off_decision = {
+	sort_order = 355
+	decision_group_type = mqa
+	picture = { reference = gfx/interface/illustrations/decisions/decision_realm.dds }
+	title = mqa_council_off_decision_title
+	desc = mqa_council_off_decision_desc
+	selection_tooltip = mqa_council_off_decision_tooltip
+	confirm_text = mqa_council_off_decision_ct
+
+	is_shown = {
+		is_ai = no
+		has_character_flag = mqa_show_decision_flag
+		has_character_flag = mqa_exceptional_council_flag
+	}
+
+	effect = {
+		custom_tooltip = mqa_council_off_decision_effect_tt
+		hidden_effect = {
+			remove_character_flag = mqa_exceptional_council_flag
+			every_councillor = { mqa_council_clear_effect = yes }
+		}
+	}
+
+	ai_will_do = { base = 0 }
+	ai_check_interval = 0
+}
+
 mqa_show_decision = {
 	sort_order = 400
     decision_group_type = mqa

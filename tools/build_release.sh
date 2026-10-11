@@ -6,7 +6,7 @@
 #   sh tools/build_release.sh
 #
 # Result:
-#   <mod folder>/monarque_absolu/        the mod files (descriptor, thumbnail, common, localization)
+#   <mod folder>/monarque_absolu/        the mod files (descriptor, thumbnail, common, events, localization)
 #   <mod folder>/monarque_absolu.mod     the launcher entry pointing to it
 #
 # After the first upload, the launcher writes remote_file_id into
@@ -28,7 +28,7 @@ fi
 
 rm -rf "$TARGET"
 mkdir -p "$TARGET"
-cp -R "$REPO/common" "$REPO/localization" "$TARGET/"
+cp -R "$REPO/common" "$REPO/events" "$REPO/localization" "$TARGET/"
 cp "$REPO/descriptor.mod" "$REPO/thumbnail.png" "$TARGET/"
 if [ -n "$REMOTE_ID" ] && ! grep -q '^remote_file_id=' "$TARGET/descriptor.mod"; then
 	printf '%s\n' "$REMOTE_ID" >> "$TARGET/descriptor.mod"

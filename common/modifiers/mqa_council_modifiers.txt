@@ -1,0 +1,22 @@
+﻿## Monarque Absolu council modifiers, given by the Exceptional council decision to each
+## councillor: +100 in the skill of their position. Removed when they leave the council.
+mqa_council_diplomacy_modifier = {
+	icon = diplomacy_positive
+	diplomacy = 100
+}
+mqa_council_martial_modifier = {
+	icon = martial_positive
+	martial = 100
+}
+mqa_council_stewardship_modifier = {
+	icon = stewardship_positive
+	stewardship = 100
+}
+mqa_council_intrigue_modifier = {
+	icon = intrigue_positive
+	intrigue = 100
+}
+mqa_council_learning_modifier = {
+	icon = learning_positive
+	learning = 100
+}

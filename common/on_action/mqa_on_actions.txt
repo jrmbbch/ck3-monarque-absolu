@@ -19,3 +19,51 @@ mqa_perfect_bloodline_birth_on_action = {
 		mqa_grant_perfect_bloodline_effect = yes
 	}
 }
+
+# Exceptional council (see common/scripted_effects/mqa_council_effects.txt).
+on_councillor_left = {
+	on_actions = { mqa_council_left_on_action }
+}
+on_fired_from_council = {
+	on_actions = { mqa_council_fired_on_action }
+}
+on_councillors_swapped = {
+	on_actions = { mqa_council_swapped_on_action }
+}
+
+# root is the councillor who left
+mqa_council_left_on_action = {
+	effect = { mqa_council_clear_effect = yes }
+}
+
+# root is the council owner, scope:councillor the councillor fired
+mqa_council_fired_on_action = {
+	effect = {
+		scope:councillor ?= { mqa_council_clear_effect = yes }
+	}
+}
+
+# root and scope:councillor swapped positions, scope:councillor_liege is the council owner
+mqa_council_swapped_on_action = {
+	trigger = {
+		scope:councillor_liege ?= { has_character_flag = mqa_exceptional_council_flag }
+	}
+	effect = {
+		mqa_council_grant_effect = yes
+		scope:councillor = { mqa_council_grant_effect = yes }
+	}
+}
+
+# The exceptional council belongs to the ruler who took the decision: when they die, their
+# councillors lose the bonus (the heir can take the decision again).
+on_death = {
+	on_actions = { mqa_council_death_on_action }
+}
+
+# root is the dying character
+mqa_council_death_on_action = {
+	trigger = { has_character_flag = mqa_exceptional_council_flag }
+	effect = {
+		every_councillor = { mqa_council_clear_effect = yes }
+	}
+}

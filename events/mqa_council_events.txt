@@ -1,0 +1,23 @@
+﻿namespace = mqa_council
+
+# Monthly check while the exceptional council is active: new councillors get their
+# modifier. Fires on the council owner, then again 30 days later until the decision is
+# revoked.
+mqa_council.1 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = { has_character_flag = mqa_exceptional_council_flag }
+			mqa_council_sync_effect = yes
+			trigger_event = {
+				id = mqa_council.1
+				days = 30
+			}
+		}
+		else = {
+			remove_character_flag = mqa_council_check_running_flag
+		}
+	}
+}
