@@ -147,8 +147,8 @@ mqa_convert_subrealm_to_religion_decision = {
 	ai_check_interval = 0
 }
 
-# Takes back, without war, every de jure county, duchy and kingdom of the kingdoms, empires
-# and hegemonies the player holds that is held from outside their realm (England's
+# Takes back, without war, every de jure county, duchy and kingdom of the duchies, kingdoms,
+# empires and hegemonies the player holds that is held from outside their realm (England's
 # Normandy, the Empire's lands in an empire of France...). Counties come with their barons;
 # nothing outside those titles is touched, and the player's own vassals keep what they hold.
 mqa_gather_realm_decision = {
@@ -166,7 +166,7 @@ mqa_gather_realm_decision = {
 	}
 
 	is_valid = {
-		any_held_title = { tier >= tier_kingdom }
+		any_held_title = { tier >= tier_duchy }
 	}
 
 	effect = {
@@ -178,7 +178,7 @@ mqa_gather_realm_decision = {
 				add_claim_on_loss = no
 			}
 			every_held_title = {
-				limit = { tier >= tier_kingdom }
+				limit = { tier >= tier_duchy }
 				every_in_de_jure_hierarchy = {
 					limit = {
 						tier >= tier_county
