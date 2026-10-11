@@ -48,7 +48,7 @@
  mqa_all_perks_interaction_desc:0 "[recipient.GetShortUINameNoTooltip|U] открывает разом все преимущества всех образов жизни вместе с чертами, венчающими каждое древо."
  mqa_take_title_interaction:0 "Захватить титул"
  mqa_take_title_interaction_desc:0 "Захватить один из титулов персонажа [recipient.GetShortUINameNoTooltip], включая безземельные и административные: отдельно или вместе с вассалами, владеющими землёй под ним."
- mqa_take_title_only_option:0 "Только титул: вассалы остаются у своего сеньора"
+ mqa_take_title_only_option:0 "Только титул: вассалы остаются у своего сеньора, если он по-прежнему выше их рангом"
  mqa_take_title_and_vassals_option:0 "Титул и вассалы: они присягают вам"
  mqa_take_realm_interaction:0 "Захватить все титулы"
  mqa_take_realm_interaction_desc:0 "Захватить разом все титулы персонажа [recipient.GetShortUINameNoTooltip] или все титулы всей его державы, включая графства и герцогства вассалов."
