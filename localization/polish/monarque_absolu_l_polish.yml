@@ -48,7 +48,7 @@
  mqa_all_perks_interaction_desc:0 "[recipient.GetShortUINameNoTooltip|U] odblokowuje naraz wszystkie atuty wszystkich stylów życia wraz z cechami wieńczącymi każde drzewko."
  mqa_take_title_interaction:0 "Zagarnij tytuł"
  mqa_take_title_interaction_desc:0 "Zagarnia jeden z tytułów: [recipient.GetShortUINameNoTooltip], w tym tytuły bez ziemi i administracyjne – sam albo wraz z wasalami, którzy posiadają pod nim ziemie."
- mqa_take_title_only_option:0 "Sam tytuł: wasale zostają przy swoim panu"
+ mqa_take_title_only_option:0 "Sam tytuł: wasale zostają przy swoim panu, jeśli nadal ma wyższą rangę"
  mqa_take_title_and_vassals_option:0 "Tytuł i jego wasale: przysięgają ci wierność"
  mqa_take_realm_interaction:0 "Zagarnij wszystkie tytuły"
  mqa_take_realm_interaction_desc:0 "Zagarnia naraz wszystkie tytuły: [recipient.GetShortUINameNoTooltip], albo wszystkie tytuły całego królestwa, w tym hrabstwa i księstwa wasali."
