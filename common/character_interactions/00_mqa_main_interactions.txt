@@ -343,9 +343,14 @@ mqa_take_title_interaction = {
 				type = swear_fealty
 				save_scope_as = mqa_return_change
 			}
+			# Only back to a lord who still outranks them (a duke left with counties only
+			# cannot keep counts as vassals).
 			every_in_list = {
 				list = mqa_previous_vassals
-				limit = { liege ?= scope:actor }
+				limit = {
+					liege ?= scope:actor
+					highest_held_title_tier < scope:recipient.highest_held_title_tier
+				}
 				change_liege = {
 					liege = scope:recipient
 					change = scope:mqa_return_change
