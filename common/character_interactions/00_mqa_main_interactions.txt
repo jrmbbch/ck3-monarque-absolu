@@ -318,6 +318,14 @@ mqa_take_title_interaction = {
 	auto_accept = yes
 
 	on_accept = {
+		# The game moves the de jure vassals of a title along with it (as with a usurpation):
+		# remember the holder's vassals so that "title only" can hand them back afterwards.
+		if = {
+			limit = { scope:title_only = yes }
+			scope:recipient = {
+				every_vassal = { add_to_temporary_list = mqa_previous_vassals }
+			}
+		}
 		create_title_and_vassal_change = {
 			type = conquest
 			save_scope_as = change
@@ -347,6 +355,25 @@ mqa_take_title_interaction = {
 			}
 		}
 		resolve_title_and_vassal_change = scope:change
+		if = {
+			limit = {
+				scope:title_only = yes
+				scope:recipient = { is_landed = yes }
+			}
+			create_title_and_vassal_change = {
+				type = swear_fealty
+				save_scope_as = mqa_return_change
+			}
+			every_in_list = {
+				list = mqa_previous_vassals
+				limit = { liege ?= scope:actor }
+				change_liege = {
+					liege = scope:recipient
+					change = scope:mqa_return_change
+				}
+			}
+			resolve_title_and_vassal_change = scope:mqa_return_change
+		}
 	}
 }
 
