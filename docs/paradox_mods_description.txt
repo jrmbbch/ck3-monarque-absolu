@@ -22,7 +22,7 @@ Decisions
 
 • Fill the coffers: gold, piety, prestige, renown and every other resource your government uses.
 • One realm, one culture and One realm, one faith.
-• Gather the realm: takes back, without war, every county, duchy and kingdom that belongs de jure to your kingdoms and empires but is held by a foreign ruler.
+• Gather the realm: takes back, without war, every county, duchy and kingdom that belongs de jure to your duchies, kingdoms and empires but is held by a foreign ruler.
 • Mend body and realm: cures every disease across the realm and the wounds of your closest kin.
 • Purify the bloodline of your closest kin (vassals keep their own flaws).
 • Fortify and arm the domain: turns the tribal and nomadic holdings of your domain into castles (unless you are tribal or of the steppe yourself), founds temples and cities in empty baronies, then fills every building slot of your domain with the best buildings the game allows (fortification first, then levies, then gold) and upgrades everything as far as the game allows. No extra slot is ever added.
