@@ -48,7 +48,7 @@
  mqa_all_perks_interaction_desc:0 "[recipient.GetShortUINameNoTooltip|U] schaltet auf einmal alle Vorzüge aller Lebensstile frei, samt den Eigenschaften, die jeden Baum krönen."
  mqa_take_title_interaction:0 "Titel an sich reißen"
  mqa_take_title_interaction_desc:0 "Einen der Titel von [recipient.GetShortUINameNoTooltip] an sich reißen, landlose und administrative Titel eingeschlossen: allein oder mit den Vasallen, die darunter Land halten."
- mqa_take_title_only_option:0 "Nur der Titel: die Vasallen bleiben bei ihrem Herrn"
+ mqa_take_title_only_option:0 "Nur der Titel: die Vasallen bleiben bei ihrem Herrn, wenn er noch höheren Ranges ist"
  mqa_take_title_and_vassals_option:0 "Der Titel und seine Vasallen: sie schwören Euch Treue"
  mqa_take_realm_interaction:0 "Alle Titel an sich reißen"
  mqa_take_realm_interaction_desc:0 "Alle Titel von [recipient.GetShortUINameNoTooltip] auf einmal an sich reißen, oder alle Titel des ganzen Reiches, einschließlich der Grafschaften und Herzogtümer der Vasallen."
