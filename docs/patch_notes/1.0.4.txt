@@ -1,0 +1,6 @@
+1.0.4
+- New decision, Gather the realm: takes back, without war, every county, duchy and kingdom that belongs de jure to your duchies, kingdoms and empires but is held by a foreign ruler. Counties come with their barons; your own vassals keep what they hold.
+- New decision, An exceptional council: each councillor gets +100 in the skill of their position, administrative ministers included, for as long as they hold it. New councillors get it within a month.
+- Louis XIV: every scheme phase now lasts the game's 10-day minimum, contract schemes included, and you can run 10 more schemes of each kind.
+- Fortify and arm the domain first turns the tribal and nomadic holdings of your domain into castles, unless you are tribal or of the steppe yourself.
+- Clearer seize interactions. Seize a title: the title alone (its vassals stay with their lord, if the lord still outranks them) or with its vassals; landless titles are listed with the others. Seize all their titles: their domain (their vassals swear fealty to you) or their whole realm (their vassals lose their counties and duchies). The options that made you a vassal of their liege are removed.

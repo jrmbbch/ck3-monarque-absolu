@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.4
+
+- **New decision, Gather the realm.** Takes back, without war, every county, duchy and kingdom that belongs de jure to the duchies, kingdoms, empires and hegemonies you hold but is held from outside your realm. Counties come with their barons; your own vassals keep what they hold, and nothing outside your titles is touched.
+- **New decision, An exceptional council** (and An ordinary council to revoke it). Each councillor gets +100 in the skill of their position: chancellor, marshal, steward, spymaster and court chaplain, plus the administrative ministers. A hidden monthly event gives it to new councillors; it is removed when a councillor leaves, is fired or swaps position, when the decision is revoked and when the ruler dies. The mod now has an `events` folder, copied by `tools/build_release.sh`.
+- **Louis XIV**: scheme phase duration -400 days for every category (contract schemes and skill-based modifiers included), which always reaches the game's 10-day minimum; 10 more hostile, personal, political and contract schemes.
+- **Fortify and arm the domain** feudalizes the tribal, nomadic and herder holdings of your domain first, as the game's own feudalize holding action does (gold cost skipped), when your government is neither tribal nor of the steppe.
+- **Seize interactions clarified**, with exclusive options and explicit labels:
+  - Seize a title: the title alone, or the title and its vassals. The game moves a title's de jure vassals with it; with the title alone, they are handed back to their former lord if the lord still outranks them. Landless titles are listed with the others.
+  - Seize all their titles (formerly Seize domain or realm): their domain, or their whole realm. The two options that made you a vassal of their liege are removed.
+
 ## 1.0.3
 
 - **Building decisions follow the manual construction rules.** Fortify and arm the domain and Dream home only build what you could build by hand: innovations, holding levels and every other requirement of the game apply. Buildings go straight to the highest level allowed; costs and construction times are still skipped.
