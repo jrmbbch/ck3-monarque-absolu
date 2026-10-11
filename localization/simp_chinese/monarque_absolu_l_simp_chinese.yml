@@ -48,7 +48,7 @@
  mqa_all_perks_interaction_desc:0 "[recipient.GetShortUINameNoTooltip|U]将一次性解锁所有生活方式的全部天赋，以及每棵天赋树顶端的特质。"
  mqa_take_title_interaction:0 "夺取头衔"
  mqa_take_title_interaction_desc:0 "夺取[recipient.GetShortUINameNoTooltip]的一个头衔，包括无地头衔和行政头衔：可单独夺取，或连同在其之下拥有领地的封臣一起夺取。"
- mqa_take_title_only_option:0 "仅头衔：封臣留在原领主麾下"
+ mqa_take_title_only_option:0 "仅头衔：若原领主等级仍高于封臣，封臣留在其麾下"
  mqa_take_title_and_vassals_option:0 "头衔及其封臣：他们向你宣誓效忠"
  mqa_take_realm_interaction:0 "夺取其所有头衔"
  mqa_take_realm_interaction_desc:0 "一次性夺取[recipient.GetShortUINameNoTooltip]持有的所有头衔，或夺取其整个国度的所有头衔，包括其封臣的伯国和公国。"
