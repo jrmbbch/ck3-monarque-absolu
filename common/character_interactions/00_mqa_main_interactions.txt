@@ -269,7 +269,8 @@ mqa_unall_in_one_interaction = {
 }
 
 # Based on the vanilla debug interaction of 1.20 (common/character_interactions/00_test_interactions.txt),
-# without debug_only: pick any title, with or without its vassals, landless and administrative titles included.
+# without debug_only: pick any title of the character, landless and administrative titles
+# included, either alone or with its vassals.
 mqa_take_title_interaction = {
 	interface_priority = 10
 	category = interaction_debug_pam
@@ -288,31 +289,17 @@ mqa_take_title_interaction = {
 	}
 
 	can_be_picked_title = {
-		trigger_if = {
-			limit = {
-				scope:landless_title = yes
-			}
-			scope:target = {
-				is_landless_type_title = yes
-				is_noble_family_title = no
-			}
-		}
-		trigger_else = {
-			scope:target = { is_landless_type_title = no }
-		}
+		scope:target = { is_noble_family_title = no }
 	}
 
+	send_options_exclusive = yes
 	send_option = {
 		flag = title_only
-		localization = mqa_take_title_interaction
+		localization = mqa_take_title_only_option
 	}
 	send_option = {
 		flag = title_and_vassals
-		localization = mqa_take_title_and_vassals_interaction
-	}
-	send_option = {
-		flag = landless_title
-		localization = mqa_take_landless_title_interaction
+		localization = mqa_take_title_and_vassals_option
 	}
 
 	auto_accept = yes
@@ -332,25 +319,17 @@ mqa_take_title_interaction = {
 			add_claim_on_loss = no
 		}
 		scope:target = {
-			switch = {
-				trigger = yes
-				scope:title_only = {
-					change_title_holder = {
-						holder = scope:actor
-						change = scope:change
-					}
+			if = {
+				limit = { scope:title_and_vassals = yes }
+				change_title_holder_include_vassals = {
+					holder = scope:actor
+					change = scope:change
 				}
-				scope:title_and_vassals = {
-					change_title_holder_include_vassals = {
-						holder = scope:actor
-						change = scope:change
-					}
-				}
-				scope:landless_title = {
-					change_title_holder = {
-						holder = scope:actor
-						change = scope:change
-					}
+			}
+			else = {
+				change_title_holder = {
+					holder = scope:actor
+					change = scope:change
 				}
 			}
 		}
@@ -378,8 +357,8 @@ mqa_take_title_interaction = {
 }
 
 # Based on the vanilla debug take_realm_interaction of 1.20, without debug_only: take every
-# title of the character at once (domain), or their whole realm including their vassals' titles,
-# either for yourself or while becoming a vassal of their liege.
+# title the character holds (domain, their vassals swear fealty to you), or every title of
+# their whole realm, their vassals' counties and duchies included (vassals keep only baronies).
 mqa_take_realm_interaction = {
 	interface_priority = 20
 	category = interaction_debug_pam
@@ -398,45 +377,24 @@ mqa_take_realm_interaction = {
 
 	auto_accept = yes
 
+	send_options_exclusive = yes
 	send_option = {
 		flag = domain
-		localization = mqa_take_domain_interaction
+		localization = mqa_take_domain_option
 	}
 	send_option = {
 		flag = realm
-		localization = mqa_take_realm_interaction
-	}
-	send_option = {
-		is_valid = {
-			scope:actor.highest_held_title_tier < scope:recipient.liege.highest_held_title_tier
-			scope:recipient = { top_liege != this }
-		}
-		flag = domain_as_vassal
-		localization = mqa_take_domain_as_vassal_interaction
-	}
-	send_option = {
-		is_valid = {
-			scope:actor.highest_held_title_tier < scope:recipient.liege.highest_held_title_tier
-			scope:recipient = { top_liege != this }
-		}
-		flag = realm_as_vassal
-		localization = mqa_take_realm_as_vassal_interaction
+		localization = mqa_take_realm_option
 	}
 
 	on_accept = {
-		scope:recipient.liege = { save_scope_as = new_liege }
-		if = {
-			limit = {
-				OR = {
-					scope:realm = yes
-					scope:realm_as_vassal = yes
-				}
-			}
-			create_title_and_vassal_change = {
-				type = conquest
-				save_scope_as = change
-			}
-			scope:recipient = {
+		create_title_and_vassal_change = {
+			type = conquest
+			save_scope_as = change
+		}
+		scope:recipient = {
+			if = {
+				limit = { scope:realm = yes }
 				every_sub_realm_title = {
 					limit = {
 						tier >= tier_county
@@ -451,23 +409,10 @@ mqa_take_realm_interaction = {
 					}
 				}
 			}
-			resolve_title_and_vassal_change = scope:change
-		}
-		else_if = {
-			limit = {
-				OR = {
-					scope:domain = yes
-					scope:domain_as_vassal = yes
-				}
-			}
-			create_title_and_vassal_change = {
-				type = conquest
-				save_scope_as = change
-			}
-			scope:recipient = {
+			else = {
 				every_held_title = {
-					title_tier >= county
 					limit = {
+						tier >= tier_county
 						is_noble_family_title = no
 						is_landless_type_title = no
 					}
@@ -478,27 +423,8 @@ mqa_take_realm_interaction = {
 					}
 				}
 			}
-			resolve_title_and_vassal_change = scope:change
 		}
-		if = {
-			limit = {
-				OR = {
-					scope:realm_as_vassal = yes
-					scope:domain_as_vassal = yes
-				}
-			}
-			create_title_and_vassal_change = {
-				type = conquest
-				save_scope_as = change
-			}
-			scope:actor = {
-				change_liege = {
-					liege = scope:new_liege
-					change = scope:change
-				}
-			}
-			resolve_title_and_vassal_change = scope:change
-		}
+		resolve_title_and_vassal_change = scope:change
 	}
 }
 
