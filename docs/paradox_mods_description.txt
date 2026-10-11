@@ -16,7 +16,7 @@ Character interactions
 • Perfect bloodline: Beautiful, Genius, Divine and Fecund with no genetic flaw, passed on to every new generation.
 • Perfect education: raises the education trait to the top of its track.
 • All perks: unlocks every perk of every lifestyle at once.
-• Seize a title (with or without its vassals, landless titles included) or a whole domain or realm.
+• Seize a title, landless titles included, alone or with its vassals; or seize all their titles: their domain (their vassals swear fealty to you) or their whole realm (their vassals lose their counties and duchies).
 
 Decisions
 
