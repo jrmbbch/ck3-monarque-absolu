@@ -48,7 +48,7 @@
  mqa_all_perks_interaction_desc:0 "[recipient.GetShortUINameNoTooltip|U] débloque d'un coup tous les atouts de tous les styles de vie, ainsi que les traits qui couronnent chaque arbre."
  mqa_take_title_interaction:0 "S'emparer d'un titre"
  mqa_take_title_interaction_desc:0 "S'emparer de l'un des titres de [recipient.GetShortUINameNoTooltip], titres sans terre et administratifs compris : seul, ou avec les vassaux qui tiennent des terres sous lui."
- mqa_take_title_only_option:0 "Le titre seul : ses vassaux restent à leur seigneur"
+ mqa_take_title_only_option:0 "Le titre seul : ses vassaux restent à leur seigneur, s'il garde un rang supérieur au leur"
  mqa_take_title_and_vassals_option:0 "Le titre et ses vassaux : ils vous prêtent allégeance"
  mqa_take_realm_interaction:0 "S'emparer de tous ses titres"
  mqa_take_realm_interaction_desc:0 "S'emparer d'un coup de tous les titres que détient [recipient.GetShortUINameNoTooltip], ou de tous les titres de son royaume, comtés et duchés de ses vassaux compris."
