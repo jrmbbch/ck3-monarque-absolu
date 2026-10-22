@@ -16,7 +16,7 @@ A Crusader Kings III mod that gives you the tools of an all-powerful sovereign: 
 | `tools/generate_building_effects.py` | Rebuilds the building effects from the installed game files |
 | `tools/generate_lifestyle_effects.py` | Rebuilds the perk unlock effect from the installed game files |
 | `tools/check_localization.py` | Checks the 9 languages: same keys, UTF-8 BOM, no broken quotes |
-| `tools/publish_release.py`, `publish_paradox.py` | Publish to the existing Steam and Paradox items, including change notes |
+| `tools/publish_release.py`, `publish_github.py`, `publish_paradox.py` | Publish the GitHub tag/release and existing Steam/Paradox items, including change notes |
 | `tools/build_release.sh` | Copies only the mod files into the game's mod folder, ready to upload |
 | `art/thumbnail.svg` | Source of the thumbnail |
 | `docs/` | Publication texts; `docs/patch_notes/<version>.txt` holds the patch note to paste on each upload |
@@ -49,11 +49,11 @@ supported_version="1.20.*"
 ```sh
 # Validate only (no network or authentication)
 python3 tools/publish_release.py all
-# Publish the current version, descriptions and matching patch notes
+# After committing and pushing the release to main, publish to GitHub, Steam and Paradox
 python3 tools/publish_release.py all --publish
 ```
 
-Steam uses the running client's session through the official Steamworks library bundled with CK3. Paradox uses the session saved by the launcher and its publication API. See [docs/publishing.md](docs/publishing.md) for prerequisites, per-platform commands, verification and API details. No credentials belong in the repository.
+GitHub creates and pushes an annotated version tag, then publishes a release with the matching notes using `gh`. A clean working tree and a release commit already pushed to `main` are required. Existing tags/releases are checked before reuse. Steam uses the running client's session through the official Steamworks library bundled with CK3. Paradox uses the session saved by the launcher and its publication API. See [docs/publishing.md](docs/publishing.md) for prerequisites, per-platform commands, verification and API details. No credentials belong in the repository.
 
 To update the local game mod folder separately:
 

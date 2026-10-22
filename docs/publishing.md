@@ -1,16 +1,16 @@
 # Publishing Monarque Absolu
 
-The publisher updates the existing items only: Steam Workshop `3813333986` (CK3 app `1158310`) and Paradox Mods `161949`. It never creates a new mod.
+The publisher creates a version tag and release on GitHub and updates the existing mod items: Steam Workshop `3813333986` (CK3 app `1158310`) and Paradox Mods `161949`. It never creates a new mod. GitHub releases use the repository `jrmbbch/ck3-monarque-absolu`.
 
 ## Commands
 
-From the repository root, validate the package without signing in or contacting either service:
+From the repository root, validate the package without signing in or contacting any service:
 
 ```sh
 python3 tools/publish_release.py all
 ```
 
-Publish to both services:
+After committing and pushing the release changes to `main`, publish to all three services:
 
 ```sh
 python3 tools/publish_release.py all --publish
@@ -19,13 +19,31 @@ python3 tools/publish_release.py all --publish
 Publish to one service only:
 
 ```sh
+python3 tools/publish_release.py github --publish
 python3 tools/publish_release.py steam --publish
 python3 tools/publish_release.py paradox --publish
 ```
 
 The version comes from `descriptor.mod`; the matching `docs/patch_notes/<version>.txt` must exist. Descriptions come from `docs/workshop_description.bbcode` and `docs/paradox_mods_description.txt`, with the Paradox short description from its separate file. Only `common/`, `events/`, `localization/`, `descriptor.mod` and `thumbnail.png` are staged in a temporary directory. The repository, tools and authentication data are never included. This does not modify the installed development or release mod folders.
 
-A successful Steam callback confirms the upload. Paradox is polled until the mod is published, its timestamp changes and the new notes appear on its latest version. A timeout means status is unknown: verify the remote item before retrying. If one service succeeds and the other fails, retry only the failed service. Paradox skips an upload when the latest version already has the exact release notes. Steam does not skip duplicate submissions.
+A successful Steam callback confirms the upload. Paradox is polled until the mod is published, its timestamp changes and the new notes appear on its latest version. A timeout means status is unknown: verify the remote item before retrying. Publication runs in order: GitHub, Steam, Paradox. Any failure stops the command before later services are called. Completed services are not rolled back. If a service fails, retry that service and any later services individually after checking their state. GitHub verifies and reuses an existing tag/release when the commit and notes match. Paradox skips an upload when the latest version already has the exact release notes. Steam does not skip duplicate submissions.
+
+## GitHub prerequisites and implementation
+
+Install GitHub CLI (`gh`) and authenticate with `gh auth login`. Prepare the next version by updating `descriptor.mod`, `CHANGELOG.md`, `docs/patch_notes/<version>.txt` and the relevant mod/description files, then commit and push those changes to `main`. The publisher does not create commits or push branch changes.
+
+`all --publish` includes GitHub; `github --publish` runs that step alone. The dry run shows the planned tag and release without contacting GitHub or requiring a clean working tree. Actual publication requires:
+
+- a clean working tree, including no untracked files;
+- `origin` pointing to this GitHub repository;
+- local `HEAD` matching the current remote `main` commit;
+- any existing local or remote version tag resolving to that same commit.
+
+The script creates an annotated `v<version>` tag at the exact commit and pushes only that tag. It then calls `gh release create --verify-tag --notes-file docs/patch_notes/<version>.txt`, with `v<version>` as the release title. GitHub supplies its standard source archives; no additional release asset is attached. The script reads back the published release and verifies its tag, release type and notes. A GitHub failure prevents any Steam or Paradox upload in that run.
+
+A matching published release is reused unchanged. A tag on another commit, a draft/prerelease, or different release notes causes an error instead of moving a tag or overwriting a release. If tag publication succeeds but release creation fails, rerunning reuses the tag. GitHub API errors other than a confirmed release-not-found (HTTP 404) stop publication.
+
+The already published `v1.0.5` remains on its original release commit. Later tooling commits therefore cannot republish it through `all --publish`: prepare the next version instead, or use an individual Steam/Paradox command when intentionally updating one of those mod items.
 
 ## Steam prerequisites and implementation
 

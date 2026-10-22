@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Publish an existing Monarque Absolu item, with notes, without the launcher UI.
+"""Publish Monarque Absolu to GitHub, Steam Workshop and Paradox Mods with release notes.
 
 No arguments publishes nothing. See --help and docs/publishing.md.
 """
@@ -162,7 +162,7 @@ class SteamPublisher:
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('platform', choices=['steam', 'paradox', 'all'])
+    parser.add_argument('platform', choices=['github', 'steam', 'paradox', 'all'])
     parser.add_argument('--publish', action='store_true', help='Actually upload; otherwise stage and validate only')
     parser.add_argument('--steam-library', type=Path, default=GAME / 'binaries/ck3.app/Contents/Frameworks/libsteam_api.dylib')
     parser.add_argument('--timeout', type=int, default=300)
@@ -173,9 +173,14 @@ def main():
         content = Path(temporary) / 'monarque_absolu'
         stage_release(content)
         print(f"Validated {sum(p.is_file() for p in content.rglob('*'))} game files; notes: {info['notes']}")
+        if args.platform in ('github', 'all'):
+            print(f"GitHub: tag v{info['version']} and release with matching notes; publication requires a clean, pushed commit.")
         if not args.publish:
             print('Dry run complete; no authentication or network requests performed.')
             return
+        if args.platform in ('github', 'all'):
+            from publish_github import publish as publish_github
+            publish_github(info)
         if args.platform in ('steam', 'all'):
             publisher = SteamPublisher(args.steam_library)
             try:
@@ -190,5 +195,5 @@ def main():
 if __name__ == '__main__':
     try:
         main()
-    except (RuntimeError, OSError, subprocess.CalledProcessError) as error:
+    except (RuntimeError, OSError, subprocess.SubprocessError) as error:
         sys.exit(f'Publication stopped: {error}')
