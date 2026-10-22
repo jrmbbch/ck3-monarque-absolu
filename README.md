@@ -16,6 +16,7 @@ A Crusader Kings III mod that gives you the tools of an all-powerful sovereign: 
 | `tools/generate_building_effects.py` | Rebuilds the building effects from the installed game files |
 | `tools/generate_lifestyle_effects.py` | Rebuilds the perk unlock effect from the installed game files |
 | `tools/check_localization.py` | Checks the 9 languages: same keys, UTF-8 BOM, no broken quotes |
+| `tools/publish_release.py`, `publish_paradox.py` | Publish to the existing Steam and Paradox items, including change notes |
 | `tools/build_release.sh` | Copies only the mod files into the game's mod folder, ready to upload |
 | `art/thumbnail.svg` | Source of the thumbnail |
 | `docs/` | Publication texts; `docs/patch_notes/<version>.txt` holds the patch note to paste on each upload |
@@ -46,9 +47,18 @@ supported_version="1.20.*"
 ## Publishing
 
 ```sh
+# Validate only (no network or authentication)
+python3 tools/publish_release.py all
+# Publish the current version, descriptions and matching patch notes
+python3 tools/publish_release.py all --publish
+```
+
+Steam uses the running client's session through the official Steamworks library bundled with CK3. Paradox uses the session saved by the launcher and its publication API. See [docs/publishing.md](docs/publishing.md) for prerequisites, per-platform commands, verification and API details. No credentials belong in the repository.
+
+To update the local game mod folder separately:
+
+```sh
 sh tools/build_release.sh
 ```
 
-Then upload **Monarque Absolu** from the launcher (*All installed mods → Upload Mod*), never the dev entry: the repository folder also contains `.git`, `tools/` and `art/`. After the first upload, copy the `remote_file_id` line the launcher adds to the built `descriptor.mod` back into the repository's `descriptor.mod`, so later uploads update the same item. The Paradox Mods ID (161949) is not stored in the descriptor: type it in the launcher's *Mod ID* field when updating there, and clear that field's Steam ID first. The launcher pre-fills the Paradox Mods description with the text saved at the previous upload: replace it with docs/paradox_mods_description.txt every time, or the website text gets overwritten.
-
-The launcher does not send a change note to the Steam Workshop (its Steam form has no field for it): after each Steam upload, open the item's change notes page (https://steamcommunity.com/sharedfiles/filedetails/changelog/3813333986), click *Edit* on the new entry and paste docs/patch_notes/<version>.txt. Paradox Mods takes the patch note in the upload form.
+Manual launcher uploads remain possible: choose the built **Monarque Absolu** entry, never the repository/dev entry. Use Steam ID `3813333986` or Paradox Mods ID `161949`, the descriptions in `docs/`, and the matching `docs/patch_notes/<version>.txt`. The launcher's Steam uploader does not send change notes; add them on the item's Steam changelog page when using that manual path.
