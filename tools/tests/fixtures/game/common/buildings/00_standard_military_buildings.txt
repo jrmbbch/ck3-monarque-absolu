@@ -1,0 +1,16 @@
+barracks_01 = {
+	next_building = barracks_02
+	can_construct_potential = { holding_type = castle_holding }
+	can_construct = {
+		scope:holder = { has_innovation = innovation_crop_rotation }
+	}
+	levy = 5
+}
+barracks_02 = {
+	can_construct_potential = { holding_type = castle_holding }
+	can_construct_showing_failures_only = { development_level >= 5 }
+	levy = max_levies
+}
+unused_01 = {
+	can_construct_potential = { always = yes }
+}

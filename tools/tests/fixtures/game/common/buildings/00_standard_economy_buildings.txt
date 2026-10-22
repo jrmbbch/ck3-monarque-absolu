@@ -1,0 +1,10 @@
+farms_01 = {
+	next_building = farms_02
+	can_construct_potential = { always = yes }
+}
+farms_02 = {
+	province_modifier = {
+		monthly_income = income
+	}
+	can_construct = { always = yes }
+}

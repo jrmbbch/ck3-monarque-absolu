@@ -1,0 +1,26 @@
+base_01 = {
+	allowed_domicile_types = { camp estate }
+	slot_type = external
+}
+base_02 = {
+	previous_building = base_01
+	can_construct = { always = yes }
+}
+gold_01 = {
+	previous_building = base_02
+	character_modifier = { monthly_income = 1 }
+}
+army_01 = {
+	previous_building = base_02
+	character_modifier = { levy = 100 }
+	can_construct = { is_landed = yes }
+}
+army_02 = {
+	previous_building = army_01
+	can_construct = { is_adult = yes }
+}
+internal_01 = {
+	previous_building = army_01
+	slot_type = internal
+	character_modifier = { prowess = 1 }
+}

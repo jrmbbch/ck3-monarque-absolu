@@ -517,7 +517,7 @@ mqa_max_education_interaction = {
 	auto_accept = yes
 }
 
-# Unlocks every lifestyle perk at once (generated list, see tools/generate_lifestyle_effects.py).
+# Unlocks every lifestyle perk at once (generated list, see tools/generate_lifestyle_effects.ps1).
 mqa_all_perks_interaction = {
 	interface_priority = 30
 	icon = inspiration

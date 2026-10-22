@@ -1,0 +1,21 @@
+﻿# GENERATED FILE, DO NOT EDIT BY HAND.
+# Built from the game files by tools/generate_lifestyle_effects.ps1.
+
+# Character scope. Unlocks every lifestyle perk, parents first.
+mqa_unlock_all_perks_effect = {
+	if = {
+		limit = { NOT = { has_perk = parent_perk } }
+		add_perk = parent_perk
+	}
+	if = {
+		limit = { NOT = { has_perk = child_perk } }
+		add_perk = child_perk
+	}
+	if = {
+		limit = { has_dlc_feature = wandering_nobles }
+		if = {
+			limit = { NOT = { has_perk = wanderer_perk } }
+			add_perk = wanderer_perk
+		}
+	}
+}

@@ -1,0 +1,14 @@
+castle_01 = {
+	next_building = castle_02
+}
+castle_02 = {
+	can_construct = { scope:holder = { is_landed = yes } }
+}
+special_01 = {
+	type = special
+	next_building = special_02
+}
+special_02 = {
+	type = special
+	can_construct = { always = yes }
+}

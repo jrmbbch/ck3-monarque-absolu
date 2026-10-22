@@ -3,7 +3,7 @@
 ## vassal barons' cities, temples and castles included: they pay taxes and levies to the player.
 ## No decision adds building slots: only the slots the game grants are used.
 ## The heavy lifting is done by common/scripted_effects/mqa_building_effects.txt,
-## generated from the game files by tools/generate_building_effects.py.
+## generated from the game files by tools/generate_building_effects.ps1.
 
 mqa_b_lucky_7_sub_realm_decision = {
 	sort_order = 280

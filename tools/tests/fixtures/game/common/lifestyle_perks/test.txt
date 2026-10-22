@@ -1,0 +1,10 @@
+child_perk = {
+	lifestyle = diplomacy_lifestyle
+	parent = parent_perk
+}
+parent_perk = {
+	lifestyle = diplomacy_lifestyle
+}
+wanderer_perk = {
+	lifestyle = wanderer_lifestyle
+}

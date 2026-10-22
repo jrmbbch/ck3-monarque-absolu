@@ -1,0 +1,4 @@
+@base = 10
+@multiplier = 2
+max_levies = @[ base * multiplier + 5 ]
+income = 1.25

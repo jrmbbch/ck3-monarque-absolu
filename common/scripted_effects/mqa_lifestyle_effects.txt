@@ -1,5 +1,5 @@
 ﻿# GENERATED FILE, DO NOT EDIT BY HAND.
-# Built from the game files by tools/generate_lifestyle_effects.py.
+# Built from the game files by tools/generate_lifestyle_effects.ps1.
 
 # Character scope. Unlocks every lifestyle perk, parents first.
 mqa_unlock_all_perks_effect = {

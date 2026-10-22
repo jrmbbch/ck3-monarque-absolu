@@ -1,5 +1,5 @@
 ﻿# GENERATED FILE, DO NOT EDIT BY HAND.
-# Built from the game files of CK3 1.20.0.4 by tools/generate_building_effects.py.
+# Built from the game files of CK3 1.20.0.4 by tools/generate_building_effects.ps1.
 # Run the script again after a game update to pick up new buildings.
 
 # Priority used by mqa_b_priority_fill_province_effect (yields at maximum level,
