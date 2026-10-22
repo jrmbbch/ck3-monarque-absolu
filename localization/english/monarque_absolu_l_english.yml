@@ -54,6 +54,10 @@
  mqa_take_realm_interaction_desc:0 "Seize every title [recipient.GetShortUINameNoTooltip] holds at once, or every title of their whole realm, their vassals' counties and duchies included."
  mqa_take_domain_option:0 "Their domain: their vassals swear fealty to you"
  mqa_take_realm_option:0 "Their whole realm: their vassals lose their counties and duchies"
+ mqa_claim_realm_interaction:0 "Claim all their lands"
+ mqa_claim_realm_interaction_desc:0 "Gain pressed claims on the titles held by [recipient.GetShortUINameNoTooltip], or on every title in their realm, including their vassals' titles. Titles and vassals remain with their current owners."
+ mqa_claim_domain_option:0 "Their domain: claim only their personal titles"
+ mqa_claim_realm_option:0 "Their whole realm: claim their titles and those of all their vassals"
 
  # Decisions
  mqa_show_decision_title:0 "--= #EMP Monarque Absolu:#! Show the powers =--"

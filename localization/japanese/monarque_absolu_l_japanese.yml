@@ -54,6 +54,10 @@
  mqa_take_realm_interaction_desc:0 "[recipient.GetShortUINameNoTooltip]が保有するすべての称号を一度に奪う。または封臣の伯領と公領も含め、その国のすべての称号を奪う。"
  mqa_take_domain_option:0 "直轄領：封臣はあなたに忠誠を誓う"
  mqa_take_realm_option:0 "国全体：封臣は伯領と公領を失う"
+ mqa_claim_realm_interaction:0 "すべての領地への請求権を獲得"
+ mqa_claim_realm_interaction_desc:0 "[recipient.GetShortUINameNoTooltip]が保有する称号、または封臣の称号を含む領国全体の称号に対する強い請求権を獲得します。称号の所有者と封臣の主君は変わりません。"
+ mqa_claim_domain_option:0 "直轄領：対象が直接保有する称号のみを請求"
+ mqa_claim_realm_option:0 "領国全体：対象とそのすべての封臣の称号を請求"
 
  # Decisions
  mqa_show_decision_title:0 "--= #EMP Monarque Absolu：#! 力を表示 =--"

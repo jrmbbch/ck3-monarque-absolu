@@ -1,0 +1,3 @@
+1.0.5
+- New interaction, Claim all their lands: gain pressed claims on the target's personal titles or on all titles in their realm, including those of direct and indirect vassals. Titles and vassals remain with their current owners. Baronies, noble family titles, landless titles and titles you already hold are excluded.
+- Whole realm is now selected by default in both Seize all their titles and Claim all their lands. You can still choose the target's personal domain instead.

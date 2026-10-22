@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.5
+
+- **New interaction, Claim all their lands.** Grants pressed claims on the target's personal titles or their entire realm, including indirect vassals. Baronies, noble family titles, landless titles and titles already held by the actor are excluded. Titles and vassals stay with their current owners.
+- **Whole realm selected by default** in both Seize all their titles and Claim all their lands; the personal domain remains available as an exclusive alternative.
+
 ## 1.0.4
 
 - **New decision, Gather the realm.** Takes back, without war, every county, duchy and kingdom that belongs de jure to the duchies, kingdoms, empires and hegemonies you hold but is held from outside your realm. Counties come with their barons; your own vassals keep what they hold, and nothing outside your titles is touched.

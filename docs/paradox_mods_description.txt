@@ -17,6 +17,8 @@ Character interactions
 • Perfect education: raises the education trait to the top of its track.
 • All perks: unlocks every perk of every lifestyle at once.
 • Seize a title, landless titles included, alone or with its vassals; or seize all their titles: their domain (their vassals swear fealty to you) or their whole realm (their vassals lose their counties and duchies).
+• Claim all their lands: gain pressed claims on their personal titles or their entire realm, including all their vassals' titles, without transferring titles or vassals. Baronies, noble family titles, landless titles and titles you already hold are excluded.
+• Whole realm is selected by default in both Seize all their titles and Claim all their lands; their personal domain remains available as an alternative.
 
 Decisions
 

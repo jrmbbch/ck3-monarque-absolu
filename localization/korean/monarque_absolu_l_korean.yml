@@ -54,6 +54,10 @@
  mqa_take_realm_interaction_desc:0 "[recipient.GetShortUINameNoTooltip]이(가) 보유한 모든 작위를 한꺼번에 빼앗거나, 봉신들의 백작령과 공작령을 포함해 왕국 전체의 모든 작위를 빼앗습니다."
  mqa_take_domain_option:0 "직할령: 봉신들이 당신에게 충성을 맹세합니다"
  mqa_take_realm_option:0 "왕국 전체: 봉신들은 백작령과 공작령을 잃습니다"
+ mqa_claim_realm_interaction:0 "모든 영지에 대한 명분 획득"
+ mqa_claim_realm_interaction_desc:0 "[recipient.GetShortUINameNoTooltip](이)가 보유한 작위 또는 봉신의 작위를 포함한 봉역 내 모든 작위에 대한 압박 명분을 획득합니다. 작위 소유자와 봉신의 주군은 바뀌지 않습니다."
+ mqa_claim_domain_option:0 "직할령: 대상이 직접 보유한 작위에만 명분 획득"
+ mqa_claim_realm_option:0 "봉역 전체: 대상과 모든 봉신의 작위에 명분 획득"
 
  # Decisions
  mqa_show_decision_title:0 "--= #EMP Monarque Absolu:#! 권능 표시 =--"

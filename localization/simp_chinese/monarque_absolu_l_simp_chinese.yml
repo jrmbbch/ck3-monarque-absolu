@@ -54,6 +54,10 @@
  mqa_take_realm_interaction_desc:0 "一次性夺取[recipient.GetShortUINameNoTooltip]持有的所有头衔，或夺取其整个国度的所有头衔，包括其封臣的伯国和公国。"
  mqa_take_domain_option:0 "其领地：封臣向你宣誓效忠"
  mqa_take_realm_option:0 "其整个国度：封臣失去其伯国和公国"
+ mqa_claim_realm_interaction:0 "获得其所有领地的宣称"
+ mqa_claim_realm_interaction_desc:0 "获得对[recipient.GetShortUINameNoTooltip]所持头衔或其领国内所有头衔的强宣称，包括其封臣的头衔。头衔持有者和封臣的领主保持不变。"
+ mqa_claim_domain_option:0 "其直辖领地：仅宣称其亲自持有的头衔"
+ mqa_claim_realm_option:0 "其整个领国：宣称其本人及所有封臣的头衔"
 
  # Decisions
  mqa_show_decision_title:0 "--= #EMP Monarque Absolu：#! 显示权能 =--"

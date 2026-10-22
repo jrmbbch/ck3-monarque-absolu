@@ -386,10 +386,12 @@ mqa_take_realm_interaction = {
 	send_option = {
 		flag = domain
 		localization = mqa_take_domain_option
+		starts_enabled = { always = no }
 	}
 	send_option = {
 		flag = realm
 		localization = mqa_take_realm_option
+		starts_enabled = { always = yes }
 	}
 
 	on_accept = {
@@ -430,6 +432,67 @@ mqa_take_realm_interaction = {
 			}
 		}
 		resolve_title_and_vassal_change = scope:change
+	}
+}
+
+# Grant the actor pressed claims without transferring titles or vassals.
+# Match the title scope of mqa_take_realm_interaction; default to the whole realm.
+mqa_claim_realm_interaction = {
+	interface_priority = 21
+	category = interaction_debug_pam
+	desc = mqa_claim_realm_interaction_desc
+	common_interaction = yes
+	use_diplomatic_range = no
+	ignores_pending_interaction_block = yes
+	icon = icon_claim_pressed
+
+	is_shown = {
+		scope:recipient = { is_landed_or_landless_administrative_or_theocratic = yes }
+		scope:recipient != scope:actor
+	}
+
+	auto_accept = yes
+
+	send_options_exclusive = yes
+	send_option = {
+		flag = domain
+		localization = mqa_claim_domain_option
+		starts_enabled = { always = no }
+	}
+	send_option = {
+		flag = realm
+		localization = mqa_claim_realm_option
+		starts_enabled = { always = yes }
+	}
+
+	on_accept = {
+		scope:recipient = {
+			if = {
+				limit = { scope:realm = yes }
+				every_sub_realm_title = {
+					limit = {
+						tier >= tier_county
+						is_noble_family_title = no
+						is_landless_type_title = no
+						NOT = { holder ?= scope:actor }
+					}
+					save_temporary_scope_as = mqa_claim_title
+					scope:actor = { add_pressed_claim = scope:mqa_claim_title }
+				}
+			}
+			else = {
+				every_held_title = {
+					limit = {
+						tier >= tier_county
+						is_noble_family_title = no
+						is_landless_type_title = no
+						NOT = { holder ?= scope:actor }
+					}
+					save_temporary_scope_as = mqa_claim_title
+					scope:actor = { add_pressed_claim = scope:mqa_claim_title }
+				}
+			}
+		}
 	}
 }
 

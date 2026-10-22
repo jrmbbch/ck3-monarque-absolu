@@ -54,6 +54,10 @@
  mqa_take_realm_interaction_desc:0 "Захватить разом все титулы персонажа [recipient.GetShortUINameNoTooltip] или все титулы всей его державы, включая графства и герцогства вассалов."
  mqa_take_domain_option:0 "Домен: вассалы присягают вам"
  mqa_take_realm_option:0 "Вся держава: вассалы теряют графства и герцогства"
+ mqa_claim_realm_interaction:0 "Получить претензии на все земли"
+ mqa_claim_realm_interaction_desc:0 "Вы получаете обоснованные претензии на титулы персонажа [recipient.GetShortUINameNoTooltip] или на все титулы его державы, включая титулы вассалов. Титулы и вассалы остаются у нынешних владельцев."
+ mqa_claim_domain_option:0 "Личный домен: претензии только на личные титулы"
+ mqa_claim_realm_option:0 "Вся держава: претензии на титулы персонажа и всех его вассалов"
 
  # Decisions
  mqa_show_decision_title:0 "--= #EMP Monarque Absolu:#! Показать силы =--"

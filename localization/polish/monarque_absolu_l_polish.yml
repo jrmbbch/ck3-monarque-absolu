@@ -54,6 +54,10 @@
  mqa_take_realm_interaction_desc:0 "Zagarnia naraz wszystkie tytuły: [recipient.GetShortUINameNoTooltip], albo wszystkie tytuły całego królestwa, w tym hrabstwa i księstwa wasali."
  mqa_take_domain_option:0 "Domena: wasale przysięgają ci wierność"
  mqa_take_realm_option:0 "Całe królestwo: wasale tracą hrabstwa i księstwa"
+ mqa_claim_realm_interaction:0 "Zdobądź roszczenia do wszystkich ziem"
+ mqa_claim_realm_interaction_desc:0 "Zyskujesz wysuwane roszczenia do tytułów postaci [recipient.GetShortUINameNoTooltip] lub do wszystkich tytułów w jej państwie, włącznie z tytułami wasali. Tytuły i wasale pozostają przy obecnych właścicielach."
+ mqa_claim_domain_option:0 "Domena: roszczenia tylko do tytułów posiadanych osobiście"
+ mqa_claim_realm_option:0 "Całe państwo: roszczenia do tytułów tej postaci i wszystkich jej wasali"
 
  # Decisions
  mqa_show_decision_title:0 "--= #EMP Monarque Absolu:#! Pokaż moce =--"

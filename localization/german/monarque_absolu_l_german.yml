@@ -54,6 +54,10 @@
  mqa_take_realm_interaction_desc:0 "Alle Titel von [recipient.GetShortUINameNoTooltip] auf einmal an sich reißen, oder alle Titel des ganzen Reiches, einschließlich der Grafschaften und Herzogtümer der Vasallen."
  mqa_take_domain_option:0 "Die Domäne: die Vasallen schwören Euch Treue"
  mqa_take_realm_option:0 "Das ganze Reich: die Vasallen verlieren ihre Grafschaften und Herzogtümer"
+ mqa_claim_realm_interaction:0 "Ansprüche auf alle Ländereien erhalten"
+ mqa_claim_realm_interaction_desc:0 "Ihr erhaltet durchgesetzte Ansprüche auf die Titel von [recipient.GetShortUINameNoTooltip] oder auf alle Titel im gesamten Reich, einschließlich der Vasallentitel. Titel und Vasallen verbleiben bei ihren bisherigen Besitzern."
+ mqa_claim_domain_option:0 "Persönliche Domäne: nur auf persönlich gehaltene Titel Anspruch erheben"
+ mqa_claim_realm_option:0 "Gesamtes Reich: auf alle Titel einschließlich sämtlicher Vasallentitel Anspruch erheben"
 
  # Decisions
  mqa_show_decision_title:0 "--= #EMP Monarque Absolu:#! Mächte anzeigen =--"
