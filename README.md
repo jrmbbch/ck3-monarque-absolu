@@ -5,7 +5,7 @@ A Crusader Kings III mod that gives you the tools of an all-powerful sovereign: 
 - **Game version:** CK3 1.20.* (Crozier), every DLC supported up to By God Alone, none required
 - **Languages:** English, French, German, Spanish, Polish, Russian, Japanese, Korean, Simplified Chinese
 - **Steam Workshop:** https://steamcommunity.com/sharedfiles/filedetails/?id=3813333986 (description: [docs/workshop_description.bbcode](docs/workshop_description.bbcode), BBCode)
-- **Paradox Mods:** https://mods.paradoxplaza.com/mods/161949/Any (description: [docs/paradox_mods_description.txt](docs/paradox_mods_description.txt) and [docs/paradox_mods_short_description.txt](docs/paradox_mods_short_description.txt), plain text to paste as is)
+- **Paradox Mods:** https://mods.paradoxplaza.com/mods/161949/Any (description: [docs/paradox_mods_description.html](docs/paradox_mods_description.html) and [docs/paradox_mods_short_description.txt](docs/paradox_mods_short_description.txt), HTML for the publication API)
 
 ## Repository layout
 

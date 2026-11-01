@@ -11,6 +11,7 @@ pwsh -File tools/publish_release.ps1 all -Publish
 param(
     [Parameter(Position=0)][ValidateSet('github','steam','paradox','all')][string]$Platform='all',
     [switch]$Publish,
+    [switch]$DescriptionsOnly,
     [string]$SteamLibrary=(Join-Path $HOME 'Library/Application Support/Steam/steamapps/common/Crusader Kings III/binaries/ck3.app/Contents/Frameworks/libsteam_api.dylib'),
     [ValidateRange(1,86400)][int]$TimeoutSeconds=300
 )
@@ -51,6 +52,12 @@ function New-ReleaseStage([string]$Destination) {
     Get-ChildItem -LiteralPath $Destination -Recurse -Force -Directory -Filter '__pycache__' | Remove-Item -Recurse -Force
 }
 function Invoke-ReleasePublication([string]$Target, [bool]$Upload, [string]$Library, [int]$Timeout=300) {
+    if ($DescriptionsOnly) {
+        if ($Target -cne 'paradox') { throw '-DescriptionsOnly requires the paradox platform' }
+        $null=Get-ParadoxDescription
+        if ($Upload) { Update-ParadoxDescriptions $Timeout } else { Write-Host 'Paradox descriptions validated; no network requests performed.' }
+        return
+    }
     $info=Get-ReleaseInfo
     Write-Host "Version $($info.Version); platforms: $Target; upload: $Upload"
     $temporary=Join-Path ([IO.Path]::GetTempPath()) ('mqa-publish-' + [guid]::NewGuid().ToString('N'))

@@ -80,16 +80,55 @@ function Test-ParadoxNotes($Detail, [string]$Notes) {
     foreach ($entry in $Detail.changelog) { if (([string]$entry.details).Trim() -ceq $Notes.Trim() -and [string]$entry.modVersion -ceq [string]$Detail.latestVersion) { return $true } }
     return $false
 }
+# CK3 uses the legacy rich-text renderer: send HTML, not BBCode or Markdown.
+function Get-ParadoxDescription {
+    $html=(Read-Text (Join-Path $script:RepoRoot 'docs/paradox_mods_description.html')).Trim()
+    try { $document=[xml]('<description>' + $html + '</description>') }
+    catch { throw 'Paradox description must be well-formed HTML using the supported subset' }
+    foreach ($element in $document.SelectNodes('//*')) {
+        if ($element.Name -cnotin @('description','p','br','strong','h3','ol','ul','li') -or $element.Attributes.Count) {
+            throw "Unsupported Paradox description element or attributes: $($element.Name)"
+        }
+    }
+    if (-not $document.SelectNodes('//h3').Count -or -not $document.SelectNodes('//li').Count) {
+        throw 'Paradox description must contain headings and list items'
+    }
+    $html
+}
+function Update-ParadoxDescriptions([int]$TimeoutSeconds=60) {
+    $description=Get-ParadoxDescription
+    $short=(Read-Text (Join-Path $script:RepoRoot 'docs/paradox_mods_short_description.txt')).Trim()
+    $auth=Get-ParadoxAuth; $before=Get-ParadoxMetadata $auth
+    if ($before.actions.canEdit -ne $true) { throw 'The signed-in account cannot edit Paradox mod 161949' }
+    if ($before.updating) { throw 'Paradox is processing an update; refusing a concurrent edit' }
+    if ($before.game -cne 'ck3' -or $before.displayName -cne 'Monarque Absolu - Absolute Monarch') { throw 'Unexpected Paradox mod identity' }
+    if ($before.longDescription.Trim() -ceq $description -and $before.shortDescription.Trim() -ceq $short) {
+        Write-Host 'Paradox: descriptions already match; no update performed.'; return
+    }
+    # Same metadata-only endpoint used by the website for legacy games.
+    # No archive, new version, or changelog entry is submitted.
+    Invoke-ParadoxRequest PUT "/mods/161949/versions/$($before.latestVersion)" $auth @{longDescription=$description;shortDescription=$short} > $null
+    $watch=[Diagnostics.Stopwatch]::StartNew()
+    while ($watch.Elapsed.TotalSeconds -lt $TimeoutSeconds) {
+        $after=Get-ParadoxMetadata $auth
+        if ([string]$after.latestVersion -cne [string]$before.latestVersion) { throw 'Paradox version changed during description update; inspect the page' }
+        if ($after.longDescription.Trim() -ceq $description -and $after.shortDescription.Trim() -ceq $short) {
+            Write-Host 'Paradox: descriptions verified online; existing mod version preserved. https://mods.paradoxplaza.com/mods/161949/Any'; return
+        }
+        Start-Sleep -Seconds 2
+    }
+    throw 'Paradox description verification timed out; inspect the page before retrying'
+}
 function Publish-Paradox([string]$Content, $Info, [int]$TimeoutSeconds=300) {
     $auth=Get-ParadoxAuth; $before=Get-ParadoxMetadata $auth
     if ($before.actions.canPublish -ne $true) { throw 'The signed-in Paradox account cannot publish mod 161949; refusing to upload' }
     if ($before.updating) { throw 'Paradox is processing an update; refusing a concurrent publication' }
     if ($before.displayName -cne $Info.Name -or $before.game -cne 'ck3') { throw 'Unexpected Paradox mod identity; refusing to upload' }
-    if (Test-ParadoxNotes $before $Info.Notes) { Write-Host 'Paradox: this version and its notes are already published; no upload performed.'; return }
+    if (Test-ParadoxNotes $before $Info.Notes) { Update-ParadoxDescriptions $TimeoutSeconds; return }
     $remoteName=$before.name; $filename="monarqueabsolu$($Info.Version.Replace('.','')).zip"
     $archive=Join-Path (Split-Path $Content -Parent) $filename
     [IO.Compression.ZipFile]::CreateFromDirectory($Content, $archive, [IO.Compression.CompressionLevel]::Optimal, $false)
-    $payload=@{ modId='161949'; modName=$remoteName; gameName='ck3'; contentFileName=$filename; os='Any'; arch='Any'; longDescription=Read-Text (Join-Path $script:RepoRoot 'docs/paradox_mods_description.txt'); shortDescription=(Read-Text (Join-Path $script:RepoRoot 'docs/paradox_mods_short_description.txt')).Trim(); displayName=$Info.Name; tags=$Info.Tags; recommendedGameVersion=$Info.Required; changelogEntry=$Info.Notes }
+    $payload=@{ modId='161949'; modName=$remoteName; gameName='ck3'; contentFileName=$filename; os='Any'; arch='Any'; longDescription=Get-ParadoxDescription; shortDescription=(Read-Text (Join-Path $script:RepoRoot 'docs/paradox_mods_short_description.txt')).Trim(); displayName=$Info.Name; tags=$Info.Tags; recommendedGameVersion=$Info.Required; changelogEntry=$Info.Notes }
     Write-Host 'Paradox: uploading the mod archive.'
     Invoke-ParadoxRequest PUT "/mods/content/ck3/$([uri]::EscapeDataString($remoteName))/content/$filename" $auth ([IO.File]::ReadAllBytes($archive)) -Binary > $null
     $result=Invoke-ParadoxRequest POST '/mods/publishUpdate' $auth $payload

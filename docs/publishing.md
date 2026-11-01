@@ -8,6 +8,7 @@ Use PowerShell **7.4+**, Git and GitHub CLI (`gh`). Tested with the Microsoft Po
 
 ```powershell
 pwsh -File tools/tests/Test-Scripts.ps1
+pwsh -File tools/tests/Test-ParadoxDescriptions.ps1
 pwsh -File tools/tests/Test-Scripts.ps1 -TestInstalledGame
 ```
 
@@ -35,9 +36,9 @@ pwsh -File tools/publish_release.ps1 steam -Publish
 pwsh -File tools/publish_release.ps1 paradox -Publish
 ```
 
-The version comes from `descriptor.mod`; the matching `docs/patch_notes/<version>.txt` must exist. Descriptions come from `docs/workshop_description.bbcode` and `docs/paradox_mods_description.txt`, with the Paradox short description from its separate file. Only `common/`, `events/`, `localization/`, `descriptor.mod` and `thumbnail.png` are staged in a temporary directory. The repository, tools and authentication data are never included. This does not modify the installed development or release mod folders.
+The version comes from `descriptor.mod`; the matching `docs/patch_notes/<version>.txt` must exist. Descriptions come from `docs/workshop_description.bbcode` and `docs/paradox_mods_description.html`, with the Paradox short description from its separate file. Only `common/`, `events/`, `localization/`, `descriptor.mod` and `thumbnail.png` are staged in a temporary directory. The repository, tools and authentication data are never included. This does not modify the installed development or release mod folders.
 
-A successful Steam callback confirms the upload. Paradox is polled until the mod is published, its timestamp changes and the new notes appear on its latest version. A timeout means status is unknown: verify the remote item before retrying. Publication runs in order: GitHub, Steam, Paradox. Any failure stops the command before later services are called. Completed services are not rolled back. If a service fails, retry that service and any later services individually after checking their state. GitHub verifies and reuses an existing tag/release when the commit and notes match. Paradox skips an upload when the latest version already has the exact release notes. Steam does not skip duplicate submissions.
+A successful Steam callback confirms the upload. Paradox is polled until the mod is published, its timestamp changes and the new notes appear on its latest version. A timeout means status is unknown: verify the remote item before retrying. Publication runs in order: GitHub, Steam, Paradox. Any failure stops the command before later services are called. Completed services are not rolled back. If a service fails, retry that service and any later services individually after checking their state. GitHub verifies and reuses an existing tag/release when the commit and notes match. Paradox skips the archive upload when the latest version already has the exact release notes, and synchronizes the descriptions through its metadata endpoint instead. Steam does not skip duplicate submissions.
 
 ## GitHub prerequisites and implementation
 
@@ -90,3 +91,21 @@ The script reads the launcher's storage-format key from its installed `app.asar`
 ## Version 1.0.5
 
 Published through the original Python publisher to both existing items on 22 October 2026. The PowerShell migration was then checked with offline tests, output comparisons and read-only live checks; it did not re-upload this version. Steam returned `EResult=1`; Paradox advanced from internal version 5 to 6 and published the 1.0.5 notes. Paradox's internal sequence number is separate from the mod's semantic version in `descriptor.mod`.
+
+## Paradox description-only corrections
+
+CK3's legacy Paradox renderer expects HTML, not newline-only text. The description
+uses the website's supported subset: `p`, `br`, `strong`, `h3`, `ol`, `ul`, `li`.
+The publisher validates that subset before sending it. Edit
+`docs/paradox_mods_description.html`; the short description remains plain text.
+
+```powershell
+pwsh -File tools/publish_release.ps1 paradox -DescriptionsOnly
+pwsh -File tools/publish_release.ps1 paradox -DescriptionsOnly -Publish
+```
+
+This mode uses the website's metadata-only `PUT /mods/161949/versions/<latestVersion>`
+endpoint. It requires edit permission and verifies both descriptions by reading them
+back. It does not stage or upload game files or create a new version or changelog.
+When a full publication finds matching release notes, it now synchronizes descriptions
+instead of skipping their changes. Both paths read the same validated HTML.
