@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Improve Paradox publication verification after delayed metadata caused an incorrect negative report for 1.0.6. Use unique metadata read URLs and no-cache headers, verify expected notes on the latest public version, and remove the timestamp-change/processing-flag requirements once those notes are visible. Retry inconclusive public reads; an expired verification window reports unknown status without re-uploading. Add a read-only verification command, offline stale/contradictory-response fixtures and tests, and updated publishing documentation. No gameplay or 1.0.6 release-note changes.
+
 ## 1.0.6
 
 - **Four independent domain decisions.** Fortify and arm the domain now only fills and upgrades existing buildings. Found new holdings, Convert holdings to castles and Grant secondary baronies are separate choices, each with its own one-shot event, static description and diagnostics. All nine translations are updated; Dream home remains separate.

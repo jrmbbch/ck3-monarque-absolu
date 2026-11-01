@@ -9,6 +9,7 @@ Use PowerShell **7.4+**, Git and GitHub CLI (`gh`). Tested with the Microsoft Po
 ```powershell
 pwsh -File tools/tests/Test-Scripts.ps1
 pwsh -File tools/tests/Test-ParadoxDescriptions.ps1
+pwsh -File tools/tests/Test-ParadoxPublication.ps1
 pwsh -File tools/tests/Test-Scripts.ps1 -TestInstalledGame
 ```
 
@@ -38,7 +39,17 @@ pwsh -File tools/publish_release.ps1 paradox -Publish
 
 The version comes from `descriptor.mod`; the matching `docs/patch_notes/<version>.txt` must exist. Descriptions come from `docs/workshop_description.bbcode` and `docs/paradox_mods_description.html`, with the Paradox short description from its separate file. Only `common/`, `events/`, `localization/`, `descriptor.mod` and `thumbnail.png` are staged in a temporary directory. The repository, tools and authentication data are never included. This does not modify the installed development or release mod folders.
 
-A successful Steam callback confirms the upload. Paradox is polled until the mod is published, its timestamp changes and the new notes appear on its latest version. A timeout means status is unknown: verify the remote item before retrying. Publication runs in order: GitHub, Steam, Paradox. Any failure stops the command before later services are called. Completed services are not rolled back. If a service fails, retry that service and any later services individually after checking their state. GitHub verifies and reuses an existing tag/release when the commit and notes match. Paradox skips the archive upload when the latest version already has the exact release notes, and synchronizes the descriptions through its metadata endpoint instead. Steam does not skip duplicate submissions.
+A successful Steam callback confirms the upload. Paradox confirmation checks that the expected notes appear on its latest public version with state `published`. A changed timestamp and cleared processing flag are not required once that public evidence exists. A timeout means status is unknown: use the read-only check below before considering a retry. Publication runs in order: GitHub, Steam, Paradox. Any failure stops the command before later services are called. Completed services are not rolled back. GitHub verifies and reuses an existing tag/release when the commit and notes match. Paradox skips archive upload when the expected version is public, and synchronizes descriptions only when processing flags permit edits. An already accepted or pending update is monitored without sending another archive. Steam does not skip duplicate submissions.
+
+After an upload, check without authentication or another upload:
+
+```powershell
+pwsh -File tools/check_paradox_publication.ps1 -TimeoutSeconds 60
+# One immediate public read
+pwsh -File tools/check_paradox_publication.ps1 -TimeoutSeconds 0
+```
+
+The verifier defaults to 30 seconds. An expired window exits nonzero with **publication not confirmed / status unknown**, not a claim that the upload failed or the version is absent. See [verification details and regression coverage](paradox_publication_verification.md).
 
 ## GitHub prerequisites and implementation
 

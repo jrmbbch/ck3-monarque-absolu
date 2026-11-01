@@ -1,0 +1,25 @@
+{
+  "notes": "1.0.6\n- Expected release notes",
+  "pending": {
+    "game": "ck3",
+    "displayName": "Monarque Absolu - Absolute Monarch",
+    "name": "existing-mod",
+    "actions": { "canPublish": true },
+    "state": "published",
+    "updating": true,
+    "latestVersion": 6,
+    "latestUpdate": "2026-11-01T07:22:02Z",
+    "changelog": [{ "modVersion": 6, "details": "1.0.5\n- Previous release notes" }]
+  },
+  "confirmed": {
+    "game": "ck3",
+    "displayName": "Monarque Absolu - Absolute Monarch",
+    "name": "existing-mod",
+    "actions": { "canPublish": true },
+    "state": "published",
+    "updating": false,
+    "latestVersion": 7,
+    "latestUpdate": "2026-11-01T07:22:02Z",
+    "changelog": [{ "modVersion": 7, "details": "1.0.6\n- Expected release notes" }]
+  }
+}

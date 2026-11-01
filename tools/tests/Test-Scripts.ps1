@@ -73,6 +73,10 @@ try {
         Assert-Equal ([Text.Encoding]::UTF8.GetString((Convert-SessionCipher $cipher $key $iv -Decrypt))) ([Text.Encoding]::UTF8.GetString($data))
         Assert-Throws { Convert-SessionCipher ([byte[]](1,2,3)) $key $iv -Decrypt } '.'
     }
+    Test-Case 'Paradox publication verification handles delayed metadata and uncertain status without re-upload' {
+        $result=Invoke-Tool 'pwsh' @('-NoProfile','-File',"$repository/tools/tests/Test-ParadoxPublication.ps1")
+        Assert-True ($result.Output.Contains('Paradox publication checks passed. No network requests performed.'))
+    }
     Test-Case 'ASAR storage format is read without executing launcher code' {
         $root=Join-Path $temporary 'asar'; $folder="$root/launcher-v2.2026.13/Paradox Launcher.app/Contents/Resources"
         [IO.Directory]::CreateDirectory($folder) > $null

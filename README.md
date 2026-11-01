@@ -21,6 +21,7 @@ A Crusader Kings III mod that gives you the tools of an all-powerful sovereign: 
 | `tools/generate_lifestyle_effects.ps1` | Rebuilds the perk unlock effect from the installed game files |
 | `tools/check_localization.ps1` | Checks the 9 languages: same keys, UTF-8 BOM, no broken quotes |
 | `tools/publish_release.ps1`, `publish_github.ps1`, `publish_steam.ps1`, `publish_paradox.ps1` | Publish the GitHub tag/release and existing Steam/Paradox items, including change notes |
+| `tools/check_paradox_publication.ps1` | Check the current release's public Paradox notes without authentication or upload |
 | `tools/build_release.ps1` | Copies only the mod files into the game's mod folder, ready to upload |
 | `art/thumbnail.svg` | Source of the thumbnail |
 | `docs/` | Publication texts; `docs/patch_notes/<version>.txt` holds the patch note to paste on each upload |
@@ -44,6 +45,8 @@ Run the offline regression suite:
 pwsh -File tools/tests/Test-Scripts.ps1
 # Also check generation against the installed game, writing only temporary files
 pwsh -File tools/tests/Test-Scripts.ps1 -TestInstalledGame
+# Focused offline checks for delayed/contradictory Paradox metadata
+pwsh -File tools/tests/Test-ParadoxPublication.ps1
 ```
 
 ## After a game update
@@ -102,3 +105,11 @@ pwsh -File tools/build_release.ps1
 ```
 
 Manual launcher uploads remain possible: choose the built **Monarque Absolu** entry, never the repository/dev entry. Use Steam ID `3813333986` or Paradox Mods ID `161949`, the descriptions in `docs/`, and the matching `docs/patch_notes/<version>.txt`. The launcher's Steam uploader does not send change notes; add them on the item's Steam changelog page when using that manual path.
+
+To check Paradox after an upload without sending it again:
+
+```powershell
+pwsh -File tools/check_paradox_publication.ps1 -TimeoutSeconds 60
+```
+
+This verifies the expected notes on the latest public version using fresh metadata requests. A timeout means **unconfirmed**, not unpublished. Matching public notes confirm publication even if processing flags or timestamps lag. See [publication verification](docs/paradox_publication_verification.md) for the criteria and retry behavior.
