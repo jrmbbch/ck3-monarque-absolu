@@ -1,0 +1,10 @@
+1.0.6
+- Four independent domain decisions: improve existing buildings, found new holdings, convert eligible holdings to castles, and grant secondary baronies. Updated descriptions in all nine languages; Dream home stays separate.
+- Fixed the decision-screen freeze caused by repeated saint-site searches. Action effects run only after confirmation, with static descriptions and tooltips instead of live construction calculations.
+- Foundation now follows the missing temple, missing city, then castles order, with temple-citadels for mandala rulers and the game's holding requirements. Tribal and nomadic governments are excluded.
+- Grant eligible old and new personal secondary baronies to generated nobles of your culture, faith and rite as direct vassals. Resolve donations together for better performance. Protect county capitals, leased titles and clergy temples; other barons keep their titles.
+- Protect holdings with active construction during all four domain actions. Keep the existing building priorities, prerequisites and slot limits, with costs and construction times skipped. Conversion and donation now require their own decisions.
+- Fixed missing/deceased-character mandala reward errors in castle, ordinary-temple and temple-citadel upgrades, preserving native reward conditions and amounts. A paused repeat test confirmed no further building changes, no reward payments and unchanged player piety.
+- Guard the common-graves epidemic event against an expired epidemic reference and fix its override-priority conflict. Other event choices and rewards are preserved.
+- Added phase, domain and reward diagnostics, removed unused diagnostic snapshots and made the active-construction counter produce a useful result marker, addressing six repeated warnings. Expanded PowerShell generators, regression tests, fixtures and documentation.
+- Compatibility: this version replaces the saint-site trigger, the common-graves event, three native building files and two mandala reward effects. Other mods changing those definitions/files may conflict; regenerate and review replacements after game updates.

@@ -1,0 +1,35 @@
+﻿# County scope: mandala governments require a temple-citadel, not a church holding.
+# Match required_county_holdings in the game's government definitions.
+mqa_b_county_has_required_temple_trigger = {
+	trigger_if = {
+		limit = { holder = { government_has_flag = government_is_mandala } }
+		any_county_province = { has_holding_type = temple_citadel_holding }
+	}
+	trigger_else = {
+		any_county_province = { has_holding_type = church_holding }
+	}
+}
+
+# Province scope. Only the actor's personally held secondary holdings are donated.
+# Other barons keep their titles, and active construction and clergy leases are protected.
+mqa_b_can_grant_holding_trigger = {
+	has_holding = yes
+	is_county_capital = no
+	has_ongoing_construction = no
+	OR = {
+		has_holding_type = castle_holding
+		has_holding_type = city_holding
+		has_holding_type = church_holding
+		has_holding_type = temple_citadel_holding
+	}
+	barony = {
+		holder = scope:mqa_b_founder
+		is_leased_out = no
+	}
+	NOT = {
+		AND = {
+			has_holding_type = church_holding
+			scope:mqa_b_founder.rite = { rite_has_parameter = theocracy_temple_lease }
+		}
+	}
+}

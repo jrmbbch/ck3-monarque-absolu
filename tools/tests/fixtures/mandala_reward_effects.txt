@@ -1,0 +1,48 @@
+mandala_upgraded_temple_holding_effect = {
+	if = {
+		limit = {
+			NOT = { exists = scope:character }
+		}
+		county.holder = { save_scope_as = character }
+	}
+	scope:character = {
+		if = {
+			limit = { root.county.holder = { is_independent_ruler = no } }
+			add_piety = {
+				value = medium_piety_value
+				multiply = 1.5
+			}
+			root.county.holder = {
+				add_piety = {
+					value = minor_piety_value
+					multiply = 1.5
+				}
+			}
+		}
+		else_if = {
+			limit = { government_has_flag = government_is_mandala }
+			add_piety = {
+				value = medium_piety_value
+				multiply = 1.5
+			}
+		}
+	}
+}
+
+creator_mandala_upgraded_regular_holding_piety_effect = {
+	if = {
+		limit = {
+			NOT = { exists = scope:character }
+		}
+		county.holder = { save_scope_as = character }
+	}
+	scope:character = {
+		if = {
+			limit = { government_has_flag = government_is_mandala is_house_head = yes }
+			add_piety = {
+				value = medium_piety_value
+				multiply = { value = creator_mandala_piety_gain_scale }
+			}
+		}
+	}
+}

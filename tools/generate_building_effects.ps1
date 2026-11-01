@@ -195,6 +195,28 @@ function Get-DomicileModel($Buildings) {
     foreach ($group in @($model.External, $model.Internal)) { foreach ($key in @($group.Keys)) { $group[$key]=@(Sort-DomicileCandidates $model @($group[$key])) } }
     $model
 }
+# Instrument emitted primitive mutations, while keeping the original generation rules.
+# One guarded counter call follows each primitive; no per-building log spam.
+function Add-BuildingDiagnostics([string]$Text) {
+    $lines=$Text -split '\n'; $output=[Collections.Generic.List[string]]::new(); $effect=''
+    for ($i=0; $i -lt $lines.Count; $i++) {
+        $line=$lines[$i]; $output.Add($line)
+        $header=[regex]::Match($line,'^(mqa_b_\w+_effect) = \{')
+        if ($header.Success) { $effect=$header.Groups[1].Value }
+        $mutation=[regex]::Match($line,'^(\t+)(?:(add_building|replace_building_effect|remove_building|remove_domicile_building) = \w+|domicile = \{ add_domicile_building = \w+ \})$')
+        if (-not $mutation.Success) { continue }
+        $kind=$mutation.Groups[2].Value
+        $counter=switch ($kind) {
+            'remove_building' { 'mqa_b_removed' }
+            'remove_domicile_building' { 'mqa_b_cancelled' }
+            '' { 'mqa_b_domicile_changes' }
+            default { $effect -eq 'mqa_b_upgrade_province_buildings_effect' ? 'mqa_b_upgraded' : 'mqa_b_added' }
+        }
+        $trace=$mutation.Groups[1].Value + "mqa_b_trace_change_effect = { COUNTER = $counter }"
+        if ($i+1 -ge $lines.Count -or $lines[$i+1] -cne $trace) { $output.Add($trace) }
+    }
+    $output -join "`n"
+}
 function Write-BuildingEffects([string]$Game, [string]$Output) {
     $version='unknown'; $settings=Join-Path (Split-Path $Game -Parent) 'launcher/launcher-settings.json'
     if (Test-Path -LiteralPath $settings) { $m=[regex]::Match((Read-Text $settings), '"rawVersion":\s*"([^"]+)"'); if ($m.Success) { $version=$m.Groups[1].Value } }
@@ -284,7 +306,7 @@ function Write-BuildingEffects([string]$Game, [string]$Output) {
     foreach ($choice in $model.Choices) { for ($i=0; $i -lt $choice.Candidates.Count; $i++) { Attempt @("has_domicile_building = $($choice.Node)") $choice.Candidates[$i] 1 ($i -eq 0 ? 'if' : 'else_if') } }
     foreach ($track in $model.BranchTracks) { for ($i=0; $i -lt $track.Count-1; $i++) { Attempt @("has_domicile_building = $($track[$i])") $track[$i+1] 1 } }
     Emit @('}', '')
-    Write-Text $Output ($out -join "`n") -Bom
+    Write-Text $Output (Add-BuildingDiagnostics ($out -join "`n")) -Bom
     Write-Host "CK3 ${version}: $upgradable upgradable building chains, $($ranked.Count) ranked and $($dropped.Count) dropped building families, $($model.RootTracks.Count + $model.BranchTracks.Count) domicile tracks -> $Output"
     $rank=1; foreach ($family in $ranked) { Write-Host ([string]::Format([Globalization.CultureInfo]::InvariantCulture, '  {0,3}. {1,-22} levies {2,5:F0}  gold {3:F2}', $rank, $family.Name, $family.Levy, $family.Gold)); $rank++ }
     Write-Host ('  dropped: ' + (($dropped | ForEach-Object { $_.Name }) -join ', '))

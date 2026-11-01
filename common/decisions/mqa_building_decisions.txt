@@ -22,25 +22,76 @@ mqa_b_lucky_7_sub_realm_decision = {
 	# Fills the existing slots by priority (fortification, levies, then gold), replacing
 	# lower-ranked buildings, then upgrades everything as far as the game allows.
 	effect = {
-		# Constructions underway cannot be cancelled by script in provinces: warn the
-		# player so they can cancel them by hand first.
-		if = {
-			limit = { mqa_b_ongoing_constructions_value > 0 }
-			custom_tooltip = mqa_b_ongoing_constructions_warning
-		}
-		# Each building's own requirements apply, as when building by hand: main
-		# buildings rise first so the others can follow. Some buildings are only
-		# unlocked by another one at a high level (farm estates by pastures 4...),
-		# so filling and upgrading run three times to settle in a single click.
-		mqa_b_feudalize_domain_holdings_effect = yes
-		mqa_b_found_domain_holdings_effect = yes
-		mqa_b_every_domain_holding_effect = { EFFECT = mqa_b_upgrade_province_buildings_effect }
-		mqa_b_every_domain_holding_effect = { EFFECT = mqa_b_priority_fill_province_effect }
-		mqa_b_every_domain_holding_effect = { EFFECT = mqa_b_upgrade_province_buildings_effect }
-		mqa_b_every_domain_holding_effect = { EFFECT = mqa_b_priority_fill_province_effect }
-		mqa_b_every_domain_holding_effect = { EFFECT = mqa_b_upgrade_province_buildings_effect }
-		mqa_b_every_domain_holding_effect = { EFFECT = mqa_b_priority_fill_province_effect }
-		mqa_b_every_domain_holding_effect = { EFFECT = mqa_b_upgrade_province_buildings_effect }
+		custom_tooltip = mqa_b_domain_effect_tt
+		# Only the event is triggered on confirmation; its body is not a tooltip effect.
+		hidden_effect = { trigger_event = mqa_building.1 }
+	}
+
+	ai_will_do = { base = 0 }
+	ai_check_interval = 0
+}
+
+mqa_b_found_holdings_decision = {
+	sort_order = 279
+	decision_group_type = mqa
+	picture = { reference = gfx/interface/illustrations/decisions/decision_realm.dds }
+	title = mqa_b_found_holdings_decision_title
+	desc = mqa_b_found_holdings_decision_desc
+	selection_tooltip = mqa_b_found_holdings_decision_tooltip
+	confirm_text = mqa_b_found_holdings_decision_ct
+
+	is_shown = {
+		is_ai = no
+		has_character_flag = mqa_b_show_decision_flag
+	}
+
+	effect = {
+		custom_tooltip = mqa_b_found_holdings_effect_tt
+		hidden_effect = { trigger_event = mqa_building.3 }
+	}
+
+	ai_will_do = { base = 0 }
+	ai_check_interval = 0
+}
+mqa_b_convert_holdings_decision = {
+	sort_order = 278
+	decision_group_type = mqa
+	picture = { reference = gfx/interface/illustrations/decisions/decision_realm.dds }
+	title = mqa_b_convert_holdings_decision_title
+	desc = mqa_b_convert_holdings_decision_desc
+	selection_tooltip = mqa_b_convert_holdings_decision_tooltip
+	confirm_text = mqa_b_convert_holdings_decision_ct
+
+	is_shown = {
+		is_ai = no
+		has_character_flag = mqa_b_show_decision_flag
+	}
+
+	effect = {
+		custom_tooltip = mqa_b_convert_holdings_effect_tt
+		hidden_effect = { trigger_event = mqa_building.4 }
+	}
+
+	ai_will_do = { base = 0 }
+	ai_check_interval = 0
+}
+mqa_b_grant_baronies_decision = {
+	sort_order = 277
+	decision_group_type = mqa
+	picture = { reference = gfx/interface/illustrations/decisions/decision_realm.dds }
+	title = mqa_b_grant_baronies_decision_title
+	desc = mqa_b_grant_baronies_decision_desc
+	selection_tooltip = mqa_b_grant_baronies_decision_tooltip
+	confirm_text = mqa_b_grant_baronies_decision_ct
+
+	is_shown = {
+		is_ai = no
+		has_character_flag = mqa_b_show_decision_flag
+	}
+
+	effect = {
+		custom_tooltip = mqa_b_grant_baronies_effect_tt
+		hidden_effect = { trigger_event = mqa_building.5 }
 	}
 
 	ai_will_do = { base = 0 }
@@ -63,13 +114,9 @@ mqa_b_max_domicile_decision = {
 	}
 
 	effect = {
-		# Upgrade first (the main building unlocks slots and levels), build in the free
-		# slots by priority, then upgrade what was just built.
-		# The effects run on the character: each building's own requirements apply to them.
-		mqa_b_cancel_domicile_construction_effect = yes
-		mqa_b_upgrade_domicile_effect = yes
-		mqa_b_construct_domicile_effect = yes
-		mqa_b_upgrade_domicile_effect = yes
+		custom_tooltip = mqa_b_domicile_effect_tt
+		# Only the event is triggered on confirmation; its body is not a tooltip effect.
+		hidden_effect = { trigger_event = mqa_building.2 }
 	}
 
 	ai_will_do = { base = 0 }

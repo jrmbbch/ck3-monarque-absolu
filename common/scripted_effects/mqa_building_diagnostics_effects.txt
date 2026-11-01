@@ -1,0 +1,146 @@
+﻿# Counters belong to the decision actor, not to each barony holder. The saved scope
+# is local to this execution. Generated effects also remain usable without tracing.
+# These count effect calls admitted by the script's conditions, not engine callbacks.
+mqa_b_trace_change_effect = {
+	if = {
+		limit = { exists = scope:mqa_b_trace_actor }
+		scope:mqa_b_trace_actor = {
+			change_variable = { name = $COUNTER$ add = 1 }
+		}
+	}
+}
+
+# Character scope. Keep only the last run's counters, plus a monotonic run number.
+mqa_b_trace_begin_effect = {
+	save_scope_as = mqa_b_trace_actor
+	if = {
+		limit = { NOT = { has_variable = mqa_b_run } }
+		set_variable = { name = mqa_b_run value = 0 }
+	}
+	change_variable = { name = mqa_b_run add = 1 }
+	set_variable = { name = mqa_b_holdings value = 0 }
+	set_variable = { name = mqa_b_skipped value = 0 }
+	set_variable = { name = mqa_b_added value = 0 }
+	set_variable = { name = mqa_b_upgraded value = 0 }
+	set_variable = { name = mqa_b_removed value = 0 }
+	set_variable = { name = mqa_b_founded value = 0 }
+	set_variable = { name = mqa_b_granted value = 0 }
+	set_variable = { name = mqa_b_grant_candidates value = 0 }
+	set_variable = { name = mqa_b_foundation_blocked value = 0 }
+	set_variable = { name = mqa_b_grant_failed value = 0 }
+	set_variable = { name = mqa_b_grant_skipped value = 0 }
+	set_variable = { name = mqa_b_feudalized value = 0 }
+	set_variable = { name = mqa_b_domicile_changes value = 0 }
+	set_variable = { name = mqa_b_cancelled value = 0 }
+	set_variable = { name = mqa_b_piety_before value = piety }
+	set_variable = { name = mqa_b_reward_payments_before value = 0 }
+	if = {
+		limit = { has_variable = mqa_reward_payments_total }
+		set_variable = { name = mqa_b_reward_payments_before value = var:mqa_reward_payments_total }
+	}
+	set_variable = { name = mqa_b_domain_after value = domain_size }
+	set_variable = { name = mqa_b_domain_limit_after value = domain_limit }
+}
+
+# Character scope, immediately around an admitted native add_piety call.
+# Callback contexts are independent from the construction decision. Store the
+# snapshots on the actual recipient, never depend on the caller's saved actor.
+mqa_b_reward_payment_begin_effect = {
+	set_variable = { name = mqa_reward_piety_before value = piety }
+}
+
+mqa_b_reward_payment_end_effect = {
+	if = {
+		limit = { NOT = { has_variable = mqa_reward_payments_total } }
+		set_variable = { name = mqa_reward_payments_total value = 0 }
+	}
+	change_variable = { name = mqa_reward_payments_total add = 1 }
+	set_variable = { name = mqa_reward_piety_after value = piety }
+	set_variable = {
+		name = mqa_reward_last_gain
+		value = { value = var:mqa_reward_piety_after subtract = var:mqa_reward_piety_before }
+	}
+	if = {
+		limit = { var:mqa_reward_last_gain > 0 }
+		debug_log = "MQA_REWARD PIETY_INCREASED"
+	}
+	else = { debug_log = "MQA_REWARD PIETY_NOT_INCREASED" }
+	save_scope_as = mqa_reward_recipient
+	debug_log_scopes = yes
+}
+
+# Character scope, before END domain. Static audit markers are readable even
+# when dynamic numeric localization has no ROOT in the logger's context.
+mqa_b_trace_improvement_result_effect = {
+	if = {
+		limit = { var:mqa_b_skipped > 0 }
+		debug_log = "MQA_BUILD RESULT active_constructions_skipped"
+	}
+	if = {
+		limit = { var:mqa_b_added = 0 var:mqa_b_upgraded = 0 var:mqa_b_removed = 0 }
+		debug_log = "MQA_BUILD RESULT no_building_changes"
+	}
+	else = { debug_log = "MQA_BUILD RESULT building_changes" }
+	if = {
+		limit = { piety > var:mqa_b_piety_before }
+		debug_log = "MQA_BUILD RESULT actor_piety_increased"
+	}
+	else_if = {
+		limit = { piety < var:mqa_b_piety_before }
+		debug_log = "MQA_BUILD RESULT actor_piety_decreased"
+	}
+	else = { debug_log = "MQA_BUILD RESULT actor_piety_unchanged" }
+	if = {
+		limit = { has_variable = mqa_reward_payments_total }
+		if = {
+			limit = { var:mqa_reward_payments_total > var:mqa_b_reward_payments_before }
+			debug_log = "MQA_BUILD RESULT actor_reward_payments"
+		}
+		else = { debug_log = "MQA_BUILD RESULT actor_no_reward_payments" }
+	}
+	else = { debug_log = "MQA_BUILD RESULT actor_no_reward_payments" }
+}
+
+# Character scope. Identify which stage changes owned holdings or their limit.
+# Literal markers avoid the unresolved ROOT localization context of debug_log.
+mqa_b_trace_domain_size_effect = {
+	if = {
+		limit = { domain_size != var:mqa_b_domain_after }
+		debug_log = "MQA_BUILD DOMAIN_SIZE_CHANGED"
+	}
+	if = {
+		limit = { domain_limit != var:mqa_b_domain_limit_after }
+		debug_log = "MQA_BUILD DOMAIN_LIMIT_CHANGED"
+	}
+	set_variable = { name = mqa_b_domain_after value = domain_size }
+	set_variable = { name = mqa_b_domain_limit_after value = domain_limit }
+}
+
+# Province scope, called once per eligible holding after founding/feudalization.
+mqa_b_count_holding_effect = {
+	mqa_b_trace_change_effect = { COUNTER = mqa_b_holdings }
+}
+
+# Character scope. Summarize outcomes once per run, without a line for every barony.
+mqa_b_trace_foundation_result_effect = {
+	if = {
+		limit = { var:mqa_b_founded > 0 }
+		debug_log = "MQA_BUILD RESULT holdings_founded"
+	}
+	if = {
+		limit = { var:mqa_b_granted > 0 }
+		debug_log = "MQA_BUILD RESULT grants_verified"
+	}
+	if = {
+		limit = { var:mqa_b_foundation_blocked > 0 }
+		debug_log = "MQA_BUILD RESULT foundation_requirements_blocked"
+	}
+	if = {
+		limit = { var:mqa_b_grant_failed > 0 }
+		debug_log = "MQA_BUILD RESULT grant_failed"
+	}
+	if = {
+		limit = { var:mqa_b_grant_skipped > 0 }
+		debug_log = "MQA_BUILD RESULT grant_skipped"
+	}
+}

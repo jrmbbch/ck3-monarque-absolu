@@ -1,0 +1,37 @@
+﻿# Override one vanilla By God Alone trigger (CK3 1.20.*).
+# Original: common/scripted_triggers/pam_saint_triggers.txt.
+# The decision screen calls this inside realm-province -> neighbouring-county loops.
+# Find a genuine site in the few local provinces BEFORE checking realm membership.
+# Keep the native realm iterator for membership, including unusual realm layouts.
+# No occupancy filter: an occupied primary site still enables adjacent burial sites.
+pam_county_has_actor_primary_site_trigger = {
+	save_temporary_scope_as = pam_primary_site_county
+	trigger_if = {
+		limit = { $ACTOR$ = { pam_faith_uses_cathedrals_trigger = yes } }
+		OR = {
+			# The actor's own cathedral is a special case in the vanilla trigger too.
+			$ACTOR$ = {
+				AND = {
+					pam_character_has_cathedral_trigger = yes
+					domicile ?= { domicile_location ?= { county = scope:pam_primary_site_county } }
+				}
+			}
+			any_county_province = {
+				any_province_domicile = { owner = { pam_character_has_cathedral_trigger = yes } }
+				save_temporary_scope_as = mqa_primary_site_province
+				$ACTOR$ = {
+					any_realm_province = { this = scope:mqa_primary_site_province }
+				}
+			}
+		}
+	}
+	trigger_else = {
+		any_county_province = {
+			barony ?= { is_holy_site_of = $ACTOR$.faith }
+			save_temporary_scope_as = mqa_primary_site_province
+			$ACTOR$ = {
+				any_realm_province = { this = scope:mqa_primary_site_province }
+			}
+		}
+	}
+}

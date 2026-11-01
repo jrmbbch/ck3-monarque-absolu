@@ -22,6 +22,7 @@ mqa_b_upgrade_province_buildings_effect = {
 			scope:holder = { is_landed = yes }
 		}
 		add_building = castle_02
+		mqa_b_trace_change_effect = { COUNTER = mqa_b_upgraded }
 	}
 	if = {
 		limit = {
@@ -32,6 +33,7 @@ mqa_b_upgrade_province_buildings_effect = {
 			development_level >= 5
 		}
 		add_building = barracks_02
+		mqa_b_trace_change_effect = { COUNTER = mqa_b_upgraded }
 	}
 	if = {
 		limit = {
@@ -41,6 +43,7 @@ mqa_b_upgrade_province_buildings_effect = {
 			always = yes
 		}
 		add_building = farms_02
+		mqa_b_trace_change_effect = { COUNTER = mqa_b_upgraded }
 	}
 	if = {
 		limit = {
@@ -50,6 +53,7 @@ mqa_b_upgrade_province_buildings_effect = {
 			always = yes
 		}
 		replace_building_effect = special_02
+		mqa_b_trace_change_effect = { COUNTER = mqa_b_upgraded }
 	}
 }
 
@@ -58,26 +62,31 @@ mqa_b_remove_barracks_effect = {
 	if = {
 		limit = { has_building = barracks_01 }
 		remove_building = barracks_01
+		mqa_b_trace_change_effect = { COUNTER = mqa_b_removed }
 	}
 	if = {
 		limit = { has_building = barracks_02 }
 		remove_building = barracks_02
+		mqa_b_trace_change_effect = { COUNTER = mqa_b_removed }
 	}
 }
 mqa_b_remove_farms_effect = {
 	if = {
 		limit = { has_building = farms_01 }
 		remove_building = farms_01
+		mqa_b_trace_change_effect = { COUNTER = mqa_b_removed }
 	}
 	if = {
 		limit = { has_building = farms_02 }
 		remove_building = farms_02
+		mqa_b_trace_change_effect = { COUNTER = mqa_b_removed }
 	}
 }
 mqa_b_remove_unused_effect = {
 	if = {
 		limit = { has_building = unused_01 }
 		remove_building = unused_01
+		mqa_b_trace_change_effect = { COUNTER = mqa_b_removed }
 	}
 }
 
@@ -113,9 +122,11 @@ mqa_b_priority_fill_province_effect = {
 					development_level >= 5
 				}
 				add_building = barracks_02
+				mqa_b_trace_change_effect = { COUNTER = mqa_b_added }
 			}
 			else = {
 				add_building = barracks_01
+				mqa_b_trace_change_effect = { COUNTER = mqa_b_added }
 			}
 		}
 	}
@@ -138,9 +149,11 @@ mqa_b_priority_fill_province_effect = {
 					always = yes
 				}
 				add_building = farms_02
+				mqa_b_trace_change_effect = { COUNTER = mqa_b_added }
 			}
 			else = {
 				add_building = farms_01
+				mqa_b_trace_change_effect = { COUNTER = mqa_b_added }
 			}
 		}
 	}
@@ -155,26 +168,32 @@ mqa_b_cancel_domicile_construction_effect = {
 			if = {
 				limit = { has_domicile_construction = army_01 }
 				remove_domicile_building = army_01
+				mqa_b_trace_change_effect = { COUNTER = mqa_b_cancelled }
 			}
 			if = {
 				limit = { has_domicile_construction = army_02 }
 				remove_domicile_building = army_02
+				mqa_b_trace_change_effect = { COUNTER = mqa_b_cancelled }
 			}
 			if = {
 				limit = { has_domicile_construction = base_01 }
 				remove_domicile_building = base_01
+				mqa_b_trace_change_effect = { COUNTER = mqa_b_cancelled }
 			}
 			if = {
 				limit = { has_domicile_construction = base_02 }
 				remove_domicile_building = base_02
+				mqa_b_trace_change_effect = { COUNTER = mqa_b_cancelled }
 			}
 			if = {
 				limit = { has_domicile_construction = gold_01 }
 				remove_domicile_building = gold_01
+				mqa_b_trace_change_effect = { COUNTER = mqa_b_cancelled }
 			}
 			if = {
 				limit = { has_domicile_construction = internal_01 }
 				remove_domicile_building = internal_01
+				mqa_b_trace_change_effect = { COUNTER = mqa_b_cancelled }
 			}
 		}
 	}
@@ -196,6 +215,7 @@ mqa_b_construct_domicile_effect = {
 				}
 			}
 			domicile = { add_domicile_building = base_01 }
+			mqa_b_trace_change_effect = { COUNTER = mqa_b_domicile_changes }
 		}
 	}
 	if = {
@@ -208,6 +228,7 @@ mqa_b_construct_domicile_effect = {
 				}
 			}
 			domicile = { add_domicile_building = base_01 }
+			mqa_b_trace_change_effect = { COUNTER = mqa_b_domicile_changes }
 		}
 	}
 	if = {
@@ -219,6 +240,7 @@ mqa_b_construct_domicile_effect = {
 			}
 		}
 		domicile = { add_domicile_building = internal_01 }
+		mqa_b_trace_change_effect = { COUNTER = mqa_b_domicile_changes }
 	}
 }
 
@@ -235,6 +257,7 @@ mqa_b_upgrade_domicile_effect = {
 			always = yes
 		}
 		domicile = { add_domicile_building = base_02 }
+		mqa_b_trace_change_effect = { COUNTER = mqa_b_domicile_changes }
 	}
 	if = {
 		limit = {
@@ -244,6 +267,7 @@ mqa_b_upgrade_domicile_effect = {
 			is_landed = yes
 		}
 		domicile = { add_domicile_building = army_01 }
+		mqa_b_trace_change_effect = { COUNTER = mqa_b_domicile_changes }
 	}
 	else_if = {
 		limit = {
@@ -252,6 +276,7 @@ mqa_b_upgrade_domicile_effect = {
 			}
 		}
 		domicile = { add_domicile_building = gold_01 }
+		mqa_b_trace_change_effect = { COUNTER = mqa_b_domicile_changes }
 	}
 	if = {
 		limit = {
@@ -261,5 +286,6 @@ mqa_b_upgrade_domicile_effect = {
 			is_adult = yes
 		}
 		domicile = { add_domicile_building = army_02 }
+		mqa_b_trace_change_effect = { COUNTER = mqa_b_domicile_changes }
 	}
 }

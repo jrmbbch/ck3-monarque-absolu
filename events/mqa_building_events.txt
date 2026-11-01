@@ -1,0 +1,100 @@
+﻿namespace = mqa_building
+
+# One-shot events: keep construction traversal out of decision tooltip evaluation.
+# No delayed event, pulse or self-scheduling work.
+
+mqa_building.1 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		mqa_b_trace_begin_effect = yes
+		debug_log = "MQA_BUILD BEGIN domain"
+		debug_log_scopes = yes
+		debug_log = "MQA_BUILD PHASE domain count_constructions"
+		set_variable = { name = mqa_b_skipped value = mqa_b_ongoing_constructions_value }
+		mqa_b_every_domain_holding_effect = { EFFECT = mqa_b_count_holding_effect }
+		debug_log = "MQA_BUILD PHASE domain pass=1"
+		mqa_b_every_domain_holding_effect = { EFFECT = mqa_b_upgrade_province_buildings_effect }
+		mqa_b_every_domain_holding_effect = { EFFECT = mqa_b_priority_fill_province_effect }
+		debug_log = "MQA_BUILD PHASE domain pass=2"
+		mqa_b_every_domain_holding_effect = { EFFECT = mqa_b_upgrade_province_buildings_effect }
+		mqa_b_every_domain_holding_effect = { EFFECT = mqa_b_priority_fill_province_effect }
+		debug_log = "MQA_BUILD PHASE domain pass=3"
+		mqa_b_every_domain_holding_effect = { EFFECT = mqa_b_upgrade_province_buildings_effect }
+		mqa_b_every_domain_holding_effect = { EFFECT = mqa_b_priority_fill_province_effect }
+		debug_log = "MQA_BUILD PHASE domain final_upgrade"
+		mqa_b_every_domain_holding_effect = { EFFECT = mqa_b_upgrade_province_buildings_effect }
+		mqa_b_trace_improvement_result_effect = yes
+		mqa_b_trace_domain_size_effect = yes
+		debug_log = "MQA_BUILD END domain"
+	}
+}
+
+mqa_building.2 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		mqa_b_trace_begin_effect = yes
+		debug_log = "MQA_BUILD BEGIN domicile"
+		debug_log_scopes = yes
+		mqa_b_cancel_domicile_construction_effect = yes
+		debug_log = "MQA_BUILD PHASE domicile upgrade=1"
+		mqa_b_upgrade_domicile_effect = yes
+		debug_log = "MQA_BUILD PHASE domicile construct"
+		mqa_b_construct_domicile_effect = yes
+		debug_log = "MQA_BUILD PHASE domicile upgrade=2"
+		mqa_b_upgrade_domicile_effect = yes
+		mqa_b_trace_domain_size_effect = yes
+		debug_log = "MQA_BUILD END domicile"
+	}
+}
+
+
+mqa_building.3 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		mqa_b_trace_begin_effect = yes
+		debug_log = "MQA_BUILD BEGIN foundation"
+		debug_log_scopes = yes
+		debug_log = "MQA_BUILD PHASE foundation found"
+		mqa_b_found_domain_holdings_effect = yes
+		mqa_b_trace_foundation_result_effect = yes
+		mqa_b_trace_domain_size_effect = yes
+		debug_log = "MQA_BUILD END foundation"
+	}
+}
+
+mqa_building.4 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		mqa_b_trace_begin_effect = yes
+		debug_log = "MQA_BUILD BEGIN conversion"
+		debug_log_scopes = yes
+		debug_log = "MQA_BUILD PHASE conversion feudalize"
+		mqa_b_feudalize_domain_holdings_effect = yes
+		mqa_b_trace_domain_size_effect = yes
+		debug_log = "MQA_BUILD END conversion"
+	}
+}
+
+mqa_building.5 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		mqa_b_trace_begin_effect = yes
+		debug_log = "MQA_BUILD BEGIN grants"
+		debug_log_scopes = yes
+		debug_log = "MQA_BUILD PHASE grants prepare_grants"
+		mqa_b_grant_personal_baronies_effect = yes
+		mqa_b_trace_foundation_result_effect = yes
+		mqa_b_trace_domain_size_effect = yes
+		debug_log = "MQA_BUILD END grants"
+	}
+}

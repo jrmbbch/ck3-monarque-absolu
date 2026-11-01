@@ -2,7 +2,7 @@
 
 # Character scope. Number of holdings of the domain, as covered by
 # mqa_b_every_domain_holding_effect, with a construction underway. The game has no
-# script effect to cancel those, so the decision warns about them.
+# script effect to cancel those, so the decision warns about them and skips their provinces.
 mqa_b_ongoing_constructions_value = {
 	value = 0
 	every_held_title = {
@@ -21,6 +21,7 @@ mqa_b_ongoing_constructions_value = {
 			tier = tier_barony
 			title_province = {
 				has_holding = yes
+				exists = barony.holder
 				has_ongoing_construction = yes
 			}
 			NOT = { county.holder ?= root }

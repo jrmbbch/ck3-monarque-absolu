@@ -2,6 +2,7 @@
 # - every holding of the counties the character holds directly, including the baronies of
 #   vassal barons (cities, temples, castles), which pay their taxes and levies to the character;
 # - every barony the character holds directly in a county held by someone else.
+# Holdings with an active construction are excluded at every pass.
 # scope:holder is set to the holder of each barony, as the game's building requirements expect.
 mqa_b_every_domain_holding_effect = {
 	every_held_title = {
@@ -10,6 +11,7 @@ mqa_b_every_domain_holding_effect = {
 			limit = {
 				has_holding = yes
 				exists = barony.holder
+				has_ongoing_construction = no
 			}
 			mqa_b_run_in_holding_effect = { EFFECT = $EFFECT$ }
 		}
@@ -19,6 +21,8 @@ mqa_b_every_domain_holding_effect = {
 			tier = tier_barony
 			title_province = {
 				has_holding = yes
+				exists = barony.holder
+				has_ongoing_construction = no
 				NOT = { county.holder ?= root }
 			}
 		}
@@ -30,17 +34,25 @@ mqa_b_every_domain_holding_effect = {
 
 # Province scope. Runs $EFFECT$ with scope:holder set to the barony holder.
 mqa_b_run_in_holding_effect = {
-	barony.holder = {
-		save_scope_as = holder
-		save_scope_as = character	# expected by some vanilla on_complete effects (mandala piety)
+	if = {
+		limit = {
+			has_ongoing_construction = no
+			exists = barony.holder
+		}
+		barony.holder = {
+			save_scope_as = holder
+		}
+		$EFFECT$ = yes
 	}
-	$EFFECT$ = yes
 }
 
 # Character scope. In every county the character holds directly, founds a holding in each
-# empty barony that the game allows to be built on: a temple if the county has none yet,
-# otherwise a city. Tribal and nomadic rulers are skipped, their holdings work differently.
+# empty barony: one temple, one city, then castles, subject to vanilla requirements.
+# Explicit donations belong to a separate decision; the engine may assign new holders itself.
+# Tribal and nomadic rulers are skipped, their holdings work differently.
 mqa_b_found_domain_holdings_effect = {
+	save_scope_as = mqa_b_founder
+	save_scope_as = holder
 	every_held_title = {
 		limit = {
 			tier = tier_county
@@ -55,21 +67,140 @@ mqa_b_found_domain_holdings_effect = {
 		every_county_province = {
 			limit = {
 				has_holding = no
+				has_ongoing_construction = no
 				barony_cannot_construct_holding = no
+				is_county_capital = no
 			}
+			# Vanilla building requirements use the founding ruler as scope:holder.
+			scope:mqa_b_founder = { save_scope_as = holder }
 			if = {
 				limit = {
 					NOT = {
 						scope:mqa_county = {
-							any_county_province = { has_holding_type = church_holding }
+							mqa_b_county_has_required_temple_trigger = yes
 						}
 					}
 				}
-				set_holding_type = church_holding
+				if = {
+					limit = { scope:mqa_b_founder = { government_has_flag = government_is_mandala } }
+					if = {
+						limit = { mqa_b_can_found_temple_citadel_trigger = yes }
+						mqa_b_found_holding_effect = { TYPE = temple_citadel_holding }
+					}
+					else = { mqa_b_trace_change_effect = { COUNTER = mqa_b_foundation_blocked } }
+				}
+				else_if = {
+					limit = { mqa_b_can_found_temple_trigger = yes }
+					mqa_b_found_holding_effect = { TYPE = church_holding }
+				}
+				else = { mqa_b_trace_change_effect = { COUNTER = mqa_b_foundation_blocked } }
 			}
-			else = {
-				set_holding_type = city_holding
+			else_if = {
+				limit = {
+					NOT = {
+						scope:mqa_county = {
+							any_county_province = { has_holding_type = city_holding }
+						}
+					}
+				}
+				if = {
+					limit = { mqa_b_can_found_city_trigger = yes }
+					mqa_b_found_holding_effect = { TYPE = city_holding }
+				}
+				else = { mqa_b_trace_change_effect = { COUNTER = mqa_b_foundation_blocked } }
 			}
+			else_if = {
+				limit = { mqa_b_can_found_castle_trigger = yes }
+				mqa_b_found_holding_effect = { TYPE = castle_holding }
+			}
+			else = { mqa_b_trace_change_effect = { COUNTER = mqa_b_foundation_blocked } }
+		}
+	}
+}
+
+# Province scope. Called only for an empty, eligible non-capital barony.
+mqa_b_found_holding_effect = {
+	set_holding_type = $TYPE$
+	mqa_b_trace_change_effect = { COUNTER = mqa_b_founded }
+}
+
+# Character scope. Snapshot eligible personal titles before changing any owners.
+# One shared transaction replaces a resolve/recalculation for every single barony.
+mqa_b_grant_personal_baronies_effect = {
+	save_scope_as = mqa_b_founder
+	every_held_title = {
+		limit = {
+			tier = tier_barony
+			title_province = { has_holding = yes is_county_capital = no }
+		}
+		if = {
+			limit = { title_province = { mqa_b_can_grant_holding_trigger = yes } }
+			add_to_list = mqa_b_grant_titles
+			scope:mqa_b_founder = { change_variable = { name = mqa_b_grant_candidates add = 1 } }
+		}
+		else = { mqa_b_trace_change_effect = { COUNTER = mqa_b_grant_skipped } }
+	}
+	if = {
+		limit = { var:mqa_b_grant_candidates > 0 }
+		create_title_and_vassal_change = {
+			type = granted
+			add_claim_on_loss = no
+			save_scope_as = mqa_b_grant_change
+		}
+		every_in_list = {
+			list = mqa_b_grant_titles
+			title_province = { mqa_b_queue_holding_grant_effect = yes }
+		}
+		debug_log = "MQA_BUILD PHASE grants resolve_grants"
+		resolve_title_and_vassal_change = scope:mqa_b_grant_change
+		every_in_list = {
+			list = mqa_b_new_grantees
+			# Each fresh noble has exactly one expected title in this transaction.
+			if = {
+				limit = {
+					var:mqa_b_expected_title = { holder = prev }
+					liege = scope:mqa_b_founder
+					culture = scope:mqa_b_founder.culture
+					faith = scope:mqa_b_founder.faith
+					rite = scope:mqa_b_founder.rite
+				}
+				mqa_b_trace_change_effect = { COUNTER = mqa_b_granted }
+			}
+			else = { mqa_b_trace_change_effect = { COUNTER = mqa_b_grant_failed } }
+			remove_variable = mqa_b_expected_title
+		}
+	}
+}
+
+# Province scope, from the frozen personal-title list. No resolution in this helper.
+mqa_b_queue_holding_grant_effect = {
+	save_scope_as = mqa_b_new_holding
+	barony = { save_scope_as = mqa_b_grant_title }
+	scope:mqa_b_founder = {
+		create_character = {
+			location = scope:mqa_b_new_holding
+			age = { 18 50 }
+			culture = scope:mqa_b_founder.culture
+			faith = scope:mqa_b_founder.faith
+			rite = scope:mqa_b_founder.rite
+			gender_female_chance = root_faith_dominant_gender_female_chance
+			dynasty = generate
+			random_traits = yes
+			save_scope_as = mqa_b_new_baron
+		}
+	}
+	barony = {
+		change_title_holder = {
+			holder = scope:mqa_b_new_baron
+			change = scope:mqa_b_grant_change
+		}
+	}
+	scope:mqa_b_new_baron = {
+		set_variable = { name = mqa_b_expected_title value = scope:mqa_b_grant_title }
+		add_to_list = mqa_b_new_grantees
+		change_liege = {
+			liege = scope:mqa_b_founder
+			change = scope:mqa_b_grant_change
 		}
 	}
 }
@@ -79,6 +210,7 @@ mqa_b_found_domain_holdings_effect = {
 # who is neither tribal nor of the steppe, on holdings they control with no construction
 # underway.
 mqa_b_feudalize_domain_holdings_effect = {
+	save_scope_as = mqa_b_founder
 	if = {
 		limit = {
 			NOR = {
@@ -102,6 +234,7 @@ mqa_b_feudalize_domain_holdings_effect = {
 			title_province = {
 				holding_pre_feudalize_effect = yes
 				set_holding_type = castle_holding
+				mqa_b_trace_change_effect = { COUNTER = mqa_b_feudalized }
 			}
 		}
 	}

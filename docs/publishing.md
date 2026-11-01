@@ -109,3 +109,7 @@ endpoint. It requires edit permission and verifies both descriptions by reading 
 back. It does not stage or upload game files or create a new version or changelog.
 When a full publication finds matching release notes, it now synchronizes descriptions
 instead of skipping their changes. Both paths read the same validated HTML.
+
+## Version 1.0.6 preparation
+
+Prepared on November 1, 2026. The descriptor and `docs/patch_notes/1.0.6.txt` agree; `CHANGELOG.md` covers the four separated domain decisions, UI performance, foundations/grants, mandala rewards, epidemic override and diagnostics. Committing and pushing the sources is separate from creating a tag/release and uploading to Steam/Paradox. Validate with the offline suite and `pwsh -File tools/publish_release.ps1 all` before publishing; the preparation dry run did not create a tag/release or upload to either mod platform.

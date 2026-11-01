@@ -27,7 +27,7 @@ function Invoke-Tool([string]$File, [string[]]$Arguments, [string]$WorkingDirect
 }
 function Remove-ScriptComments([string]$Text) { [regex]::Replace($Text, '#[^\n]*', '') }
 function Get-ScriptBlocks([string]$Text) {
-    $pattern = [regex]::new('^([A-Za-z0-9_]+)\s*=\s*\{', 'Multiline')
+    $pattern = [regex]::new('^([A-Za-z0-9_.]+)\s*=\s*\{', 'Multiline')
     $position = 0
     while (($match = $pattern.Match($Text, $position)).Success) {
         $depth = 0; $index = $match.Index + $match.Length - 1
